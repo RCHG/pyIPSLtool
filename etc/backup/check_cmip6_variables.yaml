@@ -1,0 +1,444 @@
+emiss: &emi_dep_dry_wet_general
+       method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                 global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}
+
+emiSS_1:  *emi_dep_dry_wet_general
+emiSS_2:  *emi_dep_dry_wet_general
+emiSS_3:  *emi_dep_dry_wet_general
+emiOA_1:  *emi_dep_dry_wet_general
+emiOA_4:  *emi_dep_dry_wet_general
+emiBC_1:  *emi_dep_dry_wet_general
+emiBC_4:  *emi_dep_dry_wet_general
+emiNH4_1: *emi_dep_dry_wet_general
+emiNH4_2: *emi_dep_dry_wet_general
+emiNO3_1: *emi_dep_dry_wet_general
+emiNO3_2: *emi_dep_dry_wet_general
+emiNO3_5: *emi_dep_dry_wet_general
+emihno3:  *emi_dep_dry_wet_general
+emino2:   *emi_dep_dry_wet_general
+emih2s:   *emi_dep_dry_wet_general
+eminh3:   *emi_dep_dry_wet_general
+emidust:  *emi_dep_dry_wet_general
+emioaai:  *emi_dep_dry_wet_general
+emioaas:  *emi_dep_dry_wet_general
+emibc:    *emi_dep_dry_wet_general
+emiso4:   *emi_dep_dry_wet_general
+emino3:   *emi_dep_dry_wet_general
+eminh4:   *emi_dep_dry_wet_general
+eminox:   *emi_dep_dry_wet_general
+eminoy:   *emi_dep_dry_wet_general
+emioa:    *emi_dep_dry_wet_general
+emiso2:   *emi_dep_dry_wet_general
+
+
+
+toplwad0: &dregeneral 
+         method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}
+od440aer: &aodgeneral
+         method:  {global_mean:   {kind:  global, time:  mon, units:  '-',           factor:  1  }}
+loadings: &loadings  
+         { method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]},
+                     total_load:    {kind:  global, time:  mon, units:  'Tg',       factor:  1 }}
+         }
+
+
+emidustCI:  *emi_dep_dry_wet_general
+emidustSI:  *emi_dep_dry_wet_general
+emidustD1:  *emi_dep_dry_wet_general
+emidustD4:  *emi_dep_dry_wet_general
+
+wetdustCI:  *emi_dep_dry_wet_general
+wetdustSI:  *emi_dep_dry_wet_general
+wetdustD1:  *emi_dep_dry_wet_general
+wetdustD4:  *emi_dep_dry_wet_general
+
+drydustCI:  *emi_dep_dry_wet_general
+drydustSI:  *emi_dep_dry_wet_general
+drydustD1:  *emi_dep_dry_wet_general
+drydustD4:  *emi_dep_dry_wet_general
+
+seddustCI:  *emi_dep_dry_wet_general
+seddustSI:  *emi_dep_dry_wet_general
+seddustD1:  *emi_dep_dry_wet_general
+seddustD4:  *emi_dep_dry_wet_general
+
+loaddustCI:  *loadings
+loaddustSI:  *loadings
+loaddustD1:  *loadings
+loaddustD4:  *loadings
+
+toplwad:    *dregeneral 
+topswad:    *dregeneral 
+toplwai:    *dregeneral 
+topswai:    *dregeneral 
+toplwai0:   *dregeneral 
+topswai0:   *dregeneral 
+toplwad0:   *dregeneral 
+topswad0:   *dregeneral 
+sollwad:    *dregeneral 
+solswad:    *dregeneral
+sollwai:    *dregeneral 
+solswai:    *dregeneral
+sollwad0:   *dregeneral 
+solswad0:   *dregeneral 
+toplwswad:  *dregeneral 
+sollwswad:  *dregeneral 
+toplwswad0: *dregeneral 
+sollwswad0: *dregeneral 
+
+toplwad_dust:    *dregeneral 
+topswad_dust:    *dregeneral 
+toplwad0_dust:   *dregeneral 
+topswad0_dust:   *dregeneral 
+sollwad_dust:    *dregeneral 
+solswad_dust:    *dregeneral
+sollwad0_dust:   *dregeneral 
+solswad0_dust:   *dregeneral 
+toplwswad_dust:  *dregeneral 
+sollwswad_dust:  *dregeneral 
+toplwswad0_dust: *dregeneral 
+sollwswad0_dust: *dregeneral 
+
+toplwad_dust_siA:    *dregeneral 
+topswad_dust_siA:    *dregeneral 
+toplwad0_dust_siA:   *dregeneral 
+topswad0_dust_siA:   *dregeneral 
+sollwad_dust_siA:    *dregeneral 
+solswad_dust_siA:    *dregeneral
+sollwad0_dust_siA:   *dregeneral 
+solswad0_dust_siA:   *dregeneral 
+toplwswad_dust_siA:  *dregeneral 
+sollwswad_dust_siA:  *dregeneral 
+toplwswad0_dust_siA: *dregeneral 
+sollwswad0_dust_siA: *dregeneral 
+
+toplwad_dust_siB:    *dregeneral 
+topswad_dust_siB:    *dregeneral 
+toplwad0_dust_siB:   *dregeneral 
+topswad0_dust_siB:   *dregeneral 
+sollwad_dust_siB:    *dregeneral 
+solswad_dust_siB:    *dregeneral
+sollwad0_dust_siB:   *dregeneral 
+solswad0_dust_siB:   *dregeneral 
+toplwswad_dust_siB:  *dregeneral 
+sollwswad_dust_siB:  *dregeneral 
+toplwswad0_dust_siB: *dregeneral 
+sollwswad0_dust_siB: *dregeneral 
+
+toplwad_dust_ciA:    *dregeneral 
+topswad_dust_ciA:    *dregeneral 
+toplwad0_dust_ciA:   *dregeneral 
+topswad0_dust_ciA:   *dregeneral 
+sollwad_dust_ciA:    *dregeneral 
+solswad_dust_ciA:    *dregeneral
+sollwad0_dust_ciA:   *dregeneral 
+solswad0_dust_ciA:   *dregeneral 
+toplwswad_dust_ciA:  *dregeneral 
+sollwswad_dust_ciA:  *dregeneral 
+toplwswad0_dust_ciA: *dregeneral 
+sollwswad0_dust_ciA: *dregeneral 
+
+toplwad_dust_ciB:    *dregeneral 
+topswad_dust_ciB:    *dregeneral 
+toplwad0_dust_ciB:   *dregeneral 
+topswad0_dust_ciB:   *dregeneral 
+sollwad_dust_ciB:    *dregeneral 
+solswad_dust_ciB:    *dregeneral
+sollwad0_dust_ciB:   *dregeneral 
+solswad0_dust_ciB:   *dregeneral 
+toplwswad_dust_ciB:  *dregeneral 
+sollwswad_dust_ciB:  *dregeneral 
+toplwswad0_dust_ciB: *dregeneral 
+sollwswad0_dust_ciB: *dregeneral 
+
+toplwad_dust_d1A:    *dregeneral 
+topswad_dust_d1A:    *dregeneral 
+toplwad0_dust_d1A:   *dregeneral 
+topswad0_dust_d1A:   *dregeneral 
+sollwad_dust_d1A:    *dregeneral 
+solswad_dust_d1A:    *dregeneral
+sollwad0_dust_d1A:   *dregeneral 
+solswad0_dust_d1A:   *dregeneral 
+toplwswad_dust_d1A:  *dregeneral 
+sollwswad_dust_d1A:  *dregeneral 
+toplwswad0_dust_d1A: *dregeneral 
+sollwswad0_dust_d1A: *dregeneral
+
+toplwad_dust_d1B:    *dregeneral 
+topswad_dust_d1B:    *dregeneral 
+toplwad0_dust_d1B:   *dregeneral 
+topswad0_dust_d1B:   *dregeneral 
+sollwad_dust_d1B:    *dregeneral 
+solswad_dust_d1B:    *dregeneral
+sollwad0_dust_d1B:   *dregeneral 
+solswad0_dust_d1B:   *dregeneral 
+toplwswad_dust_d1B:  *dregeneral 
+sollwswad_dust_d1B:  *dregeneral 
+toplwswad0_dust_d1B: *dregeneral 
+sollwswad0_dust_d1B: *dregeneral
+
+toplwad_dust_d4A:    *dregeneral 
+topswad_dust_d4A:    *dregeneral 
+toplwad0_dust_d4A:   *dregeneral 
+topswad0_dust_d4A:   *dregeneral 
+sollwad_dust_d4A:    *dregeneral 
+solswad_dust_d4A:    *dregeneral
+sollwad0_dust_d4A:   *dregeneral 
+solswad0_dust_d4A:   *dregeneral 
+toplwswad_dust_d4A:  *dregeneral 
+sollwswad_dust_d4A:  *dregeneral 
+toplwswad0_dust_d4A: *dregeneral 
+sollwswad0_dust_d4A: *dregeneral 
+
+toplwad_dust_d4B:    *dregeneral 
+topswad_dust_d4B:    *dregeneral 
+toplwad0_dust_d4B:   *dregeneral 
+topswad0_dust_d4B:   *dregeneral 
+sollwad_dust_d4B:    *dregeneral 
+solswad_dust_d4B:    *dregeneral
+sollwad0_dust_d4B:   *dregeneral 
+solswad0_dust_d4B:   *dregeneral 
+toplwswad_dust_d4B:  *dregeneral 
+sollwswad_dust_d4B:  *dregeneral 
+toplwswad0_dust_d4B: *dregeneral 
+sollwswad0_dust_d4B: *dregeneral 
+
+
+od550dustCI: *aodgeneral
+od550dustSI: *aodgeneral
+od550dustD1: *aodgeneral
+od550dustD4: *aodgeneral
+
+cldtau:      *aodgeneral
+
+abs550aer: &absgeneral
+         method:  {global_mean:   {kind:  global, time:  mon, units:  '-',           factor:  1  }}
+
+abs440aer:  *absgeneral
+abs865aer:  *absgeneral
+abs440bc:   *absgeneral
+abs550bc:   *absgeneral
+abs870bc:     *absgeneral
+abs440bcin:   *absgeneral
+abs550bcin:   *absgeneral
+abs870bcin:   *absgeneral
+abs440bcsin:   *absgeneral
+abs550bcsin:   *absgeneral
+abs870bcsin:   *absgeneral
+abs440bcs:   *absgeneral
+abs550bcs:   *absgeneral
+abs870bcs:   *absgeneral
+
+abs440oa:   *absgeneral
+abs550oa:   *absgeneral
+abs865oa:   *absgeneral
+abs440dust: *absgeneral
+abs550dust: *absgeneral
+abs865dust: *absgeneral
+
+rlcs:      *aodgeneral
+rldscsca:  *aodgeneral
+rldscs:    *aodgeneral
+rlus:      *aodgeneral
+rluscs:    *aodgeneral
+rsds:      *aodgeneral
+rsdscsca:  *aodgeneral
+rsdscs:    *aodgeneral
+rsdt:      *aodgeneral
+rsdtcs:    *aodgeneral
+rsut:      *aodgeneral
+rsutcsca:  *aodgeneral
+rsutcs             : *aodgeneral
+rlut               : *aodgeneral
+rlutcs             : *aodgeneral
+rlutcsca           : *aodgeneral
+
+nettop             : *aodgeneral
+
+cllmodis           : *aodgeneral
+clmmodis           : *aodgeneral
+clhmodis           : *aodgeneral
+cltmodis           : *aodgeneral
+clwmodis           : *aodgeneral
+climodis           : *aodgeneral
+tautmodis          : *aodgeneral
+tauwmodis          : *aodgeneral
+tauimodis          : *aodgeneral
+reffclwmodis       : *aodgeneral
+reffclimodis       : *aodgeneral
+pctmodis           : *aodgeneral
+lwpmodis           : *aodgeneral
+iwpmodis           : *aodgeneral
+
+dryno3:   *emi_dep_dry_wet_general
+dryhno3:  *emi_dep_dry_wet_general
+drySS_3:  *emi_dep_dry_wet_general
+dryOA_4:  *emi_dep_dry_wet_general
+dryNO3_1: *emi_dep_dry_wet_general
+dryOA_1:  *emi_dep_dry_wet_general
+drySS_2:  *emi_dep_dry_wet_general
+dryNO3_5: *emi_dep_dry_wet_general
+dryno2:   *emi_dep_dry_wet_general
+dryNO3_2: *emi_dep_dry_wet_general
+drySS_1:  *emi_dep_dry_wet_general
+dryNH4_2: *emi_dep_dry_wet_general
+dryNH4_1: *emi_dep_dry_wet_general
+
+emidms:   *emi_dep_dry_wet_general
+drydms:   *emi_dep_dry_wet_general
+emidmso:  *emi_dep_dry_wet_general
+drydmso:  *emi_dep_dry_wet_general
+wetdms:   *emi_dep_dry_wet_general
+
+
+mmrpm10: &mmr_general
+        method:  {global_mean_atlev: {kind:  global, time:  mon, units:  'kg kg-1', factor:  1, levels: [0, 2, 25, 50]}}
+
+mmrNO3_5: *mmr_general
+mmrBC_4:  *mmr_general
+mmrOA_4:  *mmr_general
+mmrSS_2:  *mmr_general
+mmrSO4_1: *mmr_general
+mmrNH4_2: *mmr_general
+mmrNO3_2: *mmr_general
+mmrSS_1:  *mmr_general
+mmrBC_1:  *mmr_general
+mmrOA_1:  *mmr_general
+mmrNH4_1: *mmr_general
+mmrNO3_1: *mmr_general
+mmrSS_3:  *mmr_general
+mmrpm1:   *mmr_general
+mmrpm2p5: *mmr_general
+mmr_5:    *mmr_general
+mmr_4:    *mmr_general
+mmr_3:    *mmr_general
+mmr_2:    *mmr_general
+mmr_1:    *mmr_general
+mmrdust:  *mmr_general
+mmrss:    *mmr_general
+mmrso4:   *mmr_general
+mmrnh4:   *mmr_general
+mmrno3:   *mmr_general
+mmrbc:    *mmr_general
+mmroa:    *mmr_general
+mmrDU_5:  *mmr_general
+
+
+depdust:      {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+depss:        {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+depssss:      {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+depso4:       {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+depso2:       {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+depbc:        {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+depoa:        {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+depno3:       {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+
+drydust:      {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+drynh3:       {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+dryso2:       {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+dryso4:       {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+dryss:        {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+dryssss:      {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  }}}
+drybc:        {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+dryoa:        {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+
+sedoa:        {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+sedbc:        {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+sedss:        {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+seddust:      {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+sedso4:       {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+
+wetso2:       {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+wetso4:       {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+wetdust:      {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+wetnh4:       {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+wetno3:       {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+wetss:        {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+wetssss:      {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+wetbc:        {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+wetoa:        {  method:  {tendency_mass: {kind:  global, time:  mon, units:  'kg m-2 s-1', factor:  1  },
+                           global_mean:   {kind:  global, time:  mon, units:  'g m-2 yr-1', factor:  31557600e3  }}}
+
+od550aer:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550dust:    {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550ss:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550bc:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550oa:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550so4:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550so2:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550no3:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od440aer:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od870aer:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550dryaer:  {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550lt1aer:  {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550gt1aer:  {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+
+rlutcsaf:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}}
+rlutcs:       {  method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}}
+rlut:         {  method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}}
+rsutcsaf:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}}
+rsutcs:       {  method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}}
+rsut:         {  method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}}
+rsdt:         {  method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}}
+rsuscs:       {  method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}}
+rsus:         {  method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}}
+
+loadbc:       {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2010, 0.00]}}}
+loaddust:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loadoa:       {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loadss:       {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loadso4:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mgS  m-2',   factor:  0.33333e6, aerocom: [2000, 0.00]}}}
+loadno3:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loadso2:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mgS  m-2',   factor:  0.5e6,     aerocom: [2000, 0.00]}}}
+
+sconcso4:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mu*g m-3',   factor:  0.33333e9,  aerocom: [2000, 0.00]}}}
+sconcbc:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mu*g m-3',   factor:  1.0e9,      aerocom: [2000, 0.00]}}}
+sconcoa:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mu*g m-3',   factor:  1.0e9,      aerocom: [2000, 0.00]}}}
+sconcss:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mu*g m-3',   factor:  1.0e9,      aerocom: [2000, 0.00]}}}
+sconcdust:    {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mu*g m-3',   factor:  1.0e9,      aerocom: [2000, 0.00]}}}
+
+
+tas: *aodgeneral
+prc: *aodgeneral
+ptp: *aodgeneral
+ps: *aodgeneral
+sci: *aodgeneral
+lwp: *aodgeneral
+hfss: *aodgeneral
+hfls: *aodgeneral
+clt: *aodgeneral
+clivi: *aodgeneral
+ci: *aodgeneral
+
+tropoz:  {  method:  {global_mean:   {kind:  global, time:  mon, units:  'DU',      factor:  1  }}}
+straoz: {  method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}}
+
+

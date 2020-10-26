@@ -1,0 +1,39 @@
+loadings: &loadings  
+         { method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]},
+                     total_load:    {kind:  global, time:  mon, units:  'Tg',       factor:  1 }}
+         }
+
+
+loaddustCI:  *loadings
+loaddustSI:  *loadings
+loaddustD1:  *loadings
+loaddustD4:  *loadings
+
+loadbc:       {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loaddust:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loadoa:       {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loadss:       {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loadso4:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mgS  m-2',   factor:  0.33333e6, aerocom: [2000, 0.00]}}}
+loadno3:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loadso2:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mgS  m-2',   factor:  0.5e6,     aerocom: [2000, 0.00]}}}
+loadnh4:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mgS  m-2',   factor:  0.5e6,     aerocom: [2000, 0.00]}}}
+
+
+loadbccmip6:       {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loaddustcmip6:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loadoacmip6:       {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loadsscmip6:       {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loadso4cmip6:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mgS  m-2',   factor:  0.33333e6, aerocom: [2000, 0.00]}}}
+loadno3cmip6:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mg   m-2',   factor:  1.e6,      aerocom: [2000, 0.00]}}}
+loadso2cmip6:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mgS  m-2',   factor:  0.5.e6,    aerocom: [2000, 0.00]}}}
+loadnh4cmip6:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mgS  m-2',   factor:  0.5e6,     aerocom: [2000, 0.00]}}}
+
+sconcso4:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mu*g m-3',   factor:  0.33333e9,  aerocom: [2000, 0.00]}}}
+sconcbc:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mu*g m-3',   factor:  1.0e9,      aerocom: [2000, 0.00]}}}
+sconcoa:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mu*g m-3',   factor:  1.0e9,      aerocom: [2000, 0.00]}}}
+sconcss:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mu*g m-3',   factor:  1.0e9,      aerocom: [2000, 0.00]}}}
+sconcdust:    {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mu*g m-3',   factor:  1.0e9,      aerocom: [2000, 0.00]}}}
+sconcno3:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  'mu*g m-3',   factor:  1.0e9,      aerocom: [2000, 0.00]}}}
+
+
+

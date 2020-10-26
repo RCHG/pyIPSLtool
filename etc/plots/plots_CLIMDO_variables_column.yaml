@@ -1,0 +1,28 @@
+
+o3col: 
+        method:  {surface_map: {title: Column, kind:  global, time:  mon, units:  'cm-2', factor:  1, vmin: 5.0, vmax: 50.0 }}
+
+o3coltot:  
+        method:  {surface_map: {title: Column, kind:  global, time:  mon, units:  'cm-2', factor:  1, vmin: 250.0, vmax: 390.0}}
+
+ch4col: 
+        method:  {surface_map: {title: Column, kind:  global, time:  mon, units:  'cm-2', factor:  1, vmin: 2.0,   vmax: 4.0  }}
+
+no2col: 
+        method:  {surface_map: {title: Column, kind:  global, time:  mon, units:  'cm-2', factor: 1, vmin: 0.0,    vmax: 20.0 }}
+
+cocol:    
+        method:  {surface_map: {title: Column, kind:  global, time:  mon, units:  'cm-2', factor:  1, vmin: 0.25, vmax: 3.5}}
+
+ch2ocol:
+        method:  {surface_map: {title: Column, kind:  global, time:  mon, units:  'cm-2', factor:  1, vmin: 0.0, vmax: 30.0}}
+so2col:
+        method:  {surface_map: {title: Column, kind:  global, time:  mon, units:  'cm-2', factor:  1, vmin: 0.0, vmax: 30.0}}
+
+ohcol:   &col_general  
+        method:  {surface_map: {title: Column, kind:  global, time:  mon, units:  'cm-2', factor:  1 }}
+
+nh3col:   *col_general
+hno2col:  *col_general
+
+

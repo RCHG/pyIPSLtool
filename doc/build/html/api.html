@@ -1,0 +1,739 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API reference &mdash; PyPUMD a documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="How to use: running in TGCC cluster" href="How-to-use.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> PyPUMD
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Structure.html">Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="How-to-use.html">How to use: running in TGCC cluster</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#modules">Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.liborganize">aeroplots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.check">regions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.specific_ipsl">loops</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyPUMD</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>API reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-reference">
+<h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<p>This page provides an auto-generated summary of API. For more details
+and examples, refer to the relevant chapters in the main part of the
+documentation.</p>
+<span class="target" id="module-organize_yaml"></span><hr class="docutils" />
+<blockquote>
+<div><p>Project   : CRESCENDO/AEROCOM
+Filename  : organize_yaml.py
+Author    : Ramiro Checa-Garcia
+email     : <a class="reference external" href="mailto:rcheca&#37;&#52;&#48;lsce&#46;ipsl&#46;fr">rcheca<span>&#64;</span>lsce<span>&#46;</span>ipsl<span>&#46;</span>fr</a>
+Purpose   : Reorganize variables for LMDzINCAOR experiment runs.</p>
+<p>Revision History ———————————————————-</p>
+<p>Date       Author     Ref    Revision</p>
+<p>2018-Apr   R.Checa           First version
+2018-Sep   R.Checa           Working as main with modules in lib
+2018-Oct   R.Checa           Implemented yaml
+2018-Nov   R.Checa           Final first version based on yaml</p>
+<p>TODO LIST:</p>
+</div></blockquote>
+<hr class="docutils" />
+<dl class="function">
+<dt id="organize_yaml.opt_parser">
+<code class="sig-prename descclassname">organize_yaml.</code><code class="sig-name descname">opt_parser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/organize_yaml.html#opt_parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#organize_yaml.opt_parser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="section" id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="module-lib.liborganize">
+<span id="aeroplots"></span><h3>aeroplots<a class="headerlink" href="#module-lib.liborganize" title="Permalink to this headline">¶</a></h3>
+<hr class="docutils" />
+<blockquote>
+<div><p>Project   : CRESCENDO/AEROCOM
+Filename  : liborganize.py
+Author    : Ramiro Checa-Garcia
+email     : <a class="reference external" href="mailto:rcheca&#37;&#52;&#48;lsce&#46;ipsl&#46;fr">rcheca<span>&#64;</span>lsce<span>&#46;</span>ipsl<span>&#46;</span>fr</a>
+Purpose   : Reorganize variables for LMDzINCAOR experiment runs.</p>
+<p>Revision History ———————————————————-</p>
+<p>Date       Author     Ref    Revision</p>
+<p>2018-Apr   R.Checa           First code
+2018-Jul   R.Checa           Implemented as module
+2018-Nov   R.Checa           Final first version.</p>
+<p>TODO LIST:</p>
+<ol class="arabic simple">
+<li><p>Diagnostics on lev_var not in hard-code         (Improvement)</p></li>
+<li><p>Add reference values for key diagnostics        (Improvement)</p></li>
+<li><p>Add description to each function                (Documentation)</p></li>
+<li><p>Factors in new_var could be variables in netcdf (Improvement)</p></li>
+</ol>
+</div></blockquote>
+<hr class="docutils" />
+<dl class="function">
+<dt id="lib.liborganize.add_global_attributes">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">add_global_attributes</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">ncname</em>, <em class="sig-param">newname</em>, <em class="sig-param">study</em>, <em class="sig-param">info_var</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#add_global_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.add_global_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysettings</strong> – </p></li>
+<li><p><strong>ncname</strong> – </p></li>
+<li><p><strong>newname</strong> – </p></li>
+<li><p><strong>study</strong> – </p></li>
+<li><p><strong>info_var</strong> – </p></li>
+<li><p><strong>finfo</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.check_units">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">check_units</code><span class="sig-paren">(</span><em class="sig-param">varname_list</em>, <em class="sig-param">vars_dataset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#check_units"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.check_units" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>varname_list</strong> – </p></li>
+<li><p><strong>vars_dataset</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.create_filename">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">create_filename</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">study</em>, <em class="sig-param">expID</em>, <em class="sig-param">varID</em>, <em class="sig-param">varfile</em>, <em class="sig-param">freq='mon'</em>, <em class="sig-param">finfo=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#create_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.create_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates the new filename of the netcdf with the diagnostics as derived from the current settings. In the case of CMIP6 netcdfs the filename will have the structure:</p>
+<blockquote>
+<div><p><strong>varID_tableID_sourceID_experimentID_memberID_gridlevel_timerange</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>varID  ——-&gt; is the variable name: varname</p></li>
+<li><p>tableID ——&gt; depends on variable AERday, Amon etc…</p></li>
+<li><p>sourceID —–&gt; IPSL-LMDZORINCAv6</p></li>
+<li><p>experimentID -&gt; CRESCWP3PD-amip</p></li>
+<li><p>memberID —–&gt; v5-r1i1p1f1  (v5 refers to our internal version)</p></li>
+<li><p>gridlabel —-&gt; gr           (refers to the original grid but we provide at preslev)</p></li>
+<li><p>timerange —-&gt; 20000101-20121231 for all cases.</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysettings</strong> – </p></li>
+<li><p><strong>study</strong> – </p></li>
+<li><p><strong>expID</strong> – </p></li>
+<li><p><strong>varID</strong> – is the variable name: varname</p></li>
+<li><p><strong>varfile</strong> – </p></li>
+<li><p><strong>freq</strong> – </p></li>
+<li><p><strong>finfo</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>save_name</p></li>
+<li><p>info_var</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.directory_structure">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">directory_structure</code><span class="sig-paren">(</span><em class="sig-param">study</em>, <em class="sig-param">mysettings</em>, <em class="sig-param">clean=False</em>, <em class="sig-param">create=False</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#directory_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.directory_structure" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>study</strong> – </p></li>
+<li><p><strong>mysettings</strong> – </p></li>
+<li><p><strong>clean</strong> – </p></li>
+<li><p><strong>create</strong> – </p></li>
+<li><p><strong>finfo</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.find_tableID">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">find_tableID</code><span class="sig-paren">(</span><em class="sig-param">varID</em>, <em class="sig-param">freq='mon'</em>, <em class="sig-param">origin='ATM'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#find_tableID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.find_tableID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.get_var">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">get_var</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">year</em>, <em class="sig-param">varname</em>, <em class="sig-param">freqsource</em>, <em class="sig-param">module</em>, <em class="sig-param">timeout</em>, <em class="sig-param">outname</em>, <em class="sig-param">expcase</em>, <em class="sig-param">study</em>, <em class="sig-param">extra=''</em>, <em class="sig-param">index=1</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#get_var"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.get_var" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysettings</strong> – </p></li>
+<li><p><strong>year</strong> – </p></li>
+<li><p><strong>varname</strong> – </p></li>
+<li><p><strong>freqsource</strong> – </p></li>
+<li><p><strong>module</strong> – </p></li>
+<li><p><strong>timeout</strong> – </p></li>
+<li><p><strong>outname</strong> – </p></li>
+<li><p><strong>expcase</strong> – </p></li>
+<li><p><strong>study</strong> – </p></li>
+<li><p><strong>extra</strong> – </p></li>
+<li><p><strong>index</strong> – </p></li>
+<li><p><strong>finfo</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.lev_var">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">lev_var</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">year</em>, <em class="sig-param">varname</em>, <em class="sig-param">freqsource</em>, <em class="sig-param">module</em>, <em class="sig-param">timeout</em>, <em class="sig-param">outname</em>, <em class="sig-param">expcase</em>, <em class="sig-param">study</em>, <em class="sig-param">extra=''</em>, <em class="sig-param">lev='top'</em>, <em class="sig-param">index=1</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#lev_var"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.lev_var" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysettings</strong> – </p></li>
+<li><p><strong>year</strong> – </p></li>
+<li><p><strong>varname</strong> – </p></li>
+<li><p><strong>freqsource</strong> – </p></li>
+<li><p><strong>module</strong> – </p></li>
+<li><p><strong>timeout</strong> – </p></li>
+<li><p><strong>outname</strong> – </p></li>
+<li><p><strong>expcase</strong> – </p></li>
+<li><p><strong>study</strong> – </p></li>
+<li><p><strong>extra</strong> – </p></li>
+<li><p><strong>lev</strong> – </p></li>
+<li><p><strong>index</strong> – </p></li>
+<li><p><strong>finfo</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.memory_usage_psutil">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">memory_usage_psutil</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#memory_usage_psutil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.memory_usage_psutil" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.myprint">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">myprint</code><span class="sig-paren">(</span><em class="sig-param">mystr</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#myprint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.myprint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.new_var">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">new_var</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">year</em>, <em class="sig-param">varname</em>, <em class="sig-param">freqsource</em>, <em class="sig-param">module</em>, <em class="sig-param">timeout</em>, <em class="sig-param">outname</em>, <em class="sig-param">expcase</em>, <em class="sig-param">study</em>, <em class="sig-param">extra=''</em>, <em class="sig-param">index=1</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#new_var"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.new_var" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysettings</strong> – </p></li>
+<li><p><strong>year</strong> – </p></li>
+<li><p><strong>varname</strong> – </p></li>
+<li><p><strong>freqsource</strong> – </p></li>
+<li><p><strong>module</strong> – </p></li>
+<li><p><strong>timeout</strong> – </p></li>
+<li><p><strong>outname</strong> – </p></li>
+<li><p><strong>expcase</strong> – </p></li>
+<li><p><strong>study</strong> – </p></li>
+<li><p><strong>extra</strong> – </p></li>
+<li><p><strong>index</strong> – </p></li>
+<li><p><strong>finfo</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.new_variable_altsur">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">new_variable_altsur</code><span class="sig-paren">(</span><em class="sig-param">vardataset</em>, <em class="sig-param">d_new_vars</em>, <em class="sig-param">outname</em>, <em class="sig-param">varname</em>, <em class="sig-param">outfile</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#new_variable_altsur"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.new_variable_altsur" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vardataset</strong> – </p></li>
+<li><p><strong>d_new_vars</strong> – </p></li>
+<li><p><strong>outname</strong> – </p></li>
+<li><p><strong>varname</strong> – </p></li>
+<li><p><strong>outfile</strong> – </p></li>
+<li><p><strong>finfo</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.post_processing">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">post_processing</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">directory</em>, <em class="sig-param">list_variables</em>, <em class="sig-param">lyears</em>, <em class="sig-param">post_t</em>, <em class="sig-param">study</em>, <em class="sig-param">expID</em>, <em class="sig-param">freq</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#post_processing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.post_processing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.process_files">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">process_files</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">year</em>, <em class="sig-param">expcase</em>, <em class="sig-param">study</em>, <em class="sig-param">proc_file</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#process_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.process_files" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysettings</strong> – </p></li>
+<li><p><strong>year</strong> – </p></li>
+<li><p><strong>expcase</strong> – </p></li>
+<li><p><strong>study</strong> – </p></li>
+<li><p><strong>proc_file</strong> – </p></li>
+<li><p><strong>finfo</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.read_process_file">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">read_process_file</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">process_file</em>, <em class="sig-param">year</em>, <em class="sig-param">expcase</em>, <em class="sig-param">study</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#read_process_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.read_process_file" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysettings</strong> – </p></li>
+<li><p><strong>process_file</strong> – </p></li>
+<li><p><strong>year</strong> – </p></li>
+<li><p><strong>expcase</strong> – </p></li>
+<li><p><strong>study</strong> – </p></li>
+<li><p><strong>finfo</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.scale_variable">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">scale_variable</code><span class="sig-paren">(</span><em class="sig-param">vardataset</em>, <em class="sig-param">d_scale_vars</em>, <em class="sig-param">outname</em>, <em class="sig-param">varname</em>, <em class="sig-param">outfile</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#scale_variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.scale_variable" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vardataset</strong> – </p></li>
+<li><p><strong>d_scale_vars</strong> – </p></li>
+<li><p><strong>outname</strong> – </p></li>
+<li><p><strong>varname</strong> – </p></li>
+<li><p><strong>outfile</strong> – </p></li>
+<li><p><strong>finfo</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.liborganize.solve_time">
+<code class="sig-prename descclassname">lib.liborganize.</code><code class="sig-name descname">solve_time</code><span class="sig-paren">(</span><em class="sig-param">outfile</em>, <em class="sig-param">outfilen</em>, <em class="sig-param">varname=''</em>, <em class="sig-param">out=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/liborganize.html#solve_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.liborganize.solve_time" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outfile</strong> – </p></li>
+<li><p><strong>outfilen</strong> – </p></li>
+<li><p><strong>varname</strong> – </p></li>
+<li><p><strong>out</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-lib.check">
+<span id="regions"></span><h3>regions<a class="headerlink" href="#module-lib.check" title="Permalink to this headline">¶</a></h3>
+<hr class="docutils" />
+<blockquote>
+<div><p>Project   : CRESCENDO/AEROCOM
+Filename  : check.py
+Author    : Ramiro Checa-Garcia
+email     : <a class="reference external" href="mailto:rcheca&#37;&#52;&#48;lsce&#46;ipsl&#46;fr">rcheca<span>&#64;</span>lsce<span>&#46;</span>ipsl<span>&#46;</span>fr</a>
+Purpose   : Specific type of checks for key variables</p>
+<p>Revision History ———————————————————-</p>
+<p>Date       Author     Ref    Revision</p>
+<p>2018-Oct   R.Checa           First version.
+2018-Nov   R.Checa           Added the global mean at level</p>
+<p>TODO LIST:</p>
+</div></blockquote>
+<hr class="docutils" />
+<dl class="function">
+<dt id="lib.check.global_mean">
+<code class="sig-prename descclassname">lib.check.</code><code class="sig-name descname">global_mean</code><span class="sig-paren">(</span><em class="sig-param">ncname</em>, <em class="sig-param">varname</em>, <em class="sig-param">dicinfo</em>, <em class="sig-param">finfo=None</em>, <em class="sig-param">level=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/check.html#global_mean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.check.global_mean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.check.global_mean_atlev">
+<code class="sig-prename descclassname">lib.check.</code><code class="sig-name descname">global_mean_atlev</code><span class="sig-paren">(</span><em class="sig-param">ncname</em>, <em class="sig-param">varname</em>, <em class="sig-param">dicinfo</em>, <em class="sig-param">level=0</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/check.html#global_mean_atlev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.check.global_mean_atlev" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.check.myprint">
+<code class="sig-prename descclassname">lib.check.</code><code class="sig-name descname">myprint</code><span class="sig-paren">(</span><em class="sig-param">mystr</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/check.html#myprint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.check.myprint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.check.tendency_mass">
+<code class="sig-prename descclassname">lib.check.</code><code class="sig-name descname">tendency_mass</code><span class="sig-paren">(</span><em class="sig-param">ncname</em>, <em class="sig-param">varname</em>, <em class="sig-param">area_fname</em>, <em class="sig-param">area_varid</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/check.html#tendency_mass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.check.tendency_mass" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.check.total_load">
+<code class="sig-prename descclassname">lib.check.</code><code class="sig-name descname">total_load</code><span class="sig-paren">(</span><em class="sig-param">ncname</em>, <em class="sig-param">varname</em>, <em class="sig-param">dicinfo</em>, <em class="sig-param">area_fname='data/area_grid.nc'</em>, <em class="sig-param">area_varid='area'</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/check.html#total_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.check.total_load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-lib.specific_ipsl">
+<span id="loops"></span><h3>loops<a class="headerlink" href="#module-lib.specific_ipsl" title="Permalink to this headline">¶</a></h3>
+<hr class="docutils" />
+<blockquote>
+<div><p>Project   : CRESCENDO/AEROCOM
+Filename  : liborganize.py
+Author    : Ramiro Checa-Garcia
+email     : <a class="reference external" href="mailto:rcheca&#37;&#52;&#48;lsce&#46;ipsl&#46;fr">rcheca<span>&#64;</span>lsce<span>&#46;</span>ipsl<span>&#46;</span>fr</a>
+Purpose   : Reorganize variables for LMDzINCAOR experiment runs.</p>
+<p>Revision History ———————————————————-</p>
+<p>Date       Author     Ref    Revision</p>
+<p>2018-Apr   R.Checa           First code
+2018-Jul   R.Checa           Implemented as module
+2018-Nov   R.Checa           Final first version.</p>
+<p>TODO LIST:</p>
+<ol class="arabic simple">
+<li><p>Diagnostics on lev_var not in hard-code         (Improvement)</p></li>
+<li><p>Add reference values for key diagnostics        (Improvement)</p></li>
+<li><p>Add description to each function                (Documentation)</p></li>
+<li><p>Factors in new_var could be variables in netcdf (Improvement)</p></li>
+</ol>
+</div></blockquote>
+<hr class="docutils" />
+<dl class="function">
+<dt id="lib.specific_ipsl.add_global_attributes">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">add_global_attributes</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">ncname</em>, <em class="sig-param">newname</em>, <em class="sig-param">study</em>, <em class="sig-param">info_var</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#add_global_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.add_global_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.check_units">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">check_units</code><span class="sig-paren">(</span><em class="sig-param">varname_list</em>, <em class="sig-param">vars_dataset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#check_units"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.check_units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.create_filename">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">create_filename</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">study</em>, <em class="sig-param">expID</em>, <em class="sig-param">varID</em>, <em class="sig-param">varfile</em>, <em class="sig-param">freq='mon'</em>, <em class="sig-param">finfo=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#create_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.create_filename" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Filename will have the structure:</dt><dd><p>varID_tableID_sourceID_experimentID_memberID_gridlevel_timerange</p>
+</dd>
+</dl>
+<p>varID  ——-&gt; is the variable name: varname
+tableID ——&gt; depends on variable AERday, Amon etc…
+sourceID —–&gt; IPSL-LMDZORINCAv6
+experimentID -&gt; CRESCWP3PD-amip
+memberID —–&gt; v5-r1i1p1f1  (v5 refers to our internal version)
+gridlabel —-&gt; gr           (refers to the original grid but we provide at preslev)
+timerange —-&gt; 20000101-20121231 for all cases.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.directory_structure">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">directory_structure</code><span class="sig-paren">(</span><em class="sig-param">study</em>, <em class="sig-param">mysettings</em>, <em class="sig-param">clean=False</em>, <em class="sig-param">create=False</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#directory_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.directory_structure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.find_tableID">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">find_tableID</code><span class="sig-paren">(</span><em class="sig-param">varID</em>, <em class="sig-param">freq='mon'</em>, <em class="sig-param">origin='ATM'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#find_tableID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.find_tableID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.get_var">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">get_var</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">year</em>, <em class="sig-param">varname</em>, <em class="sig-param">freqsource</em>, <em class="sig-param">module</em>, <em class="sig-param">timeout</em>, <em class="sig-param">outname</em>, <em class="sig-param">expcase</em>, <em class="sig-param">study</em>, <em class="sig-param">extra=''</em>, <em class="sig-param">index=1</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#get_var"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.get_var" title="Permalink to this definition">¶</a></dt>
+<dd><ul class="simple">
+<li><p>Module= ATM, CHM, etc</p></li>
+<li><p>name=vmro3 etc</p></li>
+<li><p>freq=DA, HF, MO for ATM, for CHM all is DA</p></li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.lev_var">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">lev_var</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">year</em>, <em class="sig-param">varname</em>, <em class="sig-param">freqsource</em>, <em class="sig-param">module</em>, <em class="sig-param">timeout</em>, <em class="sig-param">outname</em>, <em class="sig-param">expcase</em>, <em class="sig-param">study</em>, <em class="sig-param">extra=''</em>, <em class="sig-param">lev='top'</em>, <em class="sig-param">index=1</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#lev_var"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.lev_var" title="Permalink to this definition">¶</a></dt>
+<dd><ul class="simple">
+<li><p>Module= ATM, CHM, etc</p></li>
+<li><p>name=vmro3 etc</p></li>
+<li><p>freq=DA, HF, MO for ATM, for CHM all is DA</p></li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.memory_usage_psutil">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">memory_usage_psutil</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#memory_usage_psutil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.memory_usage_psutil" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.myprint">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">myprint</code><span class="sig-paren">(</span><em class="sig-param">mystr</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#myprint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.myprint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.new_var">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">new_var</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">year</em>, <em class="sig-param">varname</em>, <em class="sig-param">freqsource</em>, <em class="sig-param">module</em>, <em class="sig-param">timeout</em>, <em class="sig-param">outname</em>, <em class="sig-param">expcase</em>, <em class="sig-param">study</em>, <em class="sig-param">extra=''</em>, <em class="sig-param">index=1</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#new_var"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.new_var" title="Permalink to this definition">¶</a></dt>
+<dd><ul class="simple">
+<li><p>Module= ATM, CHM, etc</p></li>
+<li><p>name=vmro3 etc</p></li>
+<li><p>freq=DA, HF, MO for ATM, for CHM all is DA</p></li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.new_variable_altsur">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">new_variable_altsur</code><span class="sig-paren">(</span><em class="sig-param">vardataset</em>, <em class="sig-param">d_new_vars</em>, <em class="sig-param">outname</em>, <em class="sig-param">varname</em>, <em class="sig-param">outfile</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#new_variable_altsur"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.new_variable_altsur" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.post_processing">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">post_processing</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">directory</em>, <em class="sig-param">list_variables</em>, <em class="sig-param">lyears</em>, <em class="sig-param">post_t</em>, <em class="sig-param">study</em>, <em class="sig-param">expID</em>, <em class="sig-param">freq</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#post_processing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.post_processing" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is doing the post-processing of the extracted files</p>
+<p>Note that it is not the best function from the programming point of view as the
+results depends strongly on the files found in the directory.</p>
+<ul class="simple">
+<li><p>It should be important to add something that test if the files on the directories
+are the files expected from the settings file</p></li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.process_files">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">process_files</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">year</em>, <em class="sig-param">expcase</em>, <em class="sig-param">study</em>, <em class="sig-param">proc_file</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#process_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.process_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.read_process_file">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">read_process_file</code><span class="sig-paren">(</span><em class="sig-param">mysettings</em>, <em class="sig-param">process_file</em>, <em class="sig-param">year</em>, <em class="sig-param">expcase</em>, <em class="sig-param">study</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#read_process_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.read_process_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.scale_variable">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">scale_variable</code><span class="sig-paren">(</span><em class="sig-param">vardataset</em>, <em class="sig-param">d_scale_vars</em>, <em class="sig-param">outname</em>, <em class="sig-param">varname</em>, <em class="sig-param">outfile</em>, <em class="sig-param">finfo=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#scale_variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.scale_variable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lib.specific_ipsl.solve_time">
+<code class="sig-prename descclassname">lib.specific_ipsl.</code><code class="sig-name descname">solve_time</code><span class="sig-paren">(</span><em class="sig-param">outfile</em>, <em class="sig-param">outfilen</em>, <em class="sig-param">varname=''</em>, <em class="sig-param">out=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/specific_ipsl.html#solve_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib.specific_ipsl.solve_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="How-to-use.html" class="btn btn-neutral float-left" title="How to use: running in TGCC cluster" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Ramiro Checa-Garcia
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

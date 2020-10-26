@@ -1,0 +1,93 @@
+cldtau: &generalmean
+         method:  {global_mean:   {kind:  global, time:  mon, units:  '-',          factor:  1  }}
+
+rlut:   &generalfluxenergy
+         method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}
+
+cllmodis           : *generalmean
+clmmodis           : *generalmean
+clhmodis           : *generalmean
+cltmodis           : *generalmean
+clwmodis           : *generalmean
+climodis           : *generalmean
+tautmodis          : *generalmean
+tauwmodis          : *generalmean
+tauimodis          : *generalmean
+reffclwmodis       : *generalmean
+reffclimodis       : *generalmean
+pctmodis           : *generalmean
+lwpmodis           : *generalmean
+iwpmodis           : *generalmean
+
+nettop:     *generalfluxenergy
+rlcs:       *generalfluxenergy
+rldscsca:   *generalfluxenergy
+rldscs:     *generalfluxenergy
+rluscs:     *generalfluxenergy
+rlus:       *generalfluxenergy
+rlutcsaf:   *generalfluxenergy
+rlutcsca:   *generalfluxenergy
+rlutcs:     *generalfluxenergy 
+rlut:       *generalfluxenergy  
+rlds:       *generalfluxenergy
+rsdscsca:   *generalfluxenergy
+rsdscs:     *generalfluxenergy
+rsds:       *generalfluxenergy
+rsdtcs:     *generalfluxenergy
+rsdt:       *generalfluxenergy 
+rsuscs:     *generalfluxenergy 
+rsus:       *generalfluxenergy 
+rsutcsaf:   *generalfluxenergy 
+rsutcsca:   *generalfluxenergy
+rsutcs:     *generalfluxenergy 
+rsut:       *generalfluxenergy 
+rsuscsca:   *generalfluxenergy
+
+tas:      *generalmean
+tatp:     *generalmean
+pr:       *generalmean
+cldnvi:   *generalmean
+cldncl:   *generalmean
+prc:      *generalmean
+ptp:      *generalmean
+ps:       *generalmean
+sci:      *generalmean
+lwp:      *generalmean
+hfss:     *generalmean
+hfls:     *generalmean
+clivi:    *generalmean
+ci:       *generalmean
+bldep:    *generalmean
+prw:      *generalmean
+ts:       *generalmean
+evspsbl:  *generalmean
+cldtp:    *generalmean
+cldbp:    *generalmean
+sic:      *generalmean
+dci:      *generalmean
+prsn:     *generalmean
+prl:      *generalmean
+ctpisccp: *generalmean
+tauisccp: *generalmean
+tclisccp: *generalmean
+albisccp: *generalmean
+
+tropoz:  {  method:  {global_mean:   {kind:  global, time:  mon, units:  'DU',      factor:  1  }}}
+straoz: {  method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}}
+
+
+clt:      &meanatfourlevels 
+          method:  {global_mean_atlev:   {kind:  global, time:  mon, units:  '[not-used]',      factor:  1  , levels: [0, 5, 10, -1] }}
+airmass:  *meanatfourlevels 
+convclt:  *meanatfourlevels
+pt:       *meanatfourlevels
+ta:       *meanatfourlevels
+phalf:    *meanatfourlevels
+#pfull:    *meanatfourlevels
+zg:       *meanatfourlevels
+hus:      *meanatfourlevels
+rh:       *meanatfourlevels
+ua:       *meanatfourlevels
+va:       *meanatfourlevels
+wa:       *meanatfourlevels
+

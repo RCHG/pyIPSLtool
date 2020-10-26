@@ -1,0 +1,47 @@
+
+.. currentmodule:: pyanalysisIPSL
+
+#############
+API reference
+#############
+
+This page provides an auto-generated summary of API. For more details
+and examples, refer to the relevant chapters in the main part of the
+documentation.
+
+
+Modules
+=======
+
+.. toctree::
+   :maxdepth: 2
+
+aeroplots
+---------
+
+.. automodule:: lib.aerplots
+   :members:
+   :undoc-members:
+
+regions
+-------
+
+.. automodule:: lib.regions
+   :members:
+   :undoc-members:
+
+loops
+-----
+
+.. automodule:: lib.loops
+   :members:
+   :undoc-members:
+
+aux-plots
+---------
+
+.. automodule:: lib.aux_forplot
+   :members:
+   :undoc-members:
+
+

@@ -1,0 +1,40 @@
+
+#############################################################################################
+# Here output is organized by studies which usually will mean a submission of a set of
+# datasets based on a simulation.
+#
+
+# General configuration
+workdir:    './'
+info_logs:   './info_logs/'                          # workdir path with name info_logs
+info_checks: '../../_results/CLIMDOv0/info_checks/'  # workdir path with name info_checks
+info_plots:   '../../_results/CLIMDOv0/info_plots/'  # workdir path with name info_plots
+
+model_name: 'IPSL'
+# Diagnostics
+diagnostics: ['./diagnostics/'] # workdir path with name diagnostics
+
+# Tables directory for metadata
+tables: ['CMIP6'    : './etc/cmip6-cmor-tables-master/Tables',
+         'CRESCENDO': './etc/CRESCENDO/Tables',
+         'Jasper'   : './etc/JasperKok/Tables',
+         'AeroCOM'  : './etc/AeroCOM/Tables',
+         'CLIMDO'   : './etc/CLIMDO/Tables',
+        ]
+
+# Tables for metadata
+new_variables: ['./etc/new_variables.yaml',
+                './etc/new_variables_CLIMDO.yaml',
+               ]           # workdir path with name diagnostics
+
+# Tables for metadata
+scale_variables: ['./etc/scale_variables.yaml']       # workdir path with name diagnostics
+
+# Check variables
+check_variables: ['./etc/check_cmip6_variables.yaml',
+                  './etc/check_CLIMDO_variables.yaml',
+                 ] # workdir path with name diagnostics
+
+# Grid area models
+grid_area: ['IPSL': './etc/area_grid/IPSL_area_grid.nc']
+

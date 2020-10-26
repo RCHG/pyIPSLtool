@@ -1,0 +1,298 @@
+
+
+
+.. pyanalysisIPSL documentation master file, created by
+   sphinx-quickstart on Tue May 29 10:15:02 2018.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+================
+Dust-Calibration 
+================
+
+Here is described how to use the library for the calibration of dust in the 
+IPSL model using the od550dust variable.
+
+Methodology
+===========
+
+The dust emission scheme on the IPSL model relies on an expression to estimate the
+vertical/horizontal flux of dust particles on the atmosphere, which depends on the
+boundary layer velocity and several datasets describing soil properties. In general
+the calibration of the emission scheme is related with how the wind fields on the
+surface are described by the dynamical part of the model, therefore for each version
+released it is needed to ascertain if the parameters of the emission are correctly
+calibrated. 
+
+We have recalibrated them by comparing with observational datasets of dust aerosol
+optical depths that has been bias corrected with respect to AERONET stations and 
+most confident datasets (as there are not yet full accurate satellite retrievals of
+dust optical depth at the TOA. For this calibration we used the observationally 
+constrained dataset described by D.A. Ridley et al at ACP journal in 2016. They give
+mean values for 15 different regions of dust AOD for the period 2004-2008.
+
+Steps
+=====
+
+0. Problem
+----------
+
+.. image:: ../../out/diagnostic_problem_ts_modelSAT_od550aer.png
+
+
+1. Create the regions
+---------------------
+
+As defined by Ridley et al** We have created an specific module
+that reproduce regional mask for each region defined on that paper together with
+an additional region on North America. 
+
+To use this module it is just needed a piece of code like:
+
+.. code-block:: python
+
+    import regionmask                         # Library used to create masks
+    import lib.regions as reg                 # Module with the several regions created
+    RHZKmask = reg.create_RHZKmask(plot=True) # plot=True will create a map with regions.
+
+The regions actually are defined by plain text files that define closed paths on lat-lon
+space (so for square regions it will be 5 points, so from 1 corner to return and repeat that
+corner). These files are included at:
+
+*../etc/regions/*
+
+while in the code */lib/regions.py* these files are read to create the masked regions. The
+directory /etc/regions also have .png files with the regions plotted.
+
+.. image:: ../../etc/regions/RHKZmask_robinson.png
+
+
+2. Dust AOD per region
+-----------------------
+
+Once we have defined the region mask our fields like for example
+
+**od550dust(time, lat, lon)** can be directly constrained to each regions and time-series, or
+mean values per-region are possible. 
+
+By comparing the mean values of od550dust per region with the values given by Ridley on 
+their Table 3 of their ACP 2016 paper we have (coef is the ration of IPSL-PD over YEARLY
+mean for 2004-2008)
+
+=================  =======  =====  ===== ======  =====  =======  ========
+           Region  IPSL-PD   DJF    MAM    JJA    SON   YEAR      coef
+=================  =======  =====  ===== ======  =====  =======  ========
+    South-America  0.00218  0.020  0.000 -0.012  0.017  0.00625  0.34913
+     South-Africa  0.00917  0.097  0.073  0.059  0.114  0.08575  0.10704
+        Australia  0.03980  0.022  0.008  0.000  0.001  0.00775  5.13581
+     Mid-Atlantic  0.16684  0.064  0.106  0.143  0.084  0.09925  1.68109
+   Western-Sahara  0.65523  0.180  0.250  0.365  0.223  0.25450  2.57460
+       Mali/Niger  0.74178  0.257  0.441  0.462  0.277  0.35925  2.06481
+     Bodele/Sudan  0.51784  0.191  0.339  0.310  0.212  0.26300  1.96898
+     North-Africa  0.36901  0.118  0.219  0.207  0.151  0.17375  2.12383
+ North-MiddleEast  0.17940  0.112  0.223  0.164  0.113  0.15300  1.17258
+ South-MiddleEast  0.10055  0.123  0.204  0.330  0.150  0.20175  0.49841
+        Kyzyl-Kum  0.20601  0.115  0.176  0.154  0.101  0.13650  1.50929
+             Thar  0.20524  0.130  0.238  0.319  0.135  0.20550  0.99877
+       Taklamakan  0.26383  0.119  0.275  0.171  0.104  0.16725  1.57747
+             Gobi  0.47785  0.093  0.192  0.102  0.047  0.10850  4.40415
+=================  =======  =====  ===== ======  =====  =======  ========
+
+
+This table is contained on the file:
+
+*../etc/calibration_dust/comparsion_calibration_LMDZORINCA_CRESCENDOWP6_PDv2.dat*
+
+and described the values of LMDZORINCA simulations for CRESCENDOWP6 in particular
+for PDv2.
+
+Note that if we use the PD-nudged with ERA-Interim wind fields we have:
+
+================= ========  =====  ===== ======  =====  ======== ========                    
+Region            IPSL-PDN   DJF    MAM    JJA    SON    YEAR     coef
+================= ========  =====  ===== ======  =====  ======== ========                   
+South-America     0.00077   0.020  0.000 -0.012  0.017  0.00625  0.12446
+South-Africa      0.00399   0.097  0.073  0.059  0.114  0.08575  0.04657
+Australia         0.03252   0.022  0.008  0.000  0.001  0.00775  4.19620
+Mid-Atlantic      0.08400   0.064  0.106  0.143  0.084  0.09925  0.84643
+Western-Sahara    0.38134   0.180  0.250  0.365  0.223  0.25450  1.49840
+Mali/Niger        0.47592   0.257  0.441  0.462  0.277  0.35925  1.32475
+Bodele/Sudan      0.33206   0.191  0.339  0.310  0.212  0.26300  1.26259
+North-Africa      0.28100   0.118  0.219  0.207  0.151  0.17375  1.61728
+North-MiddleEast  0.11618   0.112  0.223  0.164  0.113  0.15300  0.75936
+South-MiddleEast  0.06983   0.123  0.204  0.330  0.150  0.20175  0.34616
+Kyzyl-Kum         0.15116   0.115  0.176  0.154  0.101  0.13650  1.10741
+Thar              0.14429   0.130  0.238  0.319  0.135  0.20550  0.70216
+Taklamakan        0.20011   0.119  0.275  0.171  0.104  0.16725  1.19651
+Gobi              0.28450   0.093  0.192  0.102  0.047  0.10850  2.62219
+================= ========  =====  ===== ======  =====  ======== ========                     
+
+Based on this table we have created another set of netcdf files with the correction but
+they are not implemented. It was just created to ascertain the differences between both
+tables.
+
+3. Corrected RHV files 
+----------------------
+
+Based on that table and the regions we have created a netCDF file that apply a correction
+factor per-region. In fact here we have extended the regions  South-America and Australia
+a little bit:
+
+.. code-block:: python
+
+    import regionmask
+    import lib.regions as reg
+    CORRECTIONmask = reg.create_CORRECTIONmask(plot=False)
+
+.. figure:: ../../out/CORRECTIONmask_robinson.png
+   :alt: New correction regions for calibration of dust emissions
+
+   New correction regions for calibration of dust emissions
+
+.. figure:: ../../out/regions_calibration_dust_emission.png
+   :alt: map with factor to be applied per region
+
+   Regions with the factor (or 1/factor) of correction
+   This corrections are factors to original rhv file.
+
+.. figure:: ../../out/regions_calibration_dust_emission_rhv145x143.Sep2018v2.png
+   :alt: final rhv map after correction
+
+   Final rhv map after correction, resolution 144x142
+
+.. figure:: ../../out/regions_calibration_dust_emission_rhvEC_v2.png
+   :alt: final rhv map after correction
+
+   Final rhv map after correction, resolution from ECWMF
+
+
+4. Files Created
+----------------
+
+* *../etc/regions/dataset_ridley_corrected_Jun2018.txt*
+* *../etc/regions/dataset_ridley_corrected_Jun2018_extended_for_calibrationIPSL.txt*
+* *../etc/calibration_dust/comparsion_calibration_LMDZORINCA_CRESCENDOWP6_PDv2.dat*
+* *../etc/calibration_dust/comparsion_calibration_LMDZORINCA_CRESCENDOWP6_PDN.dat*
+
+
+
+5. Apply to RHV netcdf files
+----------------------------
+
+Given an RHV netcdf files the code is able to update them as done in the last
+lines of the file 'calibration_dust.py'
+
+It will open netcdf files and save them with a string named updated at the end
+of the netcdf filename. By default it is done on the folder:
+
+/etc/rhv_files/
+
+Original files:
+
+* ../etc/rhv_files/rhvEC_v2.nc
+* ../etc/rhv_files/rhv145x143.Sep2018v2.nc
+
+Updated based on PDv2
+
+* ../etc/rhv_files/rhvEC_v2_updated.nc
+* ../etc/rhv_files/rhv145x143.Sep2018v2_updated.nc
+
+
+Updated based on PDN (currently not used to created rhv text files for INCA)
+
+* ../etc/rhv_files/rhvEC_v2_updated_PDN.nc
+* ../etc/rhv_files/rhv145x143.Sep2018v2_PDN.nc
+
+
+6. Results after the calibration
+--------------------------------
+
+.. figure:: ../../out/ts_testRHV_models_PD_od550aer.png
+   :scale: 50%
+   :alt: Time series after and before correction for od550aer
+
+   Time series after and before correction. We implemented the correction based on PDv2
+   original results also for PDN-ERAI (not those from the second table above).
+
+.. figure:: ../../out/ts_testRHV_models_PD_od550dust.png
+   :scale: 50%
+   :alt: Time series after and before correction for od550dust
+
+   Time series after and before correction. We implemented the correction based on PDv2
+   original results also for PDN-ERAI (not those from the second table above).
+
+
+
+
+7. Python based steps
+---------------------
+
+The codes contained on folder calibration should be run in the main folder to work, or changes the file paths in the code.
+
+1. Estimate bias per region and create a table with it:
+
+    python regions_RIDLEY_calibration_PDN_and_PD.py
+
+    This values are copied on files located in ../etc/calibration_dust/
+
+2. Based on these files create netcdf files to update the RHV text files:
+
+    python calibration_dust.py        # updated based on PD run
+ 
+    python calibration_dust_PDN.py    # updated based on PDN run (not used but created to further understanding)
+
+3. The text files based on the netcdf files created with python calibration.py are used to run new
+simulations by changing the inca.card to add path of these files. The results of these simulations are
+evaluated using:
+
+    python regions_RIDLEY_evaluation_PDN_and_PD_corrected.py
+
+    which created the some plots to show the impact of the changes over the selected areas.
+
+
+8. Comparison of dust yearly values
+-----------------------------------
+
+**Dust emissions**
+
+================= ======= ======= ====== ====== ======== ======== =========                   
+Emissions (Tg/yr)  PDNv1   PDNv2   PDv2   PDv4   CNRM-PD  Nor-PD   ECv3-PD
+================= ======= ======= ====== ====== ======== ======== =========               
+2004               1702    1386    2455   1476   3055     1396     1031
+2005               1346    1089    2815   1430   3923     1355     1047
+2006               1478    1164    2596   1557   3507     1337     1180
+2007               1550    1290    2723   1555   3570     1331      974
+2008               1558    1289    2576   1505   4075     1311     1197
+(simulation)       (ini)  (corr)  (ini)  (corr)
+================= ======= ======= ====== ====== ======== ======== =========
+
+**Dust AOD550nm**
+
+===== ========== ========== =========== ========== ===========                   
+Year   CNRM-PD    ECv3-PD    IPSL-PDv2  NorESM-PD   IPSL-PDv4
+===== ========== ========== =========== ========== ===========
+2000   0.021405   0.027840   0.047898    0.023347   0.022571
+2001   0.022364   0.029722   0.047476    0.024159   0.027958
+2002   0.022332   0.027902   0.046287    0.022483   0.024141
+2003   0.021869   0.031507   0.043285    0.023063   0.025646
+2004   0.020222   0.027034   0.042237    0.023131   0.025678
+2005   0.023903   0.026856   0.049978    0.022495   0.023580
+2006   0.023032   0.031346   0.044371    0.022478   0.026126
+2007   0.022763   0.025840   0.046587    0.022105   0.026223
+2008   0.025106   0.030657   0.046114    0.022121   0.025336
+2009   0.022544   0.029607   0.046147    0.023656   0.027535
+2010   0.028160   0.032866   0.050965    0.023866   0.026776
+2011   0.018921   0.028528   0.044027    0.021406   0.024790
+2012   0.021375   0.025955   0.045525    0.023450   0.023624
+2013   0.024767   0.029290   0.046457    0.023151   0.025850
+2014   0.022426   0.032718   0.049337    0.023900   0.028355
+===== ========== ========== =========== ========== ===========
+
+--------------------------------
+
+
+.. literalinclude:: ../../calibration/calibration_dust.py
+
+
+
+

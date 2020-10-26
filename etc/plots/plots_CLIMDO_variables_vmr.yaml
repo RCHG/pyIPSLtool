@@ -1,0 +1,53 @@
+
+vmrco:  &zm_general
+        method:  {zonal_mean: {title: Zonal-Mean, kind:  global, time:  mon, units:  'mol mol-1',  factor: 1 },
+                  surface_map1: {title: Surface,   kind:  global, time:  mon, units:  'mol mol-1' , factor:  1, set_level: 0  },
+                  surface_map2: {title: At-Level,  kind:  global, time:  mon, units:  'mol mol-1' , factor:  1, set_level: 10 }}
+
+vmrch4:   *zm_general
+vmrhco:   *zm_general
+vmrch3:   *zm_general
+vmrn2o5:  *zm_general
+vmrhno2:  *zm_general
+vmrhno3:  *zm_general
+vmrhnpo4: *zm_general
+vmrno:    *zm_general
+vmrno2:   *zm_general
+vmrno3:   *zm_general
+vmrn2o:   *zm_general
+vmrh2o2:  *zm_general
+vmroh:    *zm_general
+vmro:     *zm_general
+vmro1:    *zm_general
+vmro3:    *zm_general
+vmro3i:   *zm_general
+vmro3l:   *zm_general
+vmro3s:   *zm_general
+vmrch3o2:  *zm_general
+vmrch3o:   *zm_general
+vmrch3ooh: *zm_general
+vmrch3oh:  *zm_general
+vmrch2o:   *zm_general
+vmrc2h6:   *zm_general
+vmrc2h4:   *zm_general
+vmrc3h8:   *zm_general
+vmrc3h6:   *zm_general
+vmrc2h2:   *zm_general
+vmrisop:   *zm_general
+vmrapin:   *zm_general
+vmrc2h5o2:   *zm_general
+vmrc3h7o2:   *zm_general
+vmrpropeo2:   *zm_general
+vmrpropao2:   *zm_general
+vmrisopo2:   *zm_general
+vmrmacro2:   *zm_general
+vmrc2h5oh:   *zm_general
+vmrch3cho:   *zm_general
+vmrch3cooh:   *zm_general
+vmrch3coooh:   *zm_general
+vmrch3cocho:   *zm_general
+vmrch3co3:   *zm_general
+vmrch3coch3:   *zm_general
+vmrc2h5ooh:   *zm_general
+vmrc3h7ooh:   *zm_general
+

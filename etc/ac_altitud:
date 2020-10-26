@@ -1,0 +1,17 @@
+S_2:
+    var_surface: [emisscs   ] #, emissss ]
+        var_altitud: [emialtsscs] #, emialtssss ]
+            fac_surface: [1.0] #, 1.0]
+                fac_altitud: [1.0] #, 1.0]
+
+                emiSS_3:
+                    var_surface: [emissss   ] #, emissss ]
+                        var_altitud: [emialtssss] #, emialtssss ]
+                            fac_surface: [1.0] #, 1.0]
+                                fac_altitud: [1.0] #, 1.0]
+
+
+                                emibc:
+                                    var_surface: [emibcai     , emibcas    ]
+                                        var_altitud: [emialtbcai , emialtbcas ]
+                                            fac_surface: [1.0, 1.0

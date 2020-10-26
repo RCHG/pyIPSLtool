@@ -1,0 +1,49 @@
+
+od440aer: &aodgeneral
+         method:  {global_mean:   {kind:  global, time:  mon, units:  '-',           factor:  1  }}
+
+od550dustCI: *aodgeneral
+od550dustSI: *aodgeneral
+od550dustD1: *aodgeneral
+od550dustD4: *aodgeneral
+
+abs550aer: &absgeneral
+         method:  {global_mean:   {kind:  global, time:  mon, units:  '-',           factor:  1  }}
+
+abs440aer:  *absgeneral
+abs870aer:  *absgeneral
+abs440bc:   *absgeneral
+abs550bc:   *absgeneral
+abs870bc:     *absgeneral
+abs440bcin:   *absgeneral
+abs550bcin:   *absgeneral
+abs870bcin:   *absgeneral
+abs440bcsin:   *absgeneral
+abs550bcsin:   *absgeneral
+abs870bcsin:   *absgeneral
+abs440bcs:   *absgeneral
+abs550bcs:   *absgeneral
+abs870bcs:   *absgeneral
+
+abs440oa:   *absgeneral
+abs550oa:   *absgeneral
+abs870oa:   *absgeneral
+abs440dust: *absgeneral
+abs550dust: *absgeneral
+abs870dust: *absgeneral
+
+od550aer:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550dust:    {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550ss:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550bc:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550oa:      {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550so4:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550so2:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550no3:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od440aer:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od870aer:     {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550dryaer:  {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550lt1aer:  {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+od550gt1aer:  {  method:  {global_mean:   {kind:  global, time:  mon, units:  '1',          factor:  1  }}}
+
+

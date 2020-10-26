@@ -1,0 +1,1054 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lib.specific_ipsl &mdash; PyPUMD a documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> PyPUMD
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Structure.html">Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../How-to-use.html">How to use: running in TGCC cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyPUMD</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>lib.specific_ipsl</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lib.specific_ipsl</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">##############################################################################################</span>
+
+<span class="sd">  Project   : CRESCENDO/AEROCOM</span>
+<span class="sd">  Filename  : liborganize.py</span>
+<span class="sd">  Author    : Ramiro Checa-Garcia</span>
+<span class="sd">  email     : rcheca@lsce.ipsl.fr</span>
+<span class="sd">  Purpose   : Reorganize variables for LMDzINCAOR experiment runs.</span>
+
+<span class="sd">  Revision History ----------------------------------------------------------</span>
+
+<span class="sd">  Date       Author     Ref    Revision</span>
+
+<span class="sd">  2018-Apr   R.Checa           First code</span>
+<span class="sd">  2018-Jul   R.Checa           Implemented as module</span>
+<span class="sd">  2018-Nov   R.Checa           Final first version.</span>
+
+
+<span class="sd">  TODO LIST:</span>
+
+<span class="sd">  1. Diagnostics on lev_var not in hard-code         (Improvement)</span>
+<span class="sd">  2. Add reference values for key diagnostics        (Improvement)</span>
+<span class="sd">  3. Add description to each function                (Documentation)</span>
+<span class="sd">  4. Factors in new_var could be variables in netcdf (Improvement)</span>
+
+<span class="sd">##############################################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">numpy</span>  <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">from</span>  <span class="nn">netCDF4</span>  <span class="k">import</span> <span class="n">Dataset</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="n">pprint</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">lib.check</span> <span class="k">as</span> <span class="nn">check</span>
+<span class="kn">import</span> <span class="nn">gc</span> 
+
+<div class="viewcode-block" id="memory_usage_psutil"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.memory_usage_psutil">[docs]</a><span class="k">def</span> <span class="nf">memory_usage_psutil</span><span class="p">():</span>
+    <span class="c1"># return the memory usage in MB</span>
+    <span class="kn">import</span> <span class="nn">psutil</span>
+    <span class="k">return</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="myprint"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.myprint">[docs]</a><span class="k">def</span> <span class="nf">myprint</span><span class="p">(</span><span class="n">mystr</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mystr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">finfo</span><span class="o">!=</span><span class="kc">None</span><span class="p">:</span>
+        <span class="n">finfo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mystr</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span></div>
+
+<div class="viewcode-block" id="post_processing"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.post_processing">[docs]</a><span class="k">def</span> <span class="nf">post_processing</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">list_variables</span><span class="p">,</span> <span class="n">lyears</span><span class="p">,</span> <span class="n">post_t</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">expID</span><span class="p">,</span>
+                    <span class="n">freq</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function is doing the post-processing of the extracted files</span>
+
+<span class="sd">    Note that it is not the best function from the programming point of view as the</span>
+<span class="sd">    results depends strongly on the files found in the directory.</span>
+
+<span class="sd">    - It should be important to add something that test if the files on the directories</span>
+<span class="sd">      are the files expected from the settings file</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>  <span class="c1"># to ensure that we are not collecting too much garbage.</span>
+
+    <span class="c1">### Add a new config file where the name of the files with check are added</span>
+    <span class="c1">### then we have to make a kind of loop for all files</span>
+
+    <span class="n">f_checkings</span><span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;etc/check_cmip6_variables.yaml&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">cmip6check</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f_checkings</span><span class="p">)</span>
+
+    <span class="c1"># We define here the columns of the info-checks file ------------</span>
+    <span class="n">dfcolumns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">,</span><span class="s1">&#39;method&#39;</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;testing-file&#39;</span><span class="p">]</span>
+
+    <span class="n">vars_checks</span>     <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">l_non_processed</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">l_yes_processed</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">l_uni_processed</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">l_yes_checked</span>   <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">idirec</span><span class="p">,</span> <span class="n">direc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_variables</span><span class="p">):</span>
+         <span class="n">str1</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    ... Post-Processing of files related with &#39;</span><span class="o">+</span><span class="n">direc</span><span class="p">)</span>
+         <span class="n">myprint</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+         <span class="n">lfiles</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">directory</span><span class="o">+</span><span class="n">direc</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">direc</span><span class="o">+</span><span class="s1">&#39;*.nc&#39;</span><span class="p">))</span>
+         <span class="nb">print</span><span class="p">(</span><span class="n">lfiles</span><span class="p">)</span>
+         <span class="c1">## we select only those files that begins with the variable name, as they were </span>
+         <span class="c1">## generated on the pre-processing step.</span>
+         <span class="c1">## We also ensure that we are not including aggregations of several files</span>
+         <span class="c1">## and we remove those files with the &#39;_accum&#39; string on the name.</span>
+         <span class="k">for</span> <span class="n">indx</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lfiles</span><span class="p">):</span>
+             <span class="k">if</span> <span class="s1">&#39;-accum&#39;</span> <span class="ow">in</span> <span class="n">item</span> <span class="ow">or</span> <span class="s1">&#39;_accum&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+                 <span class="k">del</span> <span class="n">lfiles</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
+         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lfiles</span><span class="p">:</span>
+             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="o">!=</span><span class="nb">len</span><span class="p">(</span><span class="n">lfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                 <span class="n">str1</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">     -- Problem not all filenames have the same length: unusual&#39;</span><span class="p">)</span>
+                 <span class="n">myprint</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+                 <span class="k">if</span> <span class="n">mysettings</span><span class="p">[</span><span class="s1">&#39;safety&#39;</span><span class="p">][</span><span class="s1">&#39;check_files&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+                     <span class="n">exit</span><span class="p">()</span>
+
+         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lfiles</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">first_yr</span>  <span class="o">=</span> <span class="n">lfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">last_yr</span>   <span class="o">=</span> <span class="n">lfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">stringyr</span>  <span class="o">=</span> <span class="n">lyears</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">new_file_t</span><span class="o">=</span> <span class="n">lfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">stringyr</span><span class="o">+</span><span class="s1">&#39;0101&#39;</span><span class="p">,</span><span class="n">first_yr</span><span class="p">)</span>
+            <span class="n">new_file</span>  <span class="o">=</span> <span class="n">new_file_t</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">stringyr</span><span class="o">+</span><span class="s1">&#39;1231&#39;</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="o">+</span><span class="n">last_yr</span><span class="o">+</span><span class="s1">&#39;-accum&#39;</span><span class="p">)</span>
+            <span class="n">varid</span> <span class="o">=</span> <span class="n">new_file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1">#print(&#39;check this&#39;, new_file,varid)</span>
+
+         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lfiles</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">first_yr</span>  <span class="o">=</span> <span class="n">lfiles</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">last_yr</span>   <span class="o">=</span> <span class="n">lfiles</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">str_files</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lfiles</span><span class="p">[</span><span class="mi">1</span><span class="p">::])</span>
+            <span class="n">stringyr</span>  <span class="o">=</span> <span class="n">lyears</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">new_file_t</span><span class="o">=</span> <span class="n">lfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">stringyr</span><span class="o">+</span><span class="s1">&#39;0101&#39;</span><span class="p">,</span><span class="n">first_yr</span><span class="p">)</span>
+            <span class="n">new_file</span>  <span class="o">=</span> <span class="n">new_file_t</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">stringyr</span><span class="o">+</span><span class="s1">&#39;1231&#39;</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="o">+</span><span class="n">last_yr</span><span class="o">+</span><span class="s1">&#39;-accum&#39;</span><span class="p">)</span>
+            <span class="c1">#print(new_file)</span>
+            <span class="n">varid</span> <span class="o">=</span> <span class="n">new_file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="c1"># Concatenation of all files -------------------------------------------------</span>
+            <span class="k">if</span> <span class="n">post_t</span><span class="o">==</span><span class="s1">&#39;all&#39;</span><span class="p">:</span>
+                <span class="n">commandnco</span> <span class="o">=</span><span class="s1">&#39;ncrcat -O &#39;</span><span class="o">+</span><span class="n">str_files</span> <span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span> <span class="n">new_file</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">commandnco</span><span class="p">)</span>
+                <span class="n">varid</span> <span class="o">=</span> <span class="n">new_file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">varid</span><span class="o">!=</span><span class="n">direc</span><span class="p">:</span>
+                    <span class="n">varid</span><span class="o">=</span><span class="n">direc</span>
+                <span class="n">good_name</span><span class="p">,</span> <span class="n">info_var</span> <span class="o">=</span> <span class="n">create_filename</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">expID</span><span class="p">,</span> <span class="n">varid</span><span class="p">,</span>
+                                                      <span class="n">new_file</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">good_name</span><span class="o">!=</span><span class="kc">False</span><span class="p">:</span>
+                    <span class="n">save_name</span> <span class="o">=</span> <span class="n">directory</span><span class="o">+</span><span class="n">direc</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">good_name</span>
+                    <span class="n">unit_stat</span><span class="p">,</span> <span class="n">finalname</span> <span class="o">=</span> <span class="n">add_global_attributes</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">new_file</span><span class="p">,</span> 
+                                                                 <span class="n">save_name</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">info_var</span><span class="p">)</span>
+                    <span class="n">l_yes_processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">direc</span><span class="p">)</span>
+                    <span class="n">l_uni_processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unit_stat</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">varid</span> <span class="ow">in</span> <span class="n">cmip6check</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                       <span class="n">l_yes_checked</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">varid</span><span class="p">)</span>
+                       <span class="k">for</span> <span class="n">mymethod</span> <span class="ow">in</span>  <span class="n">cmip6check</span><span class="p">[</span><span class="n">varid</span><span class="p">][</span><span class="s1">&#39;method&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                           <span class="k">if</span> <span class="n">mymethod</span><span class="o">==</span><span class="s1">&#39;tendency_mass&#39;</span><span class="p">:</span>
+                                <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span> <span class="o">=</span> <span class="n">check</span><span class="o">.</span><span class="n">tendency_mass</span><span class="p">(</span><span class="n">finalname</span><span class="p">,</span> <span class="n">varid</span><span class="p">,</span> 
+                                                      <span class="s1">&#39;etc/area_grid.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+                                <span class="n">vars_checks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;variable&#39;</span><span class="p">:</span> <span class="n">a1</span><span class="p">,</span>
+                                                    <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="n">mymethod</span><span class="p">,</span>
+                                                    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">a3</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span><span class="n">a2</span><span class="p">,</span> 
+                                                    <span class="s1">&#39;testing-file&#39;</span><span class="p">:</span><span class="n">finalname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]})</span>
+
+                           <span class="k">if</span> <span class="n">mymethod</span><span class="o">==</span><span class="s1">&#39;global_mean&#39;</span><span class="p">:</span>
+                                <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="n">a4</span><span class="o">=</span> <span class="n">check</span><span class="o">.</span><span class="n">global_mean</span><span class="p">(</span><span class="n">finalname</span><span class="p">,</span> <span class="n">varid</span><span class="p">,</span>
+                                                               <span class="n">cmip6check</span><span class="p">[</span><span class="n">varid</span><span class="p">],</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+                                <span class="n">vars_checks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;variable&#39;</span><span class="p">:</span> <span class="n">a1</span><span class="p">,</span>
+                                                    <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="n">mymethod</span><span class="p">,</span>
+                                                    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">a3</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span><span class="n">a2</span><span class="p">,</span>
+                                                    <span class="s1">&#39;testing-file&#39;</span><span class="p">:</span><span class="n">finalname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]})</span>
+
+                           <span class="k">if</span> <span class="n">mymethod</span><span class="o">==</span><span class="s1">&#39;global_mean_atlev&#39;</span><span class="p">:</span>
+                                <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">cmip6check</span><span class="p">[</span><span class="n">varid</span><span class="p">][</span><span class="s1">&#39;method&#39;</span><span class="p">][</span><span class="n">mymethod</span><span class="p">][</span><span class="s1">&#39;levels&#39;</span><span class="p">]:</span>
+                                    <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span> <span class="p">,</span> <span class="n">a4</span><span class="o">=</span> <span class="n">check</span><span class="o">.</span><span class="n">global_mean_atlev</span><span class="p">(</span><span class="n">finalname</span><span class="p">,</span> <span class="n">varid</span><span class="p">,</span> 
+                                                  <span class="n">cmip6check</span><span class="p">[</span><span class="n">varid</span><span class="p">],</span> <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+                                    <span class="n">vars_checks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;variable&#39;</span><span class="p">:</span> <span class="n">a1</span><span class="p">,</span>
+                                                        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;glo mean at&#39;</span><span class="o">+</span><span class="n">a4</span><span class="p">,</span>
+                                                        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">a3</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span><span class="n">a2</span><span class="p">,</span>
+                                                        <span class="s1">&#39;testing-file&#39;</span><span class="p">:</span><span class="n">finalname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]})</span>
+
+                           <span class="k">if</span> <span class="n">mymethod</span><span class="o">==</span><span class="s1">&#39;total_load&#39;</span><span class="p">:</span>
+                                <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span>  <span class="o">=</span> <span class="n">check</span><span class="o">.</span><span class="n">total_load</span><span class="p">(</span><span class="n">finalname</span><span class="p">,</span> <span class="n">varid</span><span class="p">,</span>
+                                                               <span class="n">cmip6check</span><span class="p">[</span><span class="n">varid</span><span class="p">],</span> <span class="n">area_fname</span><span class="o">=</span><span class="s1">&#39;data/area_grid.nc&#39;</span><span class="p">,</span>
+                                                               <span class="n">area_varid</span><span class="o">=</span><span class="s1">&#39;area&#39;</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+                                <span class="n">vars_checks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;variable&#39;</span><span class="p">:</span> <span class="n">a1</span><span class="p">,</span>
+                                                    <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="n">mymethod</span><span class="p">,</span>
+                                                    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">a3</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span><span class="n">a2</span><span class="p">,</span>
+                                                    <span class="s1">&#39;testing-file&#39;</span><span class="p">:</span><span class="n">finalname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]})</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">l_non_processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">direc</span><span class="p">)</span>
+
+         <span class="k">if</span> <span class="n">post_t</span><span class="o">==</span><span class="s1">&#39;year&#39;</span> <span class="ow">or</span> <span class="s1">&#39;AEROCOM&#39;</span> <span class="ow">in</span> <span class="n">expID</span><span class="p">:</span>
+                <span class="c1">#print(expID, &#39;++++++++++++++++++++++++++++++++++++++++&#39;)</span>
+                <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">lfiles</span><span class="p">:</span>
+                    <span class="n">good_name</span><span class="p">,</span> <span class="n">info_var</span> <span class="o">=</span> <span class="n">create_filename</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">expID</span><span class="p">,</span> <span class="n">varid</span><span class="p">,</span>
+                                                          <span class="n">fname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;1_20&#39;</span><span class="p">,</span><span class="s1">&#39;1-20&#39;</span><span class="p">),</span>
+                                                          <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">good_name</span><span class="o">!=</span><span class="kc">False</span><span class="p">:</span>
+                        <span class="n">save_name</span> <span class="o">=</span> <span class="n">directory</span><span class="o">+</span><span class="n">direc</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">good_name</span>
+                        <span class="n">unit_stat</span><span class="p">,</span> <span class="n">finalname</span> <span class="o">=</span> <span class="n">add_global_attributes</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">save_name</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">info_var</span><span class="p">)</span>
+                        <span class="n">l_yes_processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">direc</span><span class="p">)</span>
+                        <span class="n">l_uni_processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unit_stat</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">varid</span> <span class="ow">in</span> <span class="n">cmip6check</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="n">l_yes_checked</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">varid</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">mymethod</span> <span class="ow">in</span>  <span class="n">cmip6check</span><span class="p">[</span><span class="n">varid</span><span class="p">][</span><span class="s1">&#39;method&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                               <span class="k">if</span> <span class="n">mymethod</span><span class="o">==</span><span class="s1">&#39;tendency_mass&#39;</span><span class="p">:</span>
+                                    <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span> <span class="o">=</span> <span class="n">check</span><span class="o">.</span><span class="n">tendency_mass</span><span class="p">(</span><span class="n">finalname</span><span class="p">,</span> <span class="n">varid</span><span class="p">,</span> 
+                                                          <span class="s1">&#39;etc/area_grid.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+                                    <span class="n">vars_checks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;variable&#39;</span><span class="p">:</span> <span class="n">a1</span><span class="p">,</span>
+                                                        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="n">mymethod</span><span class="p">,</span>
+                                                        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">a3</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span><span class="n">a2</span><span class="p">,</span> 
+                                                        <span class="s1">&#39;testing-file&#39;</span><span class="p">:</span><span class="n">finalname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]})</span>
+
+                               <span class="k">if</span> <span class="n">mymethod</span><span class="o">==</span><span class="s1">&#39;global_mean&#39;</span><span class="p">:</span>
+                                    <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="n">a4</span><span class="o">=</span> <span class="n">check</span><span class="o">.</span><span class="n">global_mean</span><span class="p">(</span><span class="n">finalname</span><span class="p">,</span> <span class="n">varid</span><span class="p">,</span>
+                                                                   <span class="n">cmip6check</span><span class="p">[</span><span class="n">varid</span><span class="p">],</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+                                    <span class="n">vars_checks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;variable&#39;</span><span class="p">:</span> <span class="n">a1</span><span class="p">,</span>
+                                                        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="n">mymethod</span><span class="p">,</span>
+                                                        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">a3</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span><span class="n">a2</span><span class="p">,</span>
+                                                        <span class="s1">&#39;testing-file&#39;</span><span class="p">:</span><span class="n">finalname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]})</span>
+
+                               <span class="k">if</span> <span class="n">mymethod</span><span class="o">==</span><span class="s1">&#39;global_mean_atlev&#39;</span><span class="p">:</span>
+                                    <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">cmip6check</span><span class="p">[</span><span class="n">varid</span><span class="p">][</span><span class="s1">&#39;method&#39;</span><span class="p">][</span><span class="n">mymethod</span><span class="p">][</span><span class="s1">&#39;levels&#39;</span><span class="p">]:</span>
+                                        <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span> <span class="p">,</span> <span class="n">a4</span><span class="o">=</span> <span class="n">check</span><span class="o">.</span><span class="n">global_mean_atlev</span><span class="p">(</span><span class="n">finalname</span><span class="p">,</span> <span class="n">varid</span><span class="p">,</span> 
+                                                      <span class="n">cmip6check</span><span class="p">[</span><span class="n">varid</span><span class="p">],</span> <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+                                        <span class="n">vars_checks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;variable&#39;</span><span class="p">:</span> <span class="n">a1</span><span class="p">,</span>
+                                                            <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;glo mean at&#39;</span><span class="o">+</span><span class="n">a4</span><span class="p">,</span>
+                                                            <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">a3</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span><span class="n">a2</span><span class="p">,</span>
+                                                            <span class="s1">&#39;testing-file&#39;</span><span class="p">:</span><span class="n">finalname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]})</span>
+
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">l_non_processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">direc</span><span class="p">)</span>
+
+    <span class="n">non_cmip6_units</span> <span class="o">=</span>  <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">l_yes_processed</span><span class="p">)</span> <span class="k">if</span> <span class="n">l_uni_processed</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">]</span>
+    <span class="n">yes_cmip6_units</span> <span class="o">=</span>  <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">l_yes_processed</span><span class="p">)</span> <span class="k">if</span> <span class="n">l_uni_processed</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="kc">True</span><span class="p">]</span>
+    <span class="n">str1</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">  Processed variables ...... [&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l_yes_processed</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;] &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">l_yes_processed</span><span class="p">)</span><span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">str2</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;    without CMIP6 units .... &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">([</span><span class="n">y</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">l_yes_processed</span><span class="p">)</span> <span class="k">if</span> <span class="n">l_uni_processed</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">])</span><span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">str3</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;    with    CMIP6 units .... &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">([</span><span class="n">y</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">l_yes_processed</span><span class="p">)</span> <span class="k">if</span> <span class="n">l_uni_processed</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="kc">True</span><span class="p">])</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;vars_cf_cmip6.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fcmip6</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">yes_cmip6_units</span><span class="p">:</span>
+            <span class="n">fcmip6</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">str4</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;  Non processed variables ... [&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l_non_processed</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;] &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">l_non_processed</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">myprint</span><span class="p">(</span><span class="n">str1</span><span class="o">+</span><span class="n">str2</span><span class="o">+</span><span class="n">str3</span><span class="o">+</span><span class="n">str4</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+    <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    Checked variables ... [&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l_yes_checked</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;] &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">l_yes_checked</span><span class="p">)</span><span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+    <span class="n">l_non_checked</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">l_yes_processed</span><span class="p">)</span><span class="o">-</span><span class="nb">set</span><span class="p">(</span><span class="n">l_yes_checked</span><span class="p">)</span>
+    <span class="n">myprint</span><span class="p">(</span>  <span class="s1">&#39;  ... processed non checked ... [&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l_non_checked</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;] &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">l_non_checked</span><span class="p">)</span><span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+    <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.width&#39;</span><span class="p">,</span> <span class="mi">140</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">freq</span><span class="o">==</span><span class="s1">&#39;hr&#39;</span><span class="p">:</span>
+        <span class="n">previ_process_file</span> <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;process&#39;</span><span class="p">][</span><span class="s1">&#39;hrs&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">previ_process_file</span> <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;process&#39;</span><span class="p">][</span><span class="n">freq</span><span class="p">]</span>
+    <span class="n">cmip6_process_file</span> <span class="o">=</span> <span class="n">previ_process_file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.process&#39;</span><span class="p">,</span> <span class="s1">&#39;_cmip6.process&#39;</span><span class="p">)</span>
+    <span class="n">noncmip6_process_file</span> <span class="o">=</span> <span class="n">previ_process_file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.process&#39;</span><span class="p">,</span> <span class="s1">&#39;_noncmip6.process&#39;</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">previ_process_file</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">cmip6_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;varname-out&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">yes_cmip6_units</span><span class="p">)]</span>
+    <span class="n">cmip6_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;tempf&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">((</span><span class="s1">&#39;column -t tempf &gt; &#39;</span><span class="o">+</span> <span class="n">cmip6_process_file</span><span class="p">))</span>
+    <span class="n">non_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;varname-out&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">non_cmip6_units</span><span class="o">+</span><span class="n">l_non_processed</span><span class="p">)]</span>
+    <span class="n">non_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;tempf&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">((</span><span class="s1">&#39;column -t tempf &gt; &#39;</span><span class="o">+</span> <span class="n">noncmip6_process_file</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">varid</span> <span class="ow">in</span> <span class="n">l_non_checked</span><span class="p">:</span>
+        <span class="n">vars_checks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;variable&#39;</span><span class="p">:</span> <span class="n">varid</span><span class="p">,</span> <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;not-set-up&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">9.99</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;testing-file&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">})</span>
+    <span class="n">test_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">vars_checks</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">dfcolumns</span> <span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;tempf&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">test_info</span></div>
+
+<div class="viewcode-block" id="find_tableID"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.find_tableID">[docs]</a><span class="k">def</span> <span class="nf">find_tableID</span><span class="p">(</span><span class="n">varID</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;mon&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;ATM&#39;</span><span class="p">):</span>
+    <span class="n">table_out</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">ltable</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">varIDwith</span> <span class="o">=</span> <span class="s2">&quot;&#39;&quot;</span><span class="o">+</span><span class="n">varID</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span>
+    <span class="n">cmip6_tables</span> <span class="o">=</span> <span class="s1">&#39;etc/cmip6-cmor-tables-master/Tables/&#39;</span>
+    <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">cmip6_tables</span><span class="p">):</span>               <span class="c1"># change directory as needed</span>
+        <span class="c1">#print(fname)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">cmip6_tables</span><span class="o">+</span><span class="n">fname</span><span class="p">):</span>           <span class="c1"># it&#39;s a file, not a directory entry</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cmip6_tables</span><span class="o">+</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>          <span class="c1"># open file</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>                           <span class="c1"># process line by line</span>
+                    <span class="k">if</span> <span class="n">varIDwith</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>                <span class="c1"># search for string</span>
+                        <span class="n">table_name</span> <span class="o">=</span> <span class="n">cmip6_tables</span><span class="o">+</span><span class="n">fname</span>
+                        <span class="n">ltable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table_name</span><span class="p">)</span>
+                        <span class="k">break</span>
+
+    <span class="n">varIDwith</span> <span class="o">=</span> <span class="s1">&#39;&quot;&#39;</span><span class="o">+</span><span class="n">varID</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span>
+    <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">cmip6_tables</span><span class="p">):</span>               <span class="c1"># change directory as needed</span>
+        <span class="c1">#print(fname)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">cmip6_tables</span><span class="o">+</span><span class="n">fname</span><span class="p">):</span>           <span class="c1"># it&#39;s a file, not a directory entry</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cmip6_tables</span><span class="o">+</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>          <span class="c1"># open file</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>                           <span class="c1"># process line by line</span>
+                    <span class="k">if</span> <span class="n">varIDwith</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>                <span class="c1"># search for string</span>
+                        <span class="n">table_name</span> <span class="o">=</span> <span class="n">cmip6_tables</span><span class="o">+</span><span class="n">fname</span>
+                        <span class="n">ltable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table_name</span><span class="p">)</span>
+                        <span class="k">break</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ltable</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">table_out</span> <span class="o">=</span> <span class="n">ltable</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">l2table</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">ltable</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">table_name</span><span class="p">:</span>
+                <span class="n">l2table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l2table</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">table_out</span><span class="o">=</span><span class="n">l2table</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">l2table</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;CMIP6_AER&#39;</span> <span class="ow">in</span> <span class="n">table_name</span><span class="p">:</span>
+                    <span class="n">table_out</span> <span class="o">=</span> <span class="n">table_name</span>
+            <span class="k">if</span> <span class="n">table_out</span><span class="o">==</span><span class="kc">False</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">l2table</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;CMIP6_A&#39;</span> <span class="ow">in</span> <span class="n">table_name</span><span class="p">:</span>
+                        <span class="n">table_out</span> <span class="o">=</span> <span class="n">table_name</span>
+
+    <span class="k">return</span> <span class="n">table_out</span></div>
+
+
+<div class="viewcode-block" id="create_filename"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.create_filename">[docs]</a><span class="k">def</span> <span class="nf">create_filename</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">expID</span><span class="p">,</span> <span class="n">varID</span><span class="p">,</span> <span class="n">varfile</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;mon&#39;</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filename will have the structure:</span>
+<span class="sd">        varID_tableID_sourceID_experimentID_memberID_gridlevel_timerange</span>
+
+<span class="sd">    varID  -------&gt; is the variable name: varname</span>
+<span class="sd">    tableID ------&gt; depends on variable AERday, Amon etc...</span>
+<span class="sd">    sourceID -----&gt; IPSL-LMDZORINCAv6</span>
+<span class="sd">    experimentID -&gt; CRESCWP3PD-amip</span>
+<span class="sd">    memberID -----&gt; v5-r1i1p1f1  (v5 refers to our internal version)</span>
+<span class="sd">    gridlabel ----&gt; gr           (refers to the original grid but we provide at preslev)</span>
+<span class="sd">    timerange ----&gt; 20000101-20121231 for all cases.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">table_name</span>   <span class="o">=</span> <span class="n">find_tableID</span><span class="p">(</span><span class="n">varID</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">table_name</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;         ---&gt; variable: &#39;</span><span class="p">,</span><span class="n">varID</span><span class="p">,</span> <span class="s1">&#39; not found in CMIP6-cmor-tables</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
+    <span class="n">tableID</span>      <span class="o">=</span> <span class="n">table_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;CMIP6&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">::]</span>
+    <span class="n">sourceID</span>     <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;expCVs&#39;</span><span class="p">][</span><span class="s1">&#39;sourceID&#39;</span><span class="p">]</span>
+    <span class="n">experimentID</span> <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;expID&#39;</span><span class="p">]</span>
+    <span class="n">memberID</span>     <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;expCVs&#39;</span><span class="p">][</span><span class="s1">&#39;memberID&#39;</span><span class="p">]</span>
+    <span class="n">gridlabel</span>    <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;expCVs&#39;</span><span class="p">][</span><span class="s1">&#39;gridlabel&#39;</span><span class="p">]</span>
+    <span class="n">timerange</span>    <span class="o">=</span> <span class="n">varfile</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;expKIND&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;CMIP6&#39;</span><span class="p">,</span><span class="s1">&#39;CRESCENDO&#39;</span><span class="p">,</span><span class="s1">&#39;JASPERKOK&#39;</span><span class="p">]:</span>
+        <span class="c1"># for CMIP6 or CRESCENDO</span>
+        <span class="n">save_name</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">varID</span> <span class="p">,</span><span class="n">tableID</span><span class="p">,</span> <span class="n">sourceID</span><span class="p">,</span> <span class="n">experimentID</span><span class="p">,</span> <span class="n">memberID</span><span class="p">,</span>
+                              <span class="n">gridlabel</span><span class="p">,</span> <span class="n">timerange</span>
+                              <span class="p">])</span>
+
+    <span class="k">if</span> <span class="s1">&#39;aerocom&#39;</span> <span class="ow">in</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;expKIND&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="c1"># for aerocom-phaseIII</span>
+        <span class="c1"># aerocom3_&lt;ModelName&gt;_&lt;ExperimentName&gt;_&lt;VariableName&gt;_&lt;VerticalCoordinateType&gt;</span>
+        <span class="c1">#    _&lt;Period&gt;_&lt;Frequency&gt;.nc</span>
+        <span class="c1"># expID is AP3-CTRL2016-PD or AP3-CTRL2016-PI or AP3-remotesensing etc..</span>
+        <span class="n">save_name</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;aerocom3_&#39;</span> <span class="o">+</span> <span class="n">sourceID</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;expID&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span>
+                     <span class="o">+</span> <span class="n">varID</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">timerange</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.nc&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">freq</span> <span class="o">+</span> <span class="s1">&#39;.nc&#39;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cmip6tb</span><span class="p">:</span>
+        <span class="n">tbdata</span>   <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cmip6tb</span><span class="p">)</span>
+        <span class="n">info_var</span> <span class="o">=</span> <span class="n">tbdata</span><span class="p">[</span><span class="s1">&#39;variable_entry&#39;</span><span class="p">][</span><span class="n">varID</span><span class="p">]</span>
+    <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;       ... final filename will be :&#39;</span><span class="o">+</span> <span class="n">save_name</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">save_name</span><span class="p">,</span> <span class="n">info_var</span></div>
+
+
+<div class="viewcode-block" id="add_global_attributes"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.add_global_attributes">[docs]</a><span class="k">def</span> <span class="nf">add_global_attributes</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">ncname</span><span class="p">,</span> <span class="n">newname</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">info_var</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">ncname</span><span class="p">)</span>
+    <span class="c1">#, autoclose=True) autoclose not implemented in IRENE old xarray version</span>
+    <span class="c1"># Here we opened a dataset </span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;activity_id&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;expCVs&#39;</span><span class="p">][</span><span class="s1">&#39;activityID&#39;</span><span class="p">]</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;institution_id&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;IPSL-LSCE&#39;</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;source_id&#39;</span><span class="p">]</span>     <span class="o">=</span><span class="s1">&#39;IPSL-LMDZORINCAv6&#39;</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;source_type&#39;</span><span class="p">]</span>   <span class="o">=</span><span class="s1">&#39;AGCM-AER&#39;</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;realm&#39;</span><span class="p">]</span>         <span class="o">=</span><span class="s1">&#39;aerosols&#39;</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;experiment_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;expID&#39;</span><span class="p">]</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;packagedby&#39;</span><span class="p">]</span>    <span class="o">=</span><span class="s1">&#39;pyIPSLpack (contact: rcheca@lsce.ipsl.fr)&#39;</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;contact&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;expCVs&#39;</span><span class="p">][</span><span class="s1">&#39;contactID&#39;</span><span class="p">]</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;spinning-up&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;expCVs&#39;</span><span class="p">][</span><span class="s1">&#39;spin-up&#39;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;long_name&#39;</span><span class="p">,</span> <span class="s1">&#39;standard_name&#39;</span><span class="p">,</span> <span class="s1">&#39;modeling_realm&#39;</span><span class="p">,</span> <span class="s1">&#39;frequency&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;dimensions&#39;</span><span class="p">,</span> <span class="s1">&#39;comment&#39;</span><span class="p">]:</span>
+        <span class="n">dataset</span><span class="p">[</span><span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;out_name&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">=</span><span class="n">info_var</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">dataset</span><span class="p">[</span><span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;out_name&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span><span class="o">!=</span><span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]:</span>
+        <span class="c1"># Here it would be possible to create a file with units equivalences...</span>
+        <span class="n">lipsl</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span>         <span class="s1">&#39;kg/kg&#39;</span><span class="p">,</span>   <span class="s1">&#39;kg/m2&#39;</span> <span class="p">,</span> <span class="s1">&#39;kg/m2/s&#39;</span><span class="p">,</span>    <span class="s1">&#39;kg/(s*m2)&#39;</span> <span class="p">,</span> <span class="s1">&#39;kg/m3&#39;</span> <span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;m^-1&#39;</span><span class="p">,</span> <span class="s1">&#39;W/m2&#39;</span><span class="p">,</span> <span class="s1">&#39;kg/kg&#39;</span><span class="p">,</span>   <span class="s1">&#39;m/s&#39;</span><span class="p">]</span>
+        <span class="n">l_cf</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="s1">&#39;mol mol-1&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span>    <span class="p">,</span>   <span class="s1">&#39;kg m-2&#39;</span><span class="p">,</span> <span class="s1">&#39;kg m-2 s-1&#39;</span><span class="p">,</span> <span class="s1">&#39;kg m-2 s-1&#39;</span><span class="p">,</span> <span class="s1">&#39;kg m-3&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;m-1&#39;</span> <span class="p">,</span> <span class="s1">&#39;W m-2&#39;</span><span class="p">,</span><span class="s1">&#39;kg kg-1&#39;</span><span class="p">,</span> <span class="s1">&#39;m s-1&#39;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">valipsl</span><span class="p">,</span> <span class="n">valcf</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lipsl</span><span class="p">,</span> <span class="n">l_cf</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">dataset</span><span class="p">[</span><span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;out_name&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">valipsl</span> <span class="ow">and</span> <span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">valcf</span><span class="p">:</span>
+               <span class="n">dataset</span><span class="p">[</span><span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;out_name&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">dataset</span><span class="p">[</span><span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;out_name&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span><span class="o">!=</span><span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]:</span>
+        <span class="n">str1</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;        non CMIP6 units &#39;</span><span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;out_name&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;,&#39;</span><span class="o">+</span><span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">])</span>
+        <span class="n">str2</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;        keeping non CMIP6&#39;</span><span class="p">)</span>
+        <span class="n">myprint</span><span class="p">(</span><span class="n">str1</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">+</span><span class="n">str2</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+        <span class="n">unit_status</span><span class="o">=</span><span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">str1</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;      ... Units consistent with CF&#39;</span><span class="p">)</span>
+        <span class="n">myprint</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+        <span class="n">unit_status</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">ltest</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;times_bnds&#39;</span><span class="p">,</span> <span class="s1">&#39;time_bnds&#39;</span><span class="p">,</span> <span class="s1">&#39;time_instant_bounds&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">checkbnd</span> <span class="ow">in</span> <span class="n">ltest</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;bounds&#39;</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;bounds&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">checkbnd</span><span class="p">:</span>
+                <span class="k">if</span>  <span class="n">checkbnd</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">del</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;bounds&#39;</span><span class="p">]</span>
+                    <span class="c1">#print(&#39;removed?&#39;, dataset[&#39;time&#39;].attrs)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;AEROCOM&#39;</span> <span class="ow">in</span> <span class="n">newname</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s1">&#39;lat&#39;</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span> <span class="ow">and</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span> <span class="ow">and</span> <span class="s1">&#39;pres&#39;</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+            <span class="n">finalname</span> <span class="o">=</span> <span class="n">newname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;out_name&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;out_name&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_3D_&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;lat&#39;</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span> <span class="ow">and</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span> <span class="ow">and</span> <span class="s1">&#39;pres&#39;</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+            <span class="n">finalname</span> <span class="o">=</span> <span class="n">newname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;out_name&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;out_name&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_3D_&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;lat&#39;</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span> <span class="ow">and</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+            <span class="n">finalname</span> <span class="o">=</span> <span class="n">newname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;out_name&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">info_var</span><span class="p">[</span><span class="s1">&#39;out_name&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_2D_&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">finalname</span><span class="o">=</span><span class="n">newname</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">finalname</span><span class="o">=</span><span class="n">newname</span>
+    <span class="c1">#print(&#39;going to save&#39;, info_var[&#39;out_name&#39;] )</span>
+    <span class="c1">#if &#39;3d&#39; not in info_var[&#39;out_name&#39;]:</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">finalname</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;File &#39;</span><span class="p">,</span><span class="n">finalname</span><span class="p">,</span> <span class="s1">&#39; is there&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">finalname</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">W_OK</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="s1">&#39;airmass&#39;</span> <span class="ow">in</span> <span class="n">finalname</span> <span class="ow">or</span> <span class="s1">&#39;ec550&#39;</span> <span class="ow">in</span> <span class="n">finalname</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dataset</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">finalname</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">dataset</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="c1">#else:</span>
+    <span class="c1">#    shutil.copy2(ncname,finalname)</span>
+    <span class="k">return</span> <span class="n">unit_status</span><span class="p">,</span> <span class="n">finalname</span></div>
+
+<div class="viewcode-block" id="directory_structure"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.directory_structure">[docs]</a><span class="k">def</span> <span class="nf">directory_structure</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">mysettings</span><span class="p">,</span> <span class="n">clean</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="kn">import</span> <span class="nn">shutil</span>
+    <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">join</span> <span class="k">as</span> <span class="n">pjoin</span>
+    <span class="n">cwd</span>  <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="s1">&#39;outdir&#39;</span><span class="p">][</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
+    <span class="n">subf</span> <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="s1">&#39;outdir&#39;</span><span class="p">][</span><span class="s1">&#39;subfolder&#39;</span><span class="p">]</span>
+
+    <span class="n">filename1</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">subf</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="s1">&#39;monthly/&#39;</span><span class="p">)</span>
+    <span class="n">filename2</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">subf</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="s1">&#39;daily/&#39;</span><span class="p">)</span>
+    <span class="n">filename3</span> <span class="o">=</span> <span class="n">pjoin</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">subf</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="s1">&#39;hourly/&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">clean</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="p">[</span><span class="n">filename1</span><span class="p">,</span> <span class="n">filename2</span><span class="p">,</span> <span class="n">filename3</span><span class="p">]:</span>
+            <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;    Cleaning of: &#39;</span><span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">listf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">mysettings</span><span class="p">[</span><span class="s1">&#39;safety&#39;</span><span class="p">][</span><span class="s1">&#39;overwrite&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">listf</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39; Safety settings stop the program: out-tree is not empty: </span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+                    <span class="n">myprint</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">listf</span><span class="p">),</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+                    <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;-------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;    ... ask to clean an empty directory ...&#39;</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+                <span class="k">pass</span>
+
+    <span class="k">if</span> <span class="n">create</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="p">[</span><span class="n">filename1</span><span class="p">,</span> <span class="n">filename2</span><span class="p">,</span> <span class="n">filename3</span><span class="p">]:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+
+    <span class="k">return</span> <span class="n">filename1</span><span class="p">,</span> <span class="n">filename2</span><span class="p">,</span> <span class="n">filename3</span></div>
+
+
+<span class="k">def</span> <span class="nf">_get_var_checkdir</span><span class="p">(</span><span class="n">outname</span><span class="p">,</span> <span class="n">freqsource</span><span class="p">,</span> <span class="n">dirMO</span><span class="p">,</span> <span class="n">dirDA</span><span class="p">,</span> <span class="n">dirHF</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">freqsource</span><span class="o">==</span><span class="s1">&#39;DA&#39;</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">dirDA</span><span class="o">+</span><span class="n">outname</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dirDA</span><span class="o">+</span><span class="n">outname</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">freqsource</span><span class="o">==</span><span class="s1">&#39;MO&#39;</span><span class="p">:</span>
+         <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">dirMO</span><span class="o">+</span><span class="n">outname</span><span class="p">)</span>
+         <span class="k">except</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dirMO</span><span class="o">+</span><span class="n">outname</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">freqsource</span><span class="o">==</span><span class="s1">&#39;HF&#39;</span><span class="p">:</span>
+         <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">dirHF</span><span class="o">+</span><span class="n">outname</span><span class="p">)</span>
+         <span class="k">except</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dirHF</span><span class="o">+</span><span class="n">outname</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+
+<span class="k">def</span> <span class="nf">_get_var_checkfiles</span><span class="p">(</span><span class="n">outname</span><span class="p">,</span> <span class="n">yr</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">freqsource</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span>
+                        <span class="n">extra</span><span class="p">,</span> <span class="n">storepath</span><span class="p">,</span> <span class="n">dirMO</span><span class="p">,</span> <span class="n">dirDA</span><span class="p">,</span> <span class="n">dirHF</span><span class="p">):</span>
+        <span class="c1">#dic_struc = { &#39;ATM&#39;:{&#39;MO&#39;:(&#39;_1M_histmth.nc&#39;,&#39;_mon&#39;), &#39;DA&#39;:(&#39;_1M_histmth.nc&#39;,&#39;_mon&#39;),</span>
+        <span class="c1">#                     &#39;HF&#39;:(&#39;_HF_histh1f.nc&#39;,&#39;_1hr&#39;)}</span>
+
+        <span class="n">f_tail</span>   <span class="o">=</span> <span class="s1">&#39;_IPSL_&#39;</span><span class="o">+</span><span class="n">study</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">yr</span><span class="o">+</span><span class="s1">&#39;0101_&#39;</span><span class="o">+</span><span class="n">yr</span><span class="o">+</span><span class="s1">&#39;1231&#39;</span><span class="o">+</span><span class="s1">&#39;.nc&#39;</span>
+        <span class="n">bpath</span> <span class="o">=</span> <span class="n">storepath</span><span class="o">+</span><span class="n">exp</span>
+        <span class="k">if</span> <span class="n">module</span><span class="o">==</span><span class="s1">&#39;ATM&#39;</span><span class="p">:</span>
+            <span class="n">basedir</span><span class="o">=</span><span class="n">bpath</span><span class="o">+</span><span class="s1">&#39;/ATM/Output/&#39;</span><span class="o">+</span><span class="n">freqsource</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">exp</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">yr</span><span class="o">+</span><span class="s1">&#39;0101_&#39;</span><span class="o">+</span><span class="n">yr</span><span class="o">+</span><span class="s1">&#39;1231&#39;</span>
+            <span class="k">if</span> <span class="n">freqsource</span><span class="o">==</span><span class="s1">&#39;MO&#39;</span><span class="p">:</span>
+                <span class="n">input_f</span><span class="o">=</span><span class="n">basedir</span> <span class="o">+</span><span class="s1">&#39;_1M_histmth.nc&#39;</span>
+                <span class="n">outfile</span> <span class="o">=</span> <span class="n">dirMO</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;_mon&#39;</span><span class="o">+</span><span class="n">f_tail</span>
+            <span class="k">if</span> <span class="n">freqsource</span><span class="o">==</span><span class="s1">&#39;DA&#39;</span><span class="p">:</span>
+                <span class="n">input_f</span><span class="o">=</span><span class="n">basedir</span><span class="o">+</span><span class="s1">&#39;_1D_histday.nc&#39;</span>
+                <span class="n">outfile</span> <span class="o">=</span> <span class="n">dirDA</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;_day&#39;</span><span class="o">+</span><span class="n">f_tail</span>
+            <span class="k">if</span> <span class="n">freqsource</span><span class="o">==</span><span class="s1">&#39;HF&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">timeout</span><span class="o">==</span><span class="s1">&#39;1h&#39;</span><span class="p">:</span>
+                    <span class="n">input_f</span> <span class="o">=</span> <span class="n">basedir</span><span class="o">+</span><span class="s1">&#39;_HF_histh1f.nc&#39;</span>
+                    <span class="n">outfile</span>    <span class="o">=</span> <span class="n">dirHF</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;_1hr&#39;</span><span class="o">+</span><span class="n">f_tail</span>
+                <span class="k">if</span> <span class="n">timeout</span><span class="o">==</span><span class="s1">&#39;6h&#39;</span><span class="p">:</span>
+                    <span class="n">input_f</span> <span class="o">=</span> <span class="n">basedir</span><span class="o">+</span><span class="s1">&#39;_HF_histh6f.nc&#39;</span>
+                    <span class="n">outfile</span>    <span class="o">=</span> <span class="n">dirHF</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;_6hr&#39;</span><span class="o">+</span><span class="n">f_tail</span>
+                <span class="k">if</span> <span class="n">timeout</span><span class="o">==</span><span class="s1">&#39;3h&#39;</span><span class="p">:</span>
+                    <span class="n">input_f</span> <span class="o">=</span> <span class="n">basedir</span><span class="o">+</span><span class="s1">&#39;_3H_remotesens.nc&#39;</span>
+                    <span class="n">outfile</span>    <span class="o">=</span> <span class="n">dirHF</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;_3hr&#39;</span><span class="o">+</span><span class="n">f_tail</span>
+
+        <span class="k">if</span> <span class="n">module</span><span class="o">==</span><span class="s1">&#39;CHM&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">freqsource</span><span class="o">==</span><span class="s1">&#39;MO&#39;</span><span class="p">:</span>
+                <span class="n">input_f</span><span class="o">=</span><span class="n">bpath</span><span class="o">+</span><span class="s1">&#39;/CHM/Output/MO/&#39;</span><span class="o">+</span><span class="n">exp</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">yr</span><span class="o">+</span><span class="s1">&#39;0101_&#39;</span><span class="o">+</span><span class="n">yr</span><span class="o">+</span><span class="s1">&#39;1231&#39;</span><span class="o">+</span><span class="s1">&#39;_1M_inca_&#39;</span><span class="o">+</span><span class="n">extra</span>
+                <span class="n">outfile</span> <span class="o">=</span> <span class="n">dirMO</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;_mon&#39;</span><span class="o">+</span><span class="n">f_tail</span>
+
+            <span class="k">if</span> <span class="n">freqsource</span><span class="o">==</span><span class="s1">&#39;DA&#39;</span><span class="p">:</span>
+                <span class="n">input_f</span><span class="o">=</span><span class="n">bpath</span><span class="o">+</span><span class="s1">&#39;/CHM/Output/DA/&#39;</span><span class="o">+</span><span class="n">exp</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">yr</span><span class="o">+</span><span class="s1">&#39;0101_&#39;</span><span class="o">+</span><span class="n">yr</span><span class="o">+</span><span class="s1">&#39;1231&#39;</span><span class="o">+</span><span class="s1">&#39;_1D_inca_&#39;</span><span class="o">+</span><span class="n">extra</span>
+                <span class="n">outfile</span> <span class="o">=</span> <span class="n">dirDA</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;_day&#39;</span><span class="o">+</span><span class="n">f_tail</span>
+
+            <span class="k">if</span> <span class="n">freqsource</span><span class="o">==</span><span class="s1">&#39;HF&#39;</span><span class="p">:</span>
+                <span class="n">input_f</span><span class="o">=</span><span class="n">bpath</span><span class="o">+</span><span class="s1">&#39;/CHM/Output/DA/&#39;</span><span class="o">+</span><span class="n">exp</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">yr</span><span class="o">+</span><span class="s1">&#39;0101_&#39;</span><span class="o">+</span><span class="n">yr</span><span class="o">+</span><span class="s1">&#39;1231&#39;</span><span class="o">+</span><span class="s1">&#39;_1D_inca_&#39;</span><span class="o">+</span><span class="n">extra</span>
+                <span class="k">if</span> <span class="n">timeout</span><span class="o">==</span><span class="s1">&#39;1h&#39;</span><span class="p">:</span>
+                    <span class="n">outfile</span> <span class="o">=</span> <span class="n">dirHF</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;_1h&#39;</span><span class="o">+</span><span class="n">f_tail</span>
+                <span class="k">if</span> <span class="n">timeout</span><span class="o">==</span><span class="s1">&#39;6h&#39;</span><span class="p">:</span>
+                    <span class="n">outfile</span> <span class="o">=</span> <span class="n">dirHF</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;_6h&#39;</span><span class="o">+</span><span class="n">f_tail</span>
+
+        <span class="k">if</span> <span class="n">module</span><span class="o">==</span><span class="s1">&#39;SRF&#39;</span><span class="p">:</span>
+            <span class="n">input_f</span><span class="o">=</span><span class="n">bpath</span><span class="o">+</span><span class="s1">&#39;/SRF/Output/MO/&#39;</span><span class="o">+</span><span class="n">exp</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">yr</span><span class="o">+</span><span class="s1">&#39;0101_&#39;</span><span class="o">+</span><span class="n">yr</span><span class="o">+</span><span class="s1">&#39;1231&#39;</span><span class="o">+</span><span class="s1">&#39;_1M_sechiba_history.nc&#39;</span>
+            <span class="k">if</span> <span class="n">freqsource</span><span class="o">==</span><span class="s1">&#39;MO&#39;</span><span class="p">:</span>
+                <span class="n">outfile</span> <span class="o">=</span> <span class="n">dirMO</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39;_mon&#39;</span><span class="o">+</span><span class="n">f_tail</span>
+
+        <span class="k">return</span> <span class="n">input_f</span><span class="p">,</span> <span class="n">outfile</span>
+
+<div class="viewcode-block" id="solve_time"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.solve_time">[docs]</a><span class="k">def</span> <span class="nf">solve_time</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">outfilen</span><span class="p">,</span> <span class="n">varname</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+
+    <span class="n">commandnco</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ncrename -O -d time_counter,time -v time_counter,time &#39;</span> <span class="o">+</span> <span class="n">outfile</span>
+                  <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">outfilen</span> <span class="o">+</span> <span class="n">out</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">commandnco</span><span class="p">)</span>
+    <span class="n">commandnco</span> <span class="o">=</span> <span class="s1">&#39;ncrename -O -v .time_counter_bnds,time_bnds &#39;</span><span class="o">+</span><span class="n">outfile</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">outfilen</span><span class="o">+</span><span class="n">out</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">commandnco</span><span class="p">)</span>
+    <span class="n">commandnco</span> <span class="o">=</span> <span class="s1">&#39;ncrename -O -d .presnivs,pres -v .presnivs,pres &#39;</span><span class="o">+</span><span class="n">outfile</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">outfilen</span><span class="o">+</span><span class="n">out</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">commandnco</span><span class="p">)</span>
+    <span class="n">commandnco</span> <span class="o">=</span> <span class="s1">&#39;ncatted -O -a standard_name,pres,o,c,air_pressure &#39;</span><span class="o">+</span><span class="n">outfile</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">outfilen</span><span class="o">+</span><span class="n">out</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">commandnco</span><span class="p">)</span>
+    <span class="n">commandnco</span> <span class="o">=</span> <span class="s1">&#39;ncatted -O -a bounds,time,o,c,time_bnds &#39;</span><span class="o">+</span><span class="n">outfile</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">outfilen</span><span class="o">+</span><span class="n">out</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">commandnco</span><span class="p">)</span>
+    <span class="n">commandnco</span> <span class="o">=</span> <span class="s1">&#39;ncks -O -x -v time_centered &#39;</span><span class="o">+</span><span class="n">outfile</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">outfilen</span><span class="o">+</span><span class="n">out</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">commandnco</span><span class="p">)</span>
+    <span class="n">commandnco</span> <span class="o">=</span> <span class="s1">&#39;ncks -O -x -v time_instant &#39;</span><span class="o">+</span><span class="n">outfile</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">outfilen</span><span class="o">+</span><span class="n">out</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">commandnco</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">varname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">commandnco</span> <span class="o">=</span> <span class="s1">&#39;ncatted -O -a coordinates,&#39;</span><span class="o">+</span><span class="n">varname</span><span class="o">+</span><span class="s1">&#39;,d,, &#39;</span><span class="o">+</span><span class="n">outfile</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">outfilen</span><span class="o">+</span><span class="n">out</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">commandnco</span><span class="p">)</span>
+        <span class="c1">#print(commandnco, varname)</span>
+
+
+    <span class="k">return</span></div>
+
+<div class="viewcode-block" id="get_var"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.get_var">[docs]</a><span class="k">def</span> <span class="nf">get_var</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">freqsource</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span>
+            <span class="n">outname</span><span class="p">,</span> <span class="n">expcase</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    - Module= ATM, CHM, etc</span>
+<span class="sd">    - name=vmro3 etc</span>
+<span class="sd">    - freq=DA, HF, MO for ATM, for CHM all is DA</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dirMO</span><span class="p">,</span> <span class="n">dirDA</span><span class="p">,</span> <span class="n">dirHF</span> <span class="o">=</span> <span class="n">directory_structure</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">mysettings</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+    <span class="n">cwd</span>  <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="s1">&#39;outdir&#39;</span><span class="p">][</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
+    <span class="n">subf</span> <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="s1">&#39;outdir&#39;</span><span class="p">][</span><span class="s1">&#39;subfolder&#39;</span><span class="p">]</span>
+    <span class="n">storepath</span> <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="s1">&#39;storepath&#39;</span><span class="p">]</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="n">_get_var_checkdir</span><span class="p">(</span><span class="n">outname</span><span class="p">,</span> <span class="n">freqsource</span><span class="p">,</span> <span class="n">dirMO</span><span class="p">,</span> <span class="n">dirDA</span><span class="p">,</span> <span class="n">dirHF</span><span class="p">)</span>
+
+    <span class="n">input_f</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span> <span class="n">_get_var_checkfiles</span><span class="p">(</span><span class="n">outname</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">freqsource</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span>
+                                            <span class="n">expcase</span><span class="p">,</span> <span class="n">extra</span><span class="p">,</span> <span class="n">storepath</span><span class="p">,</span> <span class="n">dirMO</span><span class="p">,</span> <span class="n">dirDA</span><span class="p">,</span> <span class="n">dirHF</span><span class="p">)</span>
+    
+    <span class="n">str1</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;    Extracting (&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;): &#39;</span><span class="o">+</span><span class="n">varname</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">+</span>
+          <span class="s1">&#39; and save as &#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; .... for year &#39;</span><span class="o">+</span>
+          <span class="n">year</span> <span class="o">+</span> <span class="s1">&#39;  ... [&#39;</span><span class="o">+</span><span class="n">freqsource</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">module</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="p">)</span>
+
+    <span class="n">myprint</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+
+    <span class="n">commandcdo</span> <span class="o">=</span><span class="p">(</span><span class="s1">&#39;cdo  --silent selvar,&#39;</span> <span class="o">+</span> <span class="n">varname</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">input_f</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">outfile</span>
+                <span class="o">+</span> <span class="s1">&#39; &amp;&gt; delfiles/del&#39;</span> <span class="o">+</span> <span class="n">varname</span> <span class="o">+</span> <span class="n">freqsource</span> <span class="o">+</span> <span class="n">module</span><span class="p">)</span>
+    <span class="c1">#print(commandcdo)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">commandcdo</span><span class="p">)</span>
+
+    <span class="n">solve_time</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">varname</span><span class="o">=</span><span class="n">varname</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s1">&#39; &amp;&gt;&gt; delfiles/del&#39;</span><span class="o">+</span>
+               <span class="n">varname</span><span class="o">+</span><span class="n">freqsource</span><span class="o">+</span><span class="n">module</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">outname</span><span class="o">!=</span><span class="n">varname</span><span class="p">:</span>
+      <span class="n">commandcdo</span> <span class="o">=</span><span class="s1">&#39;cdo --silent -O chname,&#39;</span><span class="o">+</span><span class="n">varname</span><span class="o">+</span><span class="s1">&#39;,&#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">outfile</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">outfile</span><span class="o">+</span><span class="s1">&#39;x&#39;</span>
+      <span class="c1">#print(commandcdo)</span>
+      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">commandcdo</span><span class="p">)</span>
+      <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">outfile</span><span class="o">+</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+
+    <span class="k">return</span></div>
+
+<div class="viewcode-block" id="check_units"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.check_units">[docs]</a><span class="k">def</span> <span class="nf">check_units</span><span class="p">(</span><span class="n">varname_list</span><span class="p">,</span> <span class="n">vars_dataset</span><span class="p">):</span>
+    <span class="n">lunits</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">varn</span> <span class="ow">in</span> <span class="n">varname_list</span><span class="p">:</span>
+        <span class="n">lunits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vars_dataset</span><span class="p">[</span><span class="n">varn</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">lunits</span></div>
+
+
+<div class="viewcode-block" id="scale_variable"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.scale_variable">[docs]</a><span class="k">def</span> <span class="nf">scale_variable</span><span class="p">(</span><span class="n">vardataset</span><span class="p">,</span> <span class="n">d_scale_vars</span><span class="p">,</span> <span class="n">outname</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="n">var_initial</span> <span class="o">=</span>  <span class="n">d_scale_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;var_initial&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">&#39;scale_factor&#39;</span> <span class="ow">in</span> <span class="n">d_scale_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">varscaled</span> <span class="o">=</span> <span class="n">vardataset</span><span class="p">[</span><span class="n">var_initial</span><span class="p">]</span><span class="o">*</span><span class="n">d_scale_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;scale_factor&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">varscaled</span> <span class="o">=</span> <span class="n">vardataset</span><span class="p">[</span><span class="n">var_initial</span><span class="p">]</span>
+
+    <span class="c1"># Check if global unit factor and new units is indicated</span>
+    <span class="k">if</span> <span class="s1">&#39;new_units&#39;</span> <span class="ow">in</span> <span class="n">d_scale_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">units_factor</span> <span class="o">=</span> <span class="n">d_scale_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;new_units&#39;</span><span class="p">][</span><span class="s1">&#39;units_factor&#39;</span><span class="p">]</span>
+        <span class="n">units_name</span>   <span class="o">=</span> <span class="n">d_scale_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;new_units&#39;</span><span class="p">][</span><span class="s1">&#39;units_name&#39;</span><span class="p">]</span>
+        <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;      We will change units from &#39;</span><span class="o">+</span><span class="n">vardataset</span><span class="p">[</span><span class="n">varname</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span><span class="o">+</span>
+                <span class="s1">&#39;  to  &#39;</span><span class="o">+</span><span class="n">units_name</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+        <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;      We use a unit conversion factor of &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">units_factor</span><span class="p">),</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span> 
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">units_factor</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">units_name</span>   <span class="o">=</span> <span class="n">vardataset</span><span class="p">[</span><span class="n">varname_sur</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="n">units_name</span>   <span class="o">=</span> <span class="n">vardataset</span><span class="p">[</span><span class="n">varname_alt</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span>
+
+    <span class="n">varfinal</span> <span class="o">=</span> <span class="n">varscaled</span><span class="o">*</span><span class="n">units_factor</span>
+    <span class="n">varfinal</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">outname</span>
+    <span class="n">varfinal</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">units_name</span>
+    <span class="n">varfinal</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="s1">&#39;time_counter&#39;</span><span class="p">)</span>
+    <span class="n">varfinal</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span></div>
+ 
+
+<div class="viewcode-block" id="new_variable_altsur"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.new_variable_altsur">[docs]</a><span class="k">def</span> <span class="nf">new_variable_altsur</span><span class="p">(</span><span class="n">vardataset</span><span class="p">,</span> <span class="n">d_new_vars</span><span class="p">,</span> <span class="n">outname</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="n">varname_sur</span> <span class="o">=</span> <span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;var_surface&#39;</span><span class="p">]</span>
+    <span class="n">varname_alt</span> <span class="o">=</span> <span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;var_altitud&#39;</span><span class="p">]</span>
+    <span class="n">factors_sur</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;fac_surface&#39;</span><span class="p">]]</span>
+    <span class="n">factors_alt</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;fac_altitud&#39;</span><span class="p">]]</span>
+
+    <span class="n">lunits</span> <span class="o">=</span><span class="n">check_units</span><span class="p">(</span><span class="n">varname_sur</span><span class="o">+</span><span class="n">varname_alt</span><span class="p">,</span> <span class="n">vardataset</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">lunits</span><span class="p">))</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;       internal consistency in units is ... ok ... &#39;</span><span class="o">+</span><span class="n">lunits</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">myprint</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lunits</span><span class="p">)</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">varname_sur</span><span class="p">)</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">varname_alt</span><span class="p">),</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+        <span class="n">exit</span><span class="p">()</span>
+
+    <span class="c1"># Aggregate values over vertical coordinates</span>
+    <span class="k">for</span> <span class="n">ivar</span><span class="p">,</span> <span class="n">var_alt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">varname_alt</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ivar</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">var_sum_alt</span> <span class="o">=</span> <span class="n">vardataset</span><span class="p">[</span><span class="n">var_alt</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;presnivs&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">var_sum_alt</span> <span class="o">=</span> <span class="p">(</span><span class="n">var_sum_alt</span> <span class="o">+</span>
+             <span class="n">vardataset</span><span class="p">[</span><span class="n">var_alt</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;presnivs&#39;</span><span class="p">)</span><span class="o">*</span><span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;fac_altitud&#39;</span><span class="p">][</span><span class="n">ivar</span><span class="p">])</span>
+
+    <span class="c1"># Aggregate values on surface</span>
+    <span class="k">for</span> <span class="n">ivar</span><span class="p">,</span> <span class="n">var_sur</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">varname_sur</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;presnivs&#39;</span> <span class="ow">in</span> <span class="n">vardataset</span><span class="p">[</span><span class="n">var_sur</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
+            <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;       selecting the pressure ... &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">vardataset</span><span class="p">[</span><span class="s1">&#39;presnivs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span>
+                    <span class="s1">&#39; &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">vardataset</span><span class="p">[</span><span class="s1">&#39;presnivs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]),</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ivar</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">var_sum_sur</span>  <span class="o">=</span> <span class="n">vardataset</span><span class="p">[</span><span class="n">var_sur</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">presnivs</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">var_sum_sur</span>  <span class="o">=</span> <span class="p">(</span><span class="n">var_sum_sur</span> <span class="o">+</span>
+                                <span class="n">vardataset</span><span class="p">[</span><span class="n">var_sur</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">presnivs</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;fac_surface&#39;</span><span class="p">][</span><span class="n">ivar</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ivar</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">var_sum_sur</span>  <span class="o">=</span> <span class="n">vardataset</span><span class="p">[</span><span class="n">var_sur</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">var_sum_sur</span>  <span class="o">=</span> <span class="p">(</span><span class="n">var_sum_sur</span> <span class="o">+</span>
+                                <span class="n">vardataset</span><span class="p">[</span><span class="n">var_sur</span><span class="p">]</span><span class="o">*</span><span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;fac_surface&#39;</span><span class="p">][</span><span class="n">ivar</span><span class="p">])</span>
+
+    <span class="c1"># Check if global unit factor and new units is indicated</span>
+    <span class="k">if</span> <span class="s1">&#39;new_units&#39;</span> <span class="ow">in</span> <span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">units_factor</span> <span class="o">=</span> <span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;new_units&#39;</span><span class="p">][</span><span class="s1">&#39;units_factor&#39;</span><span class="p">]</span>
+        <span class="n">units_name</span>   <span class="o">=</span> <span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;new_units&#39;</span><span class="p">][</span><span class="s1">&#39;units_name&#39;</span><span class="p">]</span>
+        <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;      We will change units from &#39;</span><span class="o">+</span>
+                <span class="n">vardataset</span><span class="p">[</span><span class="n">varname_sur</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span><span class="o">+</span>
+                <span class="s1">&#39;  to  &#39;</span> <span class="o">+</span> <span class="n">units_name</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+        <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;      We use a unit conversion factor of &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">units_factor</span><span class="p">),</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span> 
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">units_factor</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">units_name</span>   <span class="o">=</span> <span class="n">vardataset</span><span class="p">[</span><span class="n">varname_sur</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="n">units_name</span>   <span class="o">=</span> <span class="n">vardataset</span><span class="p">[</span><span class="n">varname_alt</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Aggregate all together:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">varname_sur</span><span class="p">)</span><span class="o">&gt;=</span><span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">varname_alt</span><span class="p">)</span><span class="o">&gt;=</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">varfinal</span> <span class="o">=</span> <span class="p">(</span><span class="n">var_sum_alt</span><span class="o">+</span><span class="n">var_sum_sur</span><span class="p">)</span><span class="o">*</span><span class="n">units_factor</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">varname_alt</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">varfinal</span> <span class="o">=</span> <span class="n">var_sum_sur</span><span class="o">*</span><span class="n">units_factor</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">varname_sur</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">varfinal</span> <span class="o">=</span> <span class="n">var_sum_alt</span><span class="o">*</span><span class="n">units_factor</span>
+
+    <span class="n">varfinal</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">outname</span>
+    <span class="n">varfinal</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">units_name</span>
+    <span class="n">varfinal</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="s1">&#39;time_counter&#39;</span><span class="p">)</span>
+    <span class="n">varfinal</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="new_var"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.new_var">[docs]</a><span class="k">def</span> <span class="nf">new_var</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">freqsource</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">outname</span><span class="p">,</span>
+            <span class="n">expcase</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    - Module= ATM, CHM, etc</span>
+<span class="sd">    - name=vmro3 etc</span>
+<span class="sd">    - freq=DA, HF, MO for ATM, for CHM all is DA</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dirMO</span><span class="p">,</span> <span class="n">dirDA</span><span class="p">,</span> <span class="n">dirHF</span> <span class="o">=</span> <span class="n">directory_structure</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">mysettings</span><span class="p">)</span>
+
+    <span class="n">cwd</span>  <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="s1">&#39;outdir&#39;</span><span class="p">][</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
+    <span class="n">subf</span> <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="s1">&#39;outdir&#39;</span><span class="p">][</span><span class="s1">&#39;subfolder&#39;</span><span class="p">]</span>
+    <span class="n">storepath</span> <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="s1">&#39;storepath&#39;</span><span class="p">]</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="n">_get_var_checkdir</span><span class="p">(</span><span class="n">outname</span><span class="p">,</span> <span class="n">freqsource</span><span class="p">,</span> <span class="n">dirMO</span><span class="p">,</span> <span class="n">dirDA</span><span class="p">,</span> <span class="n">dirHF</span><span class="p">)</span>
+
+    <span class="n">input_f</span><span class="p">,</span> <span class="n">outfile</span>  <span class="o">=</span> <span class="n">_get_var_checkfiles</span><span class="p">(</span><span class="n">outname</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">freqsource</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span>
+                                               <span class="n">timeout</span><span class="p">,</span> <span class="n">expcase</span><span class="p">,</span> <span class="n">extra</span><span class="p">,</span> <span class="n">storepath</span><span class="p">,</span>
+                                               <span class="n">dirMO</span><span class="p">,</span> <span class="n">dirDA</span><span class="p">,</span> <span class="n">dirHF</span><span class="p">)</span>
+    <span class="n">vardataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">input_f</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;time_counter&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>  <span class="c1"># we assume that all variable are in same file.</span>
+
+    <span class="n">f_new_vars</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;etc/new_variables.yaml&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">d_new_vars</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f_new_vars</span><span class="p">)</span>
+
+    <span class="n">f_scale_vars</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;etc/scale_variables.yaml&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">d_scale_vars</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f_scale_vars</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">outname</span> <span class="ow">in</span> <span class="n">d_scale_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">str1</span><span class="o">=</span><span class="p">(</span>  <span class="s1">&#39;    Scaling   (&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;): &#39;</span><span class="o">+</span><span class="n">varname</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">+</span>
+                <span class="s1">&#39; and save as &#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">+</span>
+                <span class="s1">&#39; .... for year &#39;</span><span class="o">+</span> <span class="n">year</span> <span class="o">+</span> <span class="s1">&#39;  ... [&#39;</span><span class="o">+</span><span class="n">freqsource</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">module</span><span class="o">+</span><span class="s1">&#39;]</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">myprint</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+        <span class="n">scale_variable</span><span class="p">(</span><span class="n">vardataset</span><span class="p">,</span> <span class="n">d_scale_vars</span><span class="p">,</span> <span class="n">outname</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">finfo</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">outname</span> <span class="ow">in</span> <span class="n">d_new_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">varname_sur</span> <span class="o">=</span> <span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;var_surface&#39;</span><span class="p">]</span>
+        <span class="n">varname_alt</span> <span class="o">=</span> <span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;var_altitud&#39;</span><span class="p">]</span>
+        <span class="n">factors_sur</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;fac_surface&#39;</span><span class="p">]]</span>
+        <span class="n">factors_alt</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">d_new_vars</span><span class="p">[</span><span class="n">outname</span><span class="p">][</span><span class="s1">&#39;fac_altitud&#39;</span><span class="p">]]</span>
+
+        <span class="n">str1</span><span class="o">=</span><span class="p">(</span>  <span class="s1">&#39;    Creating   (&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;): &#39;</span><span class="o">+</span><span class="n">varname</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; and save as &#39;</span>
+              <span class="o">+</span><span class="n">outname</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; .... for year &#39;</span>
+              <span class="o">+</span> <span class="n">year</span> <span class="o">+</span> <span class="s1">&#39;  ... [&#39;</span><span class="o">+</span><span class="n">freqsource</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">module</span><span class="o">+</span><span class="s1">&#39;]</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">str2</span><span class="o">=</span><span class="p">(</span>   <span class="s1">&#39;       using files ... &#39;</span><span class="o">+</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">varname_sur</span><span class="p">)</span><span class="o">+</span>
+              <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">        ... with factors &#39;</span><span class="o">+</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">factors_sur</span><span class="p">)</span><span class="o">+</span>
+              <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">       and files   ... &#39;</span><span class="o">+</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">varname_alt</span><span class="p">)</span><span class="o">+</span>
+              <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">        ... with factors &#39;</span><span class="o">+</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">factors_alt</span><span class="p">))</span>
+
+        <span class="n">myprint</span><span class="p">(</span><span class="n">str1</span><span class="o">+</span><span class="n">str2</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+        <span class="n">new_variable_altsur</span><span class="p">(</span><span class="n">vardataset</span><span class="p">,</span> <span class="n">d_new_vars</span><span class="p">,</span> <span class="n">outname</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">finfo</span><span class="p">)</span>
+
+    <span class="n">solve_time</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">varname</span><span class="o">=</span><span class="n">varname</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s1">&#39; &amp;&gt;&gt; delfiles/del&#39;</span>
+               <span class="o">+</span><span class="n">varname</span><span class="o">+</span><span class="n">freqsource</span><span class="o">+</span><span class="n">module</span><span class="p">)</span>
+
+    <span class="k">return</span></div>
+
+<div class="viewcode-block" id="lev_var"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.lev_var">[docs]</a><span class="k">def</span> <span class="nf">lev_var</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">freqsource</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">outname</span><span class="p">,</span>
+            <span class="n">expcase</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">lev</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    - Module= ATM, CHM, etc</span>
+<span class="sd">    - name=vmro3 etc</span>
+<span class="sd">    - freq=DA, HF, MO for ATM, for CHM all is DA</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dirMO</span><span class="p">,</span> <span class="n">dirDA</span><span class="p">,</span> <span class="n">dirHF</span> <span class="o">=</span> <span class="n">directory_structure</span><span class="p">(</span><span class="n">study</span><span class="p">,</span> <span class="n">mysettings</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+    <span class="n">cwd</span>  <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="s1">&#39;outdir&#39;</span><span class="p">][</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
+    <span class="n">subf</span> <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="s1">&#39;outdir&#39;</span><span class="p">][</span><span class="s1">&#39;subfolder&#39;</span><span class="p">]</span>
+    <span class="n">storepath</span> <span class="o">=</span> <span class="n">mysettings</span><span class="p">[</span><span class="s1">&#39;storepath&#39;</span><span class="p">]</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="n">_get_var_checkdir</span><span class="p">(</span><span class="n">outname</span><span class="p">,</span> <span class="n">freqsource</span><span class="p">,</span> <span class="n">dirMO</span><span class="p">,</span> <span class="n">dirDA</span><span class="p">,</span> <span class="n">dirHF</span><span class="p">)</span>
+
+    <span class="n">input_f</span><span class="p">,</span> <span class="n">outfile</span>  <span class="o">=</span> <span class="n">_get_var_checkfiles</span><span class="p">(</span><span class="n">outname</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">freqsource</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span>
+                                               <span class="n">timeout</span><span class="p">,</span> <span class="n">expcase</span><span class="p">,</span> <span class="n">extra</span><span class="p">,</span> <span class="n">storepath</span><span class="p">,</span>
+                                               <span class="n">dirMO</span><span class="p">,</span> <span class="n">dirDA</span><span class="p">,</span> <span class="n">dirHF</span><span class="p">)</span>
+
+    <span class="n">vardataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">input_f</span><span class="p">)</span>  <span class="c1"># we assume that all variable are in same file.</span>
+
+    <span class="k">if</span> <span class="n">outname</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;rlut&#39;</span><span class="p">]:</span>
+        <span class="n">varname_lev</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rlu&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">outname</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;rlutcs&#39;</span><span class="p">]:</span>
+        <span class="n">varname_lev</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rlucs&#39;</span><span class="p">]</span>
+
+
+    <span class="n">str1</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;    Creating   (&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;): &#39;</span><span class="o">+</span><span class="n">varname</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">+</span>
+          <span class="s1">&#39; and save as &#39;</span><span class="o">+</span><span class="n">outname</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; .... for year &#39;</span><span class="o">+</span>
+          <span class="n">year</span> <span class="o">+</span> <span class="s1">&#39;  ... [&#39;</span><span class="o">+</span><span class="n">freqsource</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">module</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="p">)</span>
+    <span class="n">str2</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;       using files ... &#39;</span><span class="o">+</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">varname_lev</span><span class="p">))</span>
+    <span class="n">myprint</span><span class="p">(</span><span class="n">str1</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">+</span><span class="n">str2</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+
+    <span class="k">if</span> <span class="n">lev</span><span class="o">==</span><span class="s1">&#39;top&#39;</span><span class="p">:</span>
+        <span class="n">presval</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">lev</span><span class="o">==</span><span class="s1">&#39;surf&#39;</span><span class="p">:</span>
+        <span class="n">presval</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Problem in lev_var&#39;</span><span class="p">)</span>
+        <span class="n">exit</span><span class="p">()</span>
+
+    <span class="n">var_lev</span>  <span class="o">=</span> <span class="n">vardataset</span><span class="p">[</span><span class="n">varname_lev</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">presnivs</span><span class="o">=</span><span class="n">presval</span><span class="p">)</span>
+    <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;       selecting the pressure ... &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">vardataset</span><span class="p">[</span><span class="s1">&#39;presnivs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">presval</span><span class="p">]),</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+    <span class="n">var_lev</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">outname</span>
+    <span class="n">var_lev</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="s1">&#39;time_counter&#39;</span><span class="p">)</span>
+    <span class="n">solve_time</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">varname</span><span class="o">=</span><span class="n">varname</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s1">&#39; &amp;&gt;&gt; delfiles/del&#39;</span><span class="o">+</span>
+               <span class="n">varname</span><span class="o">+</span><span class="n">freqsource</span><span class="o">+</span><span class="n">module</span><span class="p">)</span>
+
+    <span class="k">return</span></div>
+
+<div class="viewcode-block" id="read_process_file"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.read_process_file">[docs]</a><span class="k">def</span> <span class="nf">read_process_file</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">process_file</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">expcase</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.width&#39;</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">process_file</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">two_times</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;varname-out&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="kc">True</span> <span class="ow">in</span> <span class="n">two_times</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+        <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n\n</span><span class="s1"> ============= CHECK your diagnostics file &#39;</span><span class="o">+</span><span class="n">process_file</span>
+                <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> ============= it has two repeated diagnostics final varnames!!</span><span class="se">\n\n\n</span><span class="s1">&#39;</span><span class="p">,</span>
+                <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+        <span class="n">exit</span><span class="p">()</span>
+    <span class="n">list_vars</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+        <span class="n">list_vars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;varname-out&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">mysettings</span><span class="p">[</span><span class="n">study</span><span class="p">][</span><span class="s1">&#39;preprocess&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;new_var&#39;</span><span class="p">:</span>
+                <span class="n">new_var</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;varname-source&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;freq-source&#39;</span><span class="p">],</span>
+                        <span class="n">row</span><span class="p">[</span><span class="s1">&#39;module-IPSL&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;freq-specific&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;varname-out&#39;</span><span class="p">],</span>
+                        <span class="n">expcase</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;extra-info-source&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;get_var&#39;</span><span class="p">:</span>
+                <span class="n">get_var</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;varname-source&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;freq-source&#39;</span><span class="p">],</span>
+                        <span class="n">row</span><span class="p">[</span><span class="s1">&#39;module-IPSL&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;freq-specific&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;varname-out&#39;</span><span class="p">],</span>
+                        <span class="n">expcase</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;extra-info-source&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;lev_var&#39;</span><span class="p">:</span>
+                <span class="n">lev_var</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;varname-source&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;freq-source&#39;</span><span class="p">],</span>
+                        <span class="n">row</span><span class="p">[</span><span class="s1">&#39;module-IPSL&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;freq-specific&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;varname-out&#39;</span><span class="p">],</span>
+                              <span class="n">expcase</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;extra-info-source&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">list_vars</span></div>
+
+<div class="viewcode-block" id="process_files"><a class="viewcode-back" href="../../api.html#lib.specific_ipsl.process_files">[docs]</a><span class="k">def</span> <span class="nf">process_files</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">expcase</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">proc_file</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+      <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">proc_file</span><span class="p">)</span><span class="o">!=</span><span class="s1">&#39;none&#39;</span><span class="p">:</span>
+          <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;    ... aprox. number variables: &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">proc_file</span><span class="p">))</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+          <span class="n">processed_vars</span> <span class="o">=</span> <span class="n">read_process_file</span><span class="p">(</span><span class="n">mysettings</span><span class="p">,</span> <span class="n">proc_file</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">expcase</span><span class="p">,</span> <span class="n">study</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;    ... No processing ... [process-file==None]&#39;</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+          <span class="n">processed_vars</span><span class="o">=</span><span class="p">[]</span>
+
+      <span class="k">return</span> <span class="n">processed_vars</span></div>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Ramiro Checa-Garcia
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+##############################################################################################
+# SCALE VARIABLES FILE
+#
+# Author: R. Checa-Garcia
+# Contact: rcheca@lsce.ipsl.fr
+# History:
+#   2018-Nov created file and added loads, emissions, depositions, and surface concentrations
+#
+
+
+zg:
+    var_initial: zg
+    scale_factor: 1.0
+    new_units:   { units_factor: 0.10197162129779282425, units_name: 'm'}
+
+
+

@@ -1,0 +1,8 @@
+
+mdwdustCI:      &meanattwolevels 
+          method:  {global_mean_atlev:   {kind:  global, time:  mon, units:  '-',      factor:  1  , levels: [0, 3, 5, -1] }}
+mdwdustSI:  *meanattwolevels 
+mdwdustD1:  *meanattwolevels
+mdwdustD4:  *meanattwolevels
+
+

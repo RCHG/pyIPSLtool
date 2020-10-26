@@ -1,0 +1,875 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Dust-Calibration &mdash; pyIPSLpack a documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pyIPSLpack a documentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pyIPSLpack
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Structure.html">Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="How-to-use.html">How to use: running in TGCC cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">pyIPSLpack</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Dust-Calibration</li>
+    <li class="wy-breadcrumbs-aside">
+      
+          
+          <a href="_sources/Dust-Calibration.txt" rel="nofollow"> View page source</a>
+        
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dust-calibration">
+<h1>Dust-Calibration<a class="headerlink" href="#dust-calibration" title="Permalink to this headline">¶</a></h1>
+<p>Here is described how to use the library for the calibration of dust in the
+IPSL model using the od550dust variable.</p>
+<div class="section" id="methodology">
+<h2>Methodology<a class="headerlink" href="#methodology" title="Permalink to this headline">¶</a></h2>
+<p>The dust emission scheme on the IPSL model relies on an expression to estimate the
+vertical/horizontal flux of dust particles on the atmosphere, which depends on the
+boundary layer velocity and several datasets describing soil properties. In general
+the calibration of the emission scheme is related with how the wind fields on the
+surface are described by the dynamical part of the model, therefore for each version
+released it is needed to ascertain if the parameters of the emission are correctly
+calibrated.</p>
+<p>We have recalibrated them by comparing with observational datasets of dust aerosol
+optical depths that has been bias corrected with respect to AERONET stations and
+most confident datasets (as there are not yet full accurate satellite retrievals of
+dust optical depth at the TOA. For this calibration we used the observationally
+constrained dataset described by D.A. Ridley et al at ACP journal in 2016. They give
+mean values for 15 different regions of dust AOD for the period 2004-2008.</p>
+</div>
+<div class="section" id="steps">
+<h2>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="problem">
+<h3>0. Problem<a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h3>
+<img alt="../../out/diagnostic_problem_ts_modelSAT_od550aer.png" src="../../out/diagnostic_problem_ts_modelSAT_od550aer.png" />
+</div>
+<div class="section" id="create-the-regions">
+<h3>1. Create the regions<a class="headerlink" href="#create-the-regions" title="Permalink to this headline">¶</a></h3>
+<p>As defined by Ridley et al** We have created an specific module
+that reproduce regional mask for each region defined on that paper together with
+an additional region on North America.</p>
+<p>To use this module it is just needed a piece of code like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">regionmask</span>                         <span class="c1"># Library used to create masks</span>
+<span class="kn">import</span> <span class="nn">lib.regions</span> <span class="kn">as</span> <span class="nn">reg</span>                 <span class="c1"># Module with the several regions created</span>
+<span class="n">RHZKmask</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">create_RHZKmask</span><span class="p">(</span><span class="n">plot</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c1"># plot=True will create a map with regions.</span>
+</pre></div>
+</div>
+<p>The regions actually are defined by plain text files that define closed paths on lat-lon
+space (so for square regions it will be 5 points, so from 1 corner to return and repeat that
+corner). These files are included at:</p>
+<p><em>../etc/regions/</em></p>
+<p>while in the code <em>/lib/regions.py</em> these files are read to create the masked regions. The
+directory /etc/regions also have .png files with the regions plotted.</p>
+<img alt="../../etc/regions/RHKZmask_robinson.png" src="../../etc/regions/RHKZmask_robinson.png" />
+</div>
+<div class="section" id="dust-aod-per-region">
+<h3>2. Dust AOD per region<a class="headerlink" href="#dust-aod-per-region" title="Permalink to this headline">¶</a></h3>
+<p>Once we have defined the region mask our fields like for example</p>
+<p><strong>od550dust(time, lat, lon)</strong> can be directly constrained to each regions and time-series, or
+mean values per-region are possible.</p>
+<p>By comparing the mean values of od550dust per region with the values given by Ridley on
+their Table 3 of their ACP 2016 paper we have (coef is the ration of IPSL-PD over YEARLY
+mean for 2004-2008)</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="12%" />
+<col width="8%" />
+<col width="8%" />
+<col width="10%" />
+<col width="8%" />
+<col width="12%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Region</th>
+<th class="head">IPSL-PD</th>
+<th class="head">DJF</th>
+<th class="head">MAM</th>
+<th class="head">JJA</th>
+<th class="head">SON</th>
+<th class="head">YEAR</th>
+<th class="head">coef</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>South-America</td>
+<td>0.00218</td>
+<td>0.020</td>
+<td>0.000</td>
+<td>-0.012</td>
+<td>0.017</td>
+<td>0.00625</td>
+<td>0.34913</td>
+</tr>
+<tr class="row-odd"><td>South-Africa</td>
+<td>0.00917</td>
+<td>0.097</td>
+<td>0.073</td>
+<td>0.059</td>
+<td>0.114</td>
+<td>0.08575</td>
+<td>0.10704</td>
+</tr>
+<tr class="row-even"><td>Australia</td>
+<td>0.03980</td>
+<td>0.022</td>
+<td>0.008</td>
+<td>0.000</td>
+<td>0.001</td>
+<td>0.00775</td>
+<td>5.13581</td>
+</tr>
+<tr class="row-odd"><td>Mid-Atlantic</td>
+<td>0.16684</td>
+<td>0.064</td>
+<td>0.106</td>
+<td>0.143</td>
+<td>0.084</td>
+<td>0.09925</td>
+<td>1.68109</td>
+</tr>
+<tr class="row-even"><td>Western-Sahara</td>
+<td>0.65523</td>
+<td>0.180</td>
+<td>0.250</td>
+<td>0.365</td>
+<td>0.223</td>
+<td>0.25450</td>
+<td>2.57460</td>
+</tr>
+<tr class="row-odd"><td>Mali/Niger</td>
+<td>0.74178</td>
+<td>0.257</td>
+<td>0.441</td>
+<td>0.462</td>
+<td>0.277</td>
+<td>0.35925</td>
+<td>2.06481</td>
+</tr>
+<tr class="row-even"><td>Bodele/Sudan</td>
+<td>0.51784</td>
+<td>0.191</td>
+<td>0.339</td>
+<td>0.310</td>
+<td>0.212</td>
+<td>0.26300</td>
+<td>1.96898</td>
+</tr>
+<tr class="row-odd"><td>North-Africa</td>
+<td>0.36901</td>
+<td>0.118</td>
+<td>0.219</td>
+<td>0.207</td>
+<td>0.151</td>
+<td>0.17375</td>
+<td>2.12383</td>
+</tr>
+<tr class="row-even"><td>North-MiddleEast</td>
+<td>0.17940</td>
+<td>0.112</td>
+<td>0.223</td>
+<td>0.164</td>
+<td>0.113</td>
+<td>0.15300</td>
+<td>1.17258</td>
+</tr>
+<tr class="row-odd"><td>South-MiddleEast</td>
+<td>0.10055</td>
+<td>0.123</td>
+<td>0.204</td>
+<td>0.330</td>
+<td>0.150</td>
+<td>0.20175</td>
+<td>0.49841</td>
+</tr>
+<tr class="row-even"><td>Kyzyl-Kum</td>
+<td>0.20601</td>
+<td>0.115</td>
+<td>0.176</td>
+<td>0.154</td>
+<td>0.101</td>
+<td>0.13650</td>
+<td>1.50929</td>
+</tr>
+<tr class="row-odd"><td>Thar</td>
+<td>0.20524</td>
+<td>0.130</td>
+<td>0.238</td>
+<td>0.319</td>
+<td>0.135</td>
+<td>0.20550</td>
+<td>0.99877</td>
+</tr>
+<tr class="row-even"><td>Taklamakan</td>
+<td>0.26383</td>
+<td>0.119</td>
+<td>0.275</td>
+<td>0.171</td>
+<td>0.104</td>
+<td>0.16725</td>
+<td>1.57747</td>
+</tr>
+<tr class="row-odd"><td>Gobi</td>
+<td>0.47785</td>
+<td>0.093</td>
+<td>0.192</td>
+<td>0.102</td>
+<td>0.047</td>
+<td>0.10850</td>
+<td>4.40415</td>
+</tr>
+</tbody>
+</table>
+<p>This table is contained on the file:</p>
+<p><em>../etc/calibration_dust/comparsion_calibration_LMDZORINCA_CRESCENDOWP6_PDv2.dat</em></p>
+<p>and described the values of LMDZORINCA simulations for CRESCENDOWP6 in particular
+for PDv2.</p>
+<p>Note that if we use the PD-nudged with ERA-Interim wind fields we have:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="13%" />
+<col width="8%" />
+<col width="8%" />
+<col width="10%" />
+<col width="8%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Region</th>
+<th class="head">IPSL-PDN</th>
+<th class="head">DJF</th>
+<th class="head">MAM</th>
+<th class="head">JJA</th>
+<th class="head">SON</th>
+<th class="head">YEAR</th>
+<th class="head">coef</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>South-America</td>
+<td>0.00077</td>
+<td>0.020</td>
+<td>0.000</td>
+<td>-0.012</td>
+<td>0.017</td>
+<td>0.00625</td>
+<td>0.12446</td>
+</tr>
+<tr class="row-odd"><td>South-Africa</td>
+<td>0.00399</td>
+<td>0.097</td>
+<td>0.073</td>
+<td>0.059</td>
+<td>0.114</td>
+<td>0.08575</td>
+<td>0.04657</td>
+</tr>
+<tr class="row-even"><td>Australia</td>
+<td>0.03252</td>
+<td>0.022</td>
+<td>0.008</td>
+<td>0.000</td>
+<td>0.001</td>
+<td>0.00775</td>
+<td>4.19620</td>
+</tr>
+<tr class="row-odd"><td>Mid-Atlantic</td>
+<td>0.08400</td>
+<td>0.064</td>
+<td>0.106</td>
+<td>0.143</td>
+<td>0.084</td>
+<td>0.09925</td>
+<td>0.84643</td>
+</tr>
+<tr class="row-even"><td>Western-Sahara</td>
+<td>0.38134</td>
+<td>0.180</td>
+<td>0.250</td>
+<td>0.365</td>
+<td>0.223</td>
+<td>0.25450</td>
+<td>1.49840</td>
+</tr>
+<tr class="row-odd"><td>Mali/Niger</td>
+<td>0.47592</td>
+<td>0.257</td>
+<td>0.441</td>
+<td>0.462</td>
+<td>0.277</td>
+<td>0.35925</td>
+<td>1.32475</td>
+</tr>
+<tr class="row-even"><td>Bodele/Sudan</td>
+<td>0.33206</td>
+<td>0.191</td>
+<td>0.339</td>
+<td>0.310</td>
+<td>0.212</td>
+<td>0.26300</td>
+<td>1.26259</td>
+</tr>
+<tr class="row-odd"><td>North-Africa</td>
+<td>0.28100</td>
+<td>0.118</td>
+<td>0.219</td>
+<td>0.207</td>
+<td>0.151</td>
+<td>0.17375</td>
+<td>1.61728</td>
+</tr>
+<tr class="row-even"><td>North-MiddleEast</td>
+<td>0.11618</td>
+<td>0.112</td>
+<td>0.223</td>
+<td>0.164</td>
+<td>0.113</td>
+<td>0.15300</td>
+<td>0.75936</td>
+</tr>
+<tr class="row-odd"><td>South-MiddleEast</td>
+<td>0.06983</td>
+<td>0.123</td>
+<td>0.204</td>
+<td>0.330</td>
+<td>0.150</td>
+<td>0.20175</td>
+<td>0.34616</td>
+</tr>
+<tr class="row-even"><td>Kyzyl-Kum</td>
+<td>0.15116</td>
+<td>0.115</td>
+<td>0.176</td>
+<td>0.154</td>
+<td>0.101</td>
+<td>0.13650</td>
+<td>1.10741</td>
+</tr>
+<tr class="row-odd"><td>Thar</td>
+<td>0.14429</td>
+<td>0.130</td>
+<td>0.238</td>
+<td>0.319</td>
+<td>0.135</td>
+<td>0.20550</td>
+<td>0.70216</td>
+</tr>
+<tr class="row-even"><td>Taklamakan</td>
+<td>0.20011</td>
+<td>0.119</td>
+<td>0.275</td>
+<td>0.171</td>
+<td>0.104</td>
+<td>0.16725</td>
+<td>1.19651</td>
+</tr>
+<tr class="row-odd"><td>Gobi</td>
+<td>0.28450</td>
+<td>0.093</td>
+<td>0.192</td>
+<td>0.102</td>
+<td>0.047</td>
+<td>0.10850</td>
+<td>2.62219</td>
+</tr>
+</tbody>
+</table>
+<p>Based on this table we have created another set of netcdf files with the correction but
+they are not implemented. It was just created to ascertain the differences between both
+tables.</p>
+</div>
+<div class="section" id="corrected-rhv-files">
+<h3>3. Corrected RHV files<a class="headerlink" href="#corrected-rhv-files" title="Permalink to this headline">¶</a></h3>
+<p>Based on that table and the regions we have created a netCDF file that apply a correction
+factor per-region. In fact here we have extended the regions  South-America and Australia
+a little bit:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">regionmask</span>
+<span class="kn">import</span> <span class="nn">lib.regions</span> <span class="kn">as</span> <span class="nn">reg</span>
+<span class="n">CORRECTIONmask</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">create_CORRECTIONmask</span><span class="p">(</span><span class="n">plot</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure" id="id1">
+<img alt="New correction regions for calibration of dust emissions" src="../../out/CORRECTIONmask_robinson.png" />
+<p class="caption"><span class="caption-text">New correction regions for calibration of dust emissions</span></p>
+</div>
+<div class="figure" id="id2">
+<img alt="map with factor to be applied per region" src="../../out/regions_calibration_dust_emission.png" />
+<p class="caption"><span class="caption-text">Regions with the factor (or 1/factor) of correction
+This corrections are factors to original rhv file.</span></p>
+</div>
+<div class="figure" id="id3">
+<img alt="final rhv map after correction" src="../../out/regions_calibration_dust_emission_rhv145x143.Sep2018v2.png" />
+<p class="caption"><span class="caption-text">Final rhv map after correction, resolution 144x142</span></p>
+</div>
+<div class="figure" id="id4">
+<img alt="final rhv map after correction" src="../../out/regions_calibration_dust_emission_rhvEC_v2.png" />
+<p class="caption"><span class="caption-text">Final rhv map after correction, resolution from ECWMF</span></p>
+</div>
+</div>
+<div class="section" id="files-created">
+<h3>4. Files Created<a class="headerlink" href="#files-created" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><em>../etc/regions/dataset_ridley_corrected_Jun2018.txt</em></li>
+<li><em>../etc/regions/dataset_ridley_corrected_Jun2018_extended_for_calibrationIPSL.txt</em></li>
+<li><em>../etc/calibration_dust/comparsion_calibration_LMDZORINCA_CRESCENDOWP6_PDv2.dat</em></li>
+<li><em>../etc/calibration_dust/comparsion_calibration_LMDZORINCA_CRESCENDOWP6_PDN.dat</em></li>
+</ul>
+</div>
+<div class="section" id="apply-to-rhv-netcdf-files">
+<h3>5. Apply to RHV netcdf files<a class="headerlink" href="#apply-to-rhv-netcdf-files" title="Permalink to this headline">¶</a></h3>
+<p>Given an RHV netcdf files the code is able to update them as done in the last
+lines of the file &#8216;calibration_dust.py&#8217;</p>
+<p>It will open netcdf files and save them with a string named updated at the end
+of the netcdf filename. By default it is done on the folder:</p>
+<p>/etc/rhv_files/</p>
+<p>Original files:</p>
+<ul class="simple">
+<li>../etc/rhv_files/rhvEC_v2.nc</li>
+<li>../etc/rhv_files/rhv145x143.Sep2018v2.nc</li>
+</ul>
+<p>Updated based on PDv2</p>
+<ul class="simple">
+<li>../etc/rhv_files/rhvEC_v2_updated.nc</li>
+<li>../etc/rhv_files/rhv145x143.Sep2018v2_updated.nc</li>
+</ul>
+<p>Updated based on PDN (currently not used to created rhv text files for INCA)</p>
+<ul class="simple">
+<li>../etc/rhv_files/rhvEC_v2_updated_PDN.nc</li>
+<li>../etc/rhv_files/rhv145x143.Sep2018v2_PDN.nc</li>
+</ul>
+</div>
+<div class="section" id="results-after-the-calibration">
+<h3>6. Results after the calibration<a class="headerlink" href="#results-after-the-calibration" title="Permalink to this headline">¶</a></h3>
+<div class="figure" id="id5">
+<a class="reference internal image-reference" href="../../out/ts_testRHV_models_PD_od550aer.png"><img alt="Time series after and before correction for od550aer" src="../../out/ts_testRHV_models_PD_od550aer.png" /></a>
+<p class="caption"><span class="caption-text">Time series after and before correction. We implemented the correction based on PDv2
+original results also for PDN-ERAI (not those from the second table above).</span></p>
+</div>
+<div class="figure" id="id6">
+<a class="reference internal image-reference" href="../../out/ts_testRHV_models_PD_od550dust.png"><img alt="Time series after and before correction for od550dust" src="../../out/ts_testRHV_models_PD_od550dust.png" /></a>
+<p class="caption"><span class="caption-text">Time series after and before correction. We implemented the correction based on PDv2
+original results also for PDN-ERAI (not those from the second table above).</span></p>
+</div>
+</div>
+<div class="section" id="python-based-steps">
+<h3>7. Python based steps<a class="headerlink" href="#python-based-steps" title="Permalink to this headline">¶</a></h3>
+<p>The codes contained on folder calibration should be run in the main folder to work, or changes the file paths in the code.</p>
+<ol class="arabic">
+<li><p class="first">Estimate bias per region and create a table with it:</p>
+<blockquote>
+<div><p>python regions_RIDLEY_calibration_PDN_and_PD.py</p>
+<p>This values are copied on files located in ../etc/calibration_dust/</p>
+</div></blockquote>
+</li>
+<li><p class="first">Based on these files create netcdf files to update the RHV text files:</p>
+<blockquote>
+<div><p>python calibration_dust.py        # updated based on PD run</p>
+<p>python calibration_dust_PDN.py    # updated based on PDN run (not used but created to further understanding)</p>
+</div></blockquote>
+</li>
+</ol>
+<p>3. The text files based on the netcdf files created with python calibration.py are used to run new
+simulations by changing the inca.card to add path of these files. The results of these simulations are
+evaluated using:</p>
+<blockquote>
+<div><p>python regions_RIDLEY_evaluation_PDN_and_PD_corrected.py</p>
+<p>which created the some plots to show the impact of the changes over the selected areas.</p>
+</div></blockquote>
+</div>
+<div class="section" id="comparison-of-dust-yearly-values">
+<h3>8. Comparison of dust yearly values<a class="headerlink" href="#comparison-of-dust-yearly-values" title="Permalink to this headline">¶</a></h3>
+<p><strong>Dust emissions</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="10%" />
+<col width="10%" />
+<col width="9%" />
+<col width="9%" />
+<col width="12%" />
+<col width="12%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Emissions (Tg/yr)</th>
+<th class="head">PDNv1</th>
+<th class="head">PDNv2</th>
+<th class="head">PDv2</th>
+<th class="head">PDv4</th>
+<th class="head">CNRM-PD</th>
+<th class="head">Nor-PD</th>
+<th class="head">ECv3-PD</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>2004</td>
+<td>1702</td>
+<td>1386</td>
+<td>2455</td>
+<td>1476</td>
+<td>3055</td>
+<td>1396</td>
+<td>1031</td>
+</tr>
+<tr class="row-odd"><td>2005</td>
+<td>1346</td>
+<td>1089</td>
+<td>2815</td>
+<td>1430</td>
+<td>3923</td>
+<td>1355</td>
+<td>1047</td>
+</tr>
+<tr class="row-even"><td>2006</td>
+<td>1478</td>
+<td>1164</td>
+<td>2596</td>
+<td>1557</td>
+<td>3507</td>
+<td>1337</td>
+<td>1180</td>
+</tr>
+<tr class="row-odd"><td>2007</td>
+<td>1550</td>
+<td>1290</td>
+<td>2723</td>
+<td>1555</td>
+<td>3570</td>
+<td>1331</td>
+<td>974</td>
+</tr>
+<tr class="row-even"><td>2008</td>
+<td>1558</td>
+<td>1289</td>
+<td>2576</td>
+<td>1505</td>
+<td>4075</td>
+<td>1311</td>
+<td>1197</td>
+</tr>
+<tr class="row-odd"><td>(simulation)</td>
+<td>(ini)</td>
+<td>(corr)</td>
+<td>(ini)</td>
+<td>(corr)</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Dust AOD550nm</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="18%" />
+<col width="18%" />
+<col width="19%" />
+<col width="18%" />
+<col width="19%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Year</th>
+<th class="head">CNRM-PD</th>
+<th class="head">ECv3-PD</th>
+<th class="head">IPSL-PDv2</th>
+<th class="head">NorESM-PD</th>
+<th class="head">IPSL-PDv4</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>2000</td>
+<td>0.021405</td>
+<td>0.027840</td>
+<td>0.047898</td>
+<td>0.023347</td>
+<td>0.022571</td>
+</tr>
+<tr class="row-odd"><td>2001</td>
+<td>0.022364</td>
+<td>0.029722</td>
+<td>0.047476</td>
+<td>0.024159</td>
+<td>0.027958</td>
+</tr>
+<tr class="row-even"><td>2002</td>
+<td>0.022332</td>
+<td>0.027902</td>
+<td>0.046287</td>
+<td>0.022483</td>
+<td>0.024141</td>
+</tr>
+<tr class="row-odd"><td>2003</td>
+<td>0.021869</td>
+<td>0.031507</td>
+<td>0.043285</td>
+<td>0.023063</td>
+<td>0.025646</td>
+</tr>
+<tr class="row-even"><td>2004</td>
+<td>0.020222</td>
+<td>0.027034</td>
+<td>0.042237</td>
+<td>0.023131</td>
+<td>0.025678</td>
+</tr>
+<tr class="row-odd"><td>2005</td>
+<td>0.023903</td>
+<td>0.026856</td>
+<td>0.049978</td>
+<td>0.022495</td>
+<td>0.023580</td>
+</tr>
+<tr class="row-even"><td>2006</td>
+<td>0.023032</td>
+<td>0.031346</td>
+<td>0.044371</td>
+<td>0.022478</td>
+<td>0.026126</td>
+</tr>
+<tr class="row-odd"><td>2007</td>
+<td>0.022763</td>
+<td>0.025840</td>
+<td>0.046587</td>
+<td>0.022105</td>
+<td>0.026223</td>
+</tr>
+<tr class="row-even"><td>2008</td>
+<td>0.025106</td>
+<td>0.030657</td>
+<td>0.046114</td>
+<td>0.022121</td>
+<td>0.025336</td>
+</tr>
+<tr class="row-odd"><td>2009</td>
+<td>0.022544</td>
+<td>0.029607</td>
+<td>0.046147</td>
+<td>0.023656</td>
+<td>0.027535</td>
+</tr>
+<tr class="row-even"><td>2010</td>
+<td>0.028160</td>
+<td>0.032866</td>
+<td>0.050965</td>
+<td>0.023866</td>
+<td>0.026776</td>
+</tr>
+<tr class="row-odd"><td>2011</td>
+<td>0.018921</td>
+<td>0.028528</td>
+<td>0.044027</td>
+<td>0.021406</td>
+<td>0.024790</td>
+</tr>
+<tr class="row-even"><td>2012</td>
+<td>0.021375</td>
+<td>0.025955</td>
+<td>0.045525</td>
+<td>0.023450</td>
+<td>0.023624</td>
+</tr>
+<tr class="row-odd"><td>2013</td>
+<td>0.024767</td>
+<td>0.029290</td>
+<td>0.046457</td>
+<td>0.023151</td>
+<td>0.025850</td>
+</tr>
+<tr class="row-even"><td>2014</td>
+<td>0.022426</td>
+<td>0.032718</td>
+<td>0.049337</td>
+<td>0.023900</td>
+<td>0.028355</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ramiro Checa-Garcia.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'a',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

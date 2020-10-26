@@ -1,0 +1,15 @@
+
+o3col: &col_general
+        method:  {global_mean: {kind:  global, time:  mon, units:  'cm-2', factor:  1}}
+
+o3coltot: *col_general
+nh3col:   *col_general
+hno2col:  *col_general
+ch4col:   *col_general
+no2col:   *col_general
+ohcol:    *col_general
+ch2ocol:  *col_general
+so2col:   *col_general
+cocol:    *col_general
+
+

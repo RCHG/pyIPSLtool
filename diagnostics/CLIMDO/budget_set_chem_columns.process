@@ -1,0 +1,11 @@
+method   varname-source  freq-source  module-IPSL  freq-specific  varname-out  extra-info-source
+get_var  colo3tot        MO           CHM          -              o3coltot     chem.nc
+get_var  colnh3          MO           CHM          -              nh3col       chem.nc
+get_var  colhno2         MO           CHM          -              hno2col      chem.nc
+get_var  colch4          MO           CHM          -              ch4col       chem.nc
+get_var  colno2          MO           CHM          -              no2col       chem.nc
+get_var  coloh           MO           CHM          -              ohcol        chem.nc
+get_var  colch2o         MO           CHM          -              ch2ocol      chem.nc
+get_var  colso2          MO           CHM          -              so2col       chem.nc
+get_var  colco           MO           CHM          -              cocol        chem.nc
+get_var  colo3           MO           CHM          -              o3col        chem.nc

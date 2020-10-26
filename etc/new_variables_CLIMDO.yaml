@@ -1,0 +1,535 @@
+##############################################################################################
+# NEW VARIABLES FILE
+#
+# Author: R. Checa-Garcia
+# Contact: rcheca@lsce.ipsl.fr
+# History:
+#   2018-Nov created file and added loads, emissions, depositions, and surface concentrations
+#
+
+
+##############################################################################################
+# Load variables
+
+loaddust:
+    var_surface: [loaddustci ]
+    var_altitud: [ ]
+    fac_surface: [1.0]
+    fac_altitud: [ ]
+
+loadbc:
+    var_surface: [loadbcai, loadbcas]
+    var_altitud: [ ]
+    fac_surface: [1.0, 1.0]
+    fac_altitud: [ ]
+
+loadss:
+    var_surface: [loadssas, loadsscs] #, loadssss ]
+    var_altitud: [ ]
+    fac_surface: [1.0, 1.0]
+    fac_altitud: [ ]
+
+loadoa:
+    var_surface: [loadoaai, loadoaas ]
+    var_altitud: [ ]
+    fac_surface: [1.0, 1.0]
+    fac_altitud: [ ]
+
+loadso4:
+    var_surface: [loadso4as ]
+    var_altitud: [ ]
+    fac_surface: [1.0]
+    fac_altitud: [ ]
+
+loadno3:
+    var_surface: [loadno3ci, loadno3cs, loadno3as ]
+    var_altitud: [ ]
+    fac_surface: [1.0, 1.0, 1.0]
+    fac_altitud: [ ]
+
+loadnh4:
+    var_surface: [loadnh4as ]
+    var_altitud: [ ]
+    fac_surface: [1.0]
+    fac_altitud: [ ]
+
+##############################################################################################
+# Load variables AERCHEMMIP checks
+
+loaddustcmip6:
+    var_surface: [load_CIDUSTM ]
+    var_altitud: [ ]
+    fac_surface: [1.0]
+    fac_altitud: [ ]
+
+loadbccmip6:
+    var_surface: [load_AIBCM, load_ASBCM]
+    var_altitud: [ ]
+    fac_surface: [1.0, 1.0]
+    fac_altitud: [ ]
+
+loadsscmip6:
+    var_surface: [load_SSSSM, load_CSSSM, load_ASSSM ]
+    var_altitud: [ ]
+    fac_surface: [1.0, 1.0, 1.0]
+    fac_altitud: [ ]
+
+loadoacmip6:
+    var_surface: [load_AIPOMM, load_ASPOMM ]
+    var_altitud: [ ]
+    fac_surface: [1.0, 1.0]
+    fac_altitud: [ ]
+
+loadso4cmip6:
+    var_surface: [load_SO4 ]
+    var_altitud: [ ]
+    fac_surface: [1.0]
+    fac_altitud: [ ]
+
+loadno3cmip6:
+    var_surface: [load_CINO3M, load_CSNO3M, load_ASNO3M ]
+    var_altitud: [ ]
+    fac_surface: [1.0, 1.0, 1.0]
+    fac_altitud: [ ]
+
+loadnh4cmip6:
+    var_surface: [load_ASNH4 ]
+    var_altitud: [ ]
+    fac_surface: [1.0]
+    fac_altitud: [ ]
+
+##############################################################################################
+# Emission
+
+emioaai: &emioaai_base
+    var_surface: [emioaai]
+    var_altitud: [emialtoaai]
+    fac_surface: [1.0 ]
+    fac_altitud: [1.0 ]
+
+emioaas: &emioaas_base
+    var_surface: [emioaas]
+    var_altitud: [emialtoaas]
+    fac_surface: [1.0 ]
+    fac_altitud: [1.0 ]
+
+emiOA_4:
+    <<: *emioaai_base
+
+emiOA_1:
+    <<: *emioaas_base
+
+emioa:
+    var_surface: [emioaai    , emioaas    ]
+    var_altitud: [emialtoaai , emialtoaas ]
+    fac_surface: [1.0, 1.0]
+    fac_altitud: [1.0, 1.0]
+
+emioaalt:
+    var_surface: [  ]
+    var_altitud: [emialtoaai , emialtoaas ]
+    fac_surface: [ ]
+    fac_altitud: [1.0, 1.0]
+
+emibcalt:
+    var_surface: [  ]
+    var_altitud: [emialtbcai , emialtbcas ]
+    fac_surface: [ ]
+    fac_altitud: [1.0, 1.0]
+
+
+emiss:
+    var_surface: [emissas     , emisscs   ] #, emissss ]
+    var_altitud: [emialtssas  , emialtsscs] #, emialtssss ]
+    fac_surface: [1.0, 1.0] #, 1.0]
+    fac_altitud: [1.0, 1.0] #, 1.0]
+
+emiSS_1:
+    var_surface: [emissas   ] #, emissss ]
+    var_altitud: [emialtssas] #, emialtssss ]
+    fac_surface: [1.0] #, 1.0]
+    fac_altitud: [1.0] #, 1.0]
+
+emiSS_2:
+    var_surface: [emisscs   ] #, emissss ]
+    var_altitud: [emialtsscs] #, emialtssss ]
+    fac_surface: [1.0] #, 1.0]
+    fac_altitud: [1.0] #, 1.0]
+
+emiSS_3:
+    var_surface: [emissss   ] #, emissss ]
+    var_altitud: [emialtssss] #, emialtssss ]
+    fac_surface: [1.0] #, 1.0]
+    fac_altitud: [1.0] #, 1.0]
+
+emiss3:
+    var_surface: [emissss   ] #, emissss ]
+    var_altitud: [emialtssss] #, emialtssss ]
+    fac_surface: [1.0] #, 1.0]
+    fac_altitud: [1.0] #, 1.0]
+
+emibc:
+    var_surface: [emibcai     , emibcas    ]
+    var_altitud: [emialtbcai , emialtbcas ]
+    fac_surface: [1.0, 1.0]
+    fac_altitud: [1.0, 1.0]
+
+emiso4:
+    var_surface: [emiso4as    , emiso4cs    ]
+    var_altitud: [emialtso4as , emialtso4cs ]
+    fac_surface: [1.0, 1.0]
+    fac_altitud: [1.0, 1.0]
+
+emino3:
+    var_surface: [emino3as, emino3cs, emino3ci ]
+    var_altitud: [emialtno3as, emialtno3cs, emialtno3ci ]
+    fac_surface: [1.0, 1.0, 1.0]
+    fac_altitud: [1.0, 1.0, 1.0]
+
+eminoy:
+    var_surface: [emino2, emihno3]
+    var_altitud: [  ]
+    fac_surface: [1.0, 1.0]
+    fac_altitud: [  ]
+
+eminox:
+    var_surface: [emino, emino2]
+    var_altitud: [  ]
+    fac_surface: [1.0, 1.0]
+    fac_altitud: [  ]
+
+emidust:
+    var_surface: [emidustci]
+    var_altitud: [emialtdustci]
+    fac_surface: [1.0 ]
+    fac_altitud: [1.0 ]
+
+eminh4:
+    var_surface: [eminh4as, eminh4cs]
+    var_altitud: [emialtnh4as]         # there not emissions in altitude for nh4cs
+    fac_surface: [1.0 , 1.0]
+    fac_altitud: [1.0 ]
+
+
+emiNH4_1:
+    var_surface: [eminh4as]
+    var_altitud: [emialtnh4as]  
+    fac_surface: [1.0 ]
+    fac_altitud: [1.0 ]
+
+
+emiNO3_1:
+    var_surface: [emino3as]
+    var_altitud: [emialtno3as]  
+    fac_surface: [1.0 ]
+    fac_altitud: [1.0 ]
+
+emiNO3_5:
+    var_surface: [emino3ci]
+    var_altitud: [emialtno3ci]  
+    fac_surface: [1.0 ]
+    fac_altitud: [1.0 ]
+
+
+emiNO3_2:
+    var_surface: [emino3cs]
+    var_altitud: [emialtno3cs]  
+    fac_surface: [1.0 ]
+    fac_altitud: [1.0 ]
+
+
+
+
+##############################################################################################
+# Total Deposition (wet + dry)
+
+depdust:
+    var_surface: [wetdustci, drydustci, seddustci]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0, 1.0]
+    fac_altitud: [ ]
+
+depdustCMIP6:
+    var_surface: [wetdustci, drydust, seddustci]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0, 1.0]
+    fac_altitud: [ ]
+depss:
+    var_surface:  [ wetssas , wetsscs , dryssas , drysscs, sedssas, sedsscs ] #, wetssss, dryssss]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0, 1.0, 1.0 , 1.0, 1.0]
+    fac_altitud: [ ]
+
+
+depso4:
+    var_surface: [ wetso4as , dryso4as ,  wetso4cs , dryso4cs , sedso4cs, sedso4as]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0, 1.0, 1.0, 1.0, 1.0 ]
+    fac_altitud: [ ]
+
+depso2:
+    var_surface: [ wetso2 , dryso2 ]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0]
+    fac_altitud: [ ]
+
+depbc:
+    var_surface: [ wetbcas , wetbcai , drybcas , drybcai , sedbcas, sedbcai]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0, 1.0, 1.0, 1.0, 1.0 ]
+    fac_altitud: [ ]
+
+depoa:
+    var_surface: [ wetoaas , wetoaai , dryoaas , dryoaai, sedoaas, sedoaai ]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0, 1.0, 1.0, 1.0, 1.0]
+    fac_altitud: [ ]
+
+depno3:
+    var_surface: [ wetno3as , wetno3cs , wetno3ci ,  dryno3as , dryno3cs , dryno3ci, sedno3as, sedno3cs, sedno3ci ]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+    fac_altitud: [ ]
+
+depnox:
+    var_surface: [ wetno2 , wetno , dryno2 , dryno, sedno, sedno2 ]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0, 1.0, 1.0, 1.0, 1.0]
+    fac_altitud: [ ]
+
+##############################################################################################
+# Sedimentation
+
+sedoa:
+    var_surface: [ sedoaas , sedoaai ]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0]
+    fac_altitud: [ ]
+
+sedss:
+    var_surface: [ sedssas , sedsscs] #, sedssss ]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0] #, 1.0]
+    fac_altitud: [ ]
+
+
+##############################################################################################
+# Wet deposition
+
+wetso2:
+    var_surface: [ ]
+    var_altitud: [ wet3d_so2 ]
+    fac_surface: [ ]
+    fac_altitud: [ 1.0 ]
+
+wetno3:
+    var_surface: [ wetno3as , wetno3cs , wetno3ci  ]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0, 1.0]
+    fac_altitud: [ ]
+
+wetso4:
+    var_surface: [ wetso4as , wetso4cs ]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0 ]
+    fac_altitud: [ ]
+
+wetbc:
+    var_surface: [ wetbcas , wetbcai ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0 ]
+    fac_altitud: [ ]
+
+wetoa:
+    var_surface: [ wetoaas , wetoaai ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0]
+    fac_altitud: [ ]
+
+wetss:
+    var_surface:  [ wetssas , wetsscs] # wetssss]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0] #, 1.0]
+    fac_altitud: [ ]
+
+wetnox:
+    var_surface:  [ wetno , wetno2] # wetssss]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0] #, 1.0]
+    fac_altitud: [ ]
+
+
+
+
+##############################################################################################
+# Dry deposition
+
+dryno3:
+    var_surface: [ dryno3as , dryno3cs , dryno3ci ]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0, 1.0]
+    fac_altitud: [ ]
+
+dryso4:
+    var_surface: [ dryso4as , dryso4cs ]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0 ]
+    fac_altitud: [ ]
+
+drybc:
+    var_surface: [ drybcas , drybcai ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0 ]
+    fac_altitud: [ ]
+
+dryoa:
+    var_surface: [ dryoaas , dryoaai ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0]
+    fac_altitud: [ ]
+
+dryss:
+    var_surface: [ dryssas , drysscs] #, dryssss]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0] #, 1.0]
+    fac_altitud: [ ]
+
+drynox:
+    var_surface: [ dryno , dryno2] #, dryssss]
+    var_altitud: [ ]
+    fac_surface: [1.0 , 1.0] #, 1.0]
+    fac_altitud: [ ]
+
+##############################################################################################
+# Surface concentrations
+
+sconcbc:
+    var_surface: [ mmrbcas, mmrbcai ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0 ]   #[1.269, 1.269]  # 1.269 is air density at 5 C
+    fac_altitud: [ ]
+    new_units:   { units_factor: 1.269, units_name: 'kg m-3'}
+
+
+sconcoa:
+    var_surface: [ mmroaas, mmroaai , mmrmsacs, mmrmsaas]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0, 1.0, 1.0]  #1.269, 1.269]  # 1.269 is air density at 5 C
+    fac_altitud: [ ]
+    new_units:   { units_factor: 1.269, units_name: 'kg m-3'}
+
+sconcss:
+    var_surface: [ mmrssas, mmrsscs] #, mmrssss ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0] #1.269, 1.269]  #, 1.269]  # 1.269 is air density at 5 C
+    fac_altitud: [ ]
+    new_units:   { units_factor: 1.269, units_name: 'kg m-3'}
+
+sconcdust:
+    var_surface: [ mmrdustci ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0 ] # 1.269 ]  # 1.269 is air density at 5 C
+    fac_altitud: [ ]
+    new_units:   { units_factor: 1.269, units_name: 'kg m-3'}
+
+sconcso4:
+    var_surface: [ mmrso4as, mmrso4cs ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0 , 0.0] # 1.269 ]  # 1.269 is air density at 5 C
+    fac_altitud: [ ]
+    new_units:   { units_factor: 1.269, units_name: 'kg m-3'}
+   
+sconcno3:
+    var_surface: [ mmrno3as, mmrno3cs, mmrno3ci ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0 , 1.0, 1.0 ] # 1.269 ]  # 1.269 is air density at 5 C
+    fac_altitud: [ ]
+    new_units:   { units_factor: 1.269, units_name: 'kg m-3'}
+
+##############################################################################################
+# Optical properties
+#
+
+od550gt1aer:
+    var_surface: [ od550aer, od550lt1aer ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, -1.0 ]  
+    fac_altitud: [ ]
+
+od550fineaer:
+    var_surface: [ od550_AIBCM, od550_AIPOMM, od550_ASBCM, od550_ASNO3M, od550_ASPOMM, od550_ASSO4M, od550_ASSSM ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ]  
+    fac_altitud: [ ]
+
+od550coarseaer:
+    var_surface: [ od550_CIDUSTM, od550_CINO3M, od550_CSNO3M, od550_CSSO4M, od550_CSSSM, od550_SSSSM ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 ]  
+    fac_altitud: [ ]
+
+od550dryfineaer:
+    var_surface: [ dryod550_AIBCM, dryod550_AIPOMM, dryod550_ASBCM, dryod550_ASNO3M, dryod550_ASPOMM, dryod550_ASSO4M, dryod550_ASSSM ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ]  
+    fac_altitud: [ ]
+
+od550drycoarseaer:
+    var_surface: [ dryod550_CIDUSTM, dryod550_CINO3M, dryod550_CSNO3M, dryod550_CSSO4M, dryod550_CSSSM, dryod550_SSSSM ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 ]  
+    fac_altitud: [ ]
+
+od550bc:
+    var_surface: [ od550_AIBCM, od550_ASBCM ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0 ]  
+    fac_altitud: [ ]
+
+od550oa:
+    var_surface: [ od550_AIPOMM, od550_ASPOMM ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0 ]  
+    fac_altitud: [ ]
+
+od550ss:
+    var_surface: [ od550_ASSSM, od550_CSSSM, od550_SSSSM ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0, 1.0 ]  
+    fac_altitud: [ ]
+
+od550no3:
+    var_surface: [ od550_CINO3M, od550_CSNO3M, od550_ASNO3M ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0, 1.0 ]  
+    fac_altitud: [ ]
+
+##############################################################################################
+# Direct Radiatve Effects
+#
+
+toplwswad:
+    var_surface: [topswad, toplwad ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0 ]  
+    fac_altitud: [ ]
+
+sollwswad:
+    var_surface: [solswad, sollwad ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0 ]  
+    fac_altitud: [ ]
+
+toplwswad0:
+    var_surface: [topswad0, toplwad0 ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0 ]  
+    fac_altitud: [ ]
+
+sollwswad0:
+    var_surface: [solswad0, sollwad0 ]
+    var_altitud: [ ]
+    fac_surface: [ 1.0, 1.0 ]  
+    fac_altitud: [ ]
+
+

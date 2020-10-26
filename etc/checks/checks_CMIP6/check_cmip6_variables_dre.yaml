@@ -1,0 +1,141 @@
+toplwad0: &dregeneral 
+         method:  {global_mean:   {kind:  global, time:  mon, units:  'W m-2',      factor:  1  }}
+
+toplwad:    *dregeneral 
+topswad:    *dregeneral 
+toplwai:    *dregeneral 
+topswai:    *dregeneral 
+toplwai0:   *dregeneral 
+topswai0:   *dregeneral 
+toplwad0:   *dregeneral 
+topswad0:   *dregeneral 
+sollwad:    *dregeneral 
+solswad:    *dregeneral
+sollwai:    *dregeneral 
+solswai:    *dregeneral
+sollwad0:   *dregeneral 
+solswad0:   *dregeneral 
+toplwswad:  *dregeneral 
+sollwswad:  *dregeneral 
+toplwswad0: *dregeneral 
+sollwswad0: *dregeneral 
+
+toplwad_dust:    *dregeneral 
+topswad_dust:    *dregeneral 
+toplwad0_dust:   *dregeneral 
+topswad0_dust:   *dregeneral 
+sollwad_dust:    *dregeneral 
+solswad_dust:    *dregeneral
+sollwad0_dust:   *dregeneral 
+solswad0_dust:   *dregeneral 
+toplwswad_dust:  *dregeneral 
+sollwswad_dust:  *dregeneral 
+toplwswad0_dust: *dregeneral 
+sollwswad0_dust: *dregeneral 
+
+toplwad_dust_siA:    *dregeneral 
+topswad_dust_siA:    *dregeneral 
+toplwad0_dust_siA:   *dregeneral 
+topswad0_dust_siA:   *dregeneral 
+sollwad_dust_siA:    *dregeneral 
+solswad_dust_siA:    *dregeneral
+sollwad0_dust_siA:   *dregeneral 
+solswad0_dust_siA:   *dregeneral 
+toplwswad_dust_siA:  *dregeneral 
+sollwswad_dust_siA:  *dregeneral 
+toplwswad0_dust_siA: *dregeneral 
+sollwswad0_dust_siA: *dregeneral 
+
+toplwad_dust_siB:    *dregeneral 
+topswad_dust_siB:    *dregeneral 
+toplwad0_dust_siB:   *dregeneral 
+topswad0_dust_siB:   *dregeneral 
+sollwad_dust_siB:    *dregeneral 
+solswad_dust_siB:    *dregeneral
+sollwad0_dust_siB:   *dregeneral 
+solswad0_dust_siB:   *dregeneral 
+toplwswad_dust_siB:  *dregeneral 
+sollwswad_dust_siB:  *dregeneral 
+toplwswad0_dust_siB: *dregeneral 
+sollwswad0_dust_siB: *dregeneral 
+
+toplwad_dust_ciA:    *dregeneral 
+topswad_dust_ciA:    *dregeneral 
+toplwad0_dust_ciA:   *dregeneral 
+topswad0_dust_ciA:   *dregeneral 
+sollwad_dust_ciA:    *dregeneral 
+solswad_dust_ciA:    *dregeneral
+sollwad0_dust_ciA:   *dregeneral 
+solswad0_dust_ciA:   *dregeneral 
+toplwswad_dust_ciA:  *dregeneral 
+sollwswad_dust_ciA:  *dregeneral 
+toplwswad0_dust_ciA: *dregeneral 
+sollwswad0_dust_ciA: *dregeneral 
+
+toplwad_dust_ciB:    *dregeneral 
+topswad_dust_ciB:    *dregeneral 
+toplwad0_dust_ciB:   *dregeneral 
+topswad0_dust_ciB:   *dregeneral 
+sollwad_dust_ciB:    *dregeneral 
+solswad_dust_ciB:    *dregeneral
+sollwad0_dust_ciB:   *dregeneral 
+solswad0_dust_ciB:   *dregeneral 
+toplwswad_dust_ciB:  *dregeneral 
+sollwswad_dust_ciB:  *dregeneral 
+toplwswad0_dust_ciB: *dregeneral 
+sollwswad0_dust_ciB: *dregeneral 
+
+toplwad_dust_d1A:    *dregeneral 
+topswad_dust_d1A:    *dregeneral 
+toplwad0_dust_d1A:   *dregeneral 
+topswad0_dust_d1A:   *dregeneral 
+sollwad_dust_d1A:    *dregeneral 
+solswad_dust_d1A:    *dregeneral
+sollwad0_dust_d1A:   *dregeneral 
+solswad0_dust_d1A:   *dregeneral 
+toplwswad_dust_d1A:  *dregeneral 
+sollwswad_dust_d1A:  *dregeneral 
+toplwswad0_dust_d1A: *dregeneral 
+sollwswad0_dust_d1A: *dregeneral
+
+toplwad_dust_d1B:    *dregeneral 
+topswad_dust_d1B:    *dregeneral 
+toplwad0_dust_d1B:   *dregeneral 
+topswad0_dust_d1B:   *dregeneral 
+sollwad_dust_d1B:    *dregeneral 
+solswad_dust_d1B:    *dregeneral
+sollwad0_dust_d1B:   *dregeneral 
+solswad0_dust_d1B:   *dregeneral 
+toplwswad_dust_d1B:  *dregeneral 
+sollwswad_dust_d1B:  *dregeneral 
+toplwswad0_dust_d1B: *dregeneral 
+sollwswad0_dust_d1B: *dregeneral
+
+toplwad_dust_d4A:    *dregeneral 
+topswad_dust_d4A:    *dregeneral 
+toplwad0_dust_d4A:   *dregeneral 
+topswad0_dust_d4A:   *dregeneral 
+sollwad_dust_d4A:    *dregeneral 
+solswad_dust_d4A:    *dregeneral
+sollwad0_dust_d4A:   *dregeneral 
+solswad0_dust_d4A:   *dregeneral 
+toplwswad_dust_d4A:  *dregeneral 
+sollwswad_dust_d4A:  *dregeneral 
+toplwswad0_dust_d4A: *dregeneral 
+sollwswad0_dust_d4A: *dregeneral 
+
+toplwad_dust_d4B:    *dregeneral 
+topswad_dust_d4B:    *dregeneral 
+toplwad0_dust_d4B:   *dregeneral 
+topswad0_dust_d4B:   *dregeneral 
+sollwad_dust_d4B:    *dregeneral 
+solswad_dust_d4B:    *dregeneral
+sollwad0_dust_d4B:   *dregeneral 
+solswad0_dust_d4B:   *dregeneral 
+toplwswad_dust_d4B:  *dregeneral 
+sollwswad_dust_d4B:  *dregeneral 
+toplwswad0_dust_d4B: *dregeneral 
+sollwswad0_dust_d4B: *dregeneral 
+
+
+

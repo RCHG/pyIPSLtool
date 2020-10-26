@@ -1,0 +1,292 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Structure &mdash; PyPUMD a documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="How to use: running in TGCC cluster" href="How-to-use.html" />
+    <link rel="prev" title="library for IPSL data analysis in Python" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> PyPUMD
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#file-tree">File Tree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="How-to-use.html">How to use: running in TGCC cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyPUMD</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Structure</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Structure.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="structure">
+<h1>Structure<a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h1>
+<p>Here is described the file structure of the library</p>
+<div class="section" id="file-tree">
+<h2>File Tree<a class="headerlink" href="#file-tree" title="Permalink to this headline">¶</a></h2>
+<p>Main files and folders:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> .
+├── calibration_dust.py
+├── dust_analysis.py
+├── main_irene.py
+├── regions_RIDLEY_study.py
+├── regions_study.py
+├── main.py
+├── seasonal.py
+│
+├── doc
+├── etc
+│   ├── calibration_dust
+│   │   └── comparsion_calibration_LMDZORINCA_CRESCENDOWP6_PDv2.dat
+│   ├── emis_alt.json
+│   ├── emissions.json
+│   ├── h2o_modes.json
+│   ├── loadings.json
+│   ├── mdw_modes.json
+│   ├── opt_depth.json
+│   ├── regions
+│   │   ├── ATmask_robinson.png
+│   │   ├── CORRECTIONmask_robinson.png
+│   │   ├── dataset_ridley_corrected_Jun2018_extended_for_calibrationIPSL.txt
+│   │   ├── dataset_ridley_corrected_Jun2018.txt
+│   │   ├── dataset_ridley_corrected.txt
+│   │   ├── dataset_ridley_original.txt
+│   │   ├── KIMmask_robinson.png
+│   │   ├── RHKZmask_PlateCarree.png
+│   │   └── RHKZmask_robinson.png
+│   └── rhv_files
+│       ├── rhv145x143.Sep2018v2.nc
+│       ├── rhv145x143.Sep2018v2_updated.nc
+│       ├── rhvEC_v2.nc
+│       └── rhvEC_v2_updated.nc
+├── examples [17 entries exceeds filelimit, not opening dir]
+├── lib
+│   ├── aerplots.py
+│   ├── aux_forplot.py
+│   ├── dic_definitions.py
+│   ├── __init__.py
+│   ├── loops.py
+│   ├── regions_old.py
+│   └── regions.py
+├── non_used
+├── old
+└── out [22 entries exceeds filelimit, not opening dir]
+
+28 directories, 94 files
+</pre></div>
+</div>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Main folders:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* /lib               -&gt; main modules
+* /etc               -&gt; specific information to be used by library
+* /non_used and /old -&gt; old scripts
+* /doc               -&gt; documentation
+* /examples          -&gt; similar to /non_used??
+* /out               -&gt; figures that are part of direct outputs and
+                        temporary analysis.
+</pre></div>
+</div>
+<p>Files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="n">calibration_dust</span><span class="o">.</span><span class="n">py</span>  <span class="o">----&gt;</span> <span class="n">IMPORTANT</span> <span class="n">it</span> <span class="n">creates</span> <span class="n">correction</span> <span class="n">files</span><span class="o">.</span>
+<span class="o">*</span> <span class="n">dust_analysis</span><span class="o">.</span><span class="n">py</span>
+<span class="o">*</span> <span class="n">main_irene</span><span class="o">.</span><span class="n">py</span>
+<span class="o">*</span> <span class="n">regions_RIDLEY_study</span><span class="o">.</span><span class="n">py</span> <span class="o">-&gt;</span> <span class="n">IMPORTANT</span> <span class="n">it</span> <span class="n">creates</span> <span class="n">calibration</span> <span class="n">tables</span><span class="o">.</span>
+<span class="o">*</span> <span class="n">regions_study</span><span class="o">.</span><span class="n">py</span>
+<span class="o">*</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span>
+<span class="o">*</span> <span class="n">seasonal</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="How-to-use.html" class="btn btn-neutral float-right" title="How to use: running in TGCC cluster" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="library for IPSL data analysis in Python" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Ramiro Checa-Garcia
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+Dust Optical Corrections
+========================
+
+Role on od550lt1aer
+-------------------
+
+od550lt1aer represents the aerosol optical depth for sizes smaller than 1 mu m. The procedure
+used here to calibrate the dust contribution to od550lt1aer relies on an experimental
+definition of the distribution of sizes of the optical depth of dust :math:`\tau_{dust}(D)dD` of
+Jasper F. Kok et al 2017 (Nature Geosciences).
+
+The supplementary figure S1 can be decomposed as a table:
+
+=====  =====  ================ ============= ======================                                                                        
+Dmin   Dmax   :math:`\Delta D` :math:`\tau`  :math:`\Delta D*\tau`
+=====  =====  ================ ============= ======================
+0.2    0.5    0.3              4.2e-4        0.000126
+0.5    1      0.5              4.0e-3        0.002000
+1      2      1                9.0e-3        0.009000
+2      5      3                1.1e-2        0.033000
+5      10     5                3.8e-3        0.019000
+10     20     10               5.7e-4        0.0057
+=====  =====  ================ ============= ======================
+
+The sum of :math:`\sum_{i}\Delta D_{i} \cdot \Delta \tau_{i} = 0.068826` which is our 
+normalization factor
+
+The contribution of dust optical depth of particles between 0.2 and 1 mu m is:
+
+:math:`(0.000126+0.002000)/0.068826 = 0.0309`
+
+so the fraction of particles with sizes between 0.2 and 1 contribute with the 0.0309% to the
+total optical dust depth, and the biggest contribution is between 2 and 5 with a factor close
+to 50%.
+
+Ascertain the dust optical depth distribution
+---------------------------------------------
+
+
+
+
+

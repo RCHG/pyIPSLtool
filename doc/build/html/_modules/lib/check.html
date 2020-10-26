@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>lib.check &mdash; PyPUMD a documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> PyPUMD
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Structure.html">Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../How-to-use.html">How to use: running in TGCC cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyPUMD</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>lib.check</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lib.check</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">##############################################################################################</span>
+
+<span class="sd">  Project   : CRESCENDO/AEROCOM</span>
+<span class="sd">  Filename  : check.py</span>
+<span class="sd">  Author    : Ramiro Checa-Garcia</span>
+<span class="sd">  email     : rcheca@lsce.ipsl.fr</span>
+<span class="sd">  Purpose   : Specific type of checks for key variables</span>
+
+<span class="sd">  Revision History ----------------------------------------------------------</span>
+
+<span class="sd">  Date       Author     Ref    Revision</span>
+
+<span class="sd">  2018-Oct   R.Checa           First version.</span>
+<span class="sd">  2018-Nov   R.Checa           Added the global mean at level</span>
+
+
+<span class="sd">  TODO LIST:</span>
+
+
+<span class="sd">##############################################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="myprint"><a class="viewcode-back" href="../../api.html#lib.check.myprint">[docs]</a><span class="k">def</span> <span class="nf">myprint</span><span class="p">(</span><span class="n">mystr</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mystr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">finfo</span><span class="o">!=</span><span class="kc">None</span><span class="p">:</span>
+        <span class="n">finfo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mystr</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span></div>
+
+<div class="viewcode-block" id="total_load"><a class="viewcode-back" href="../../api.html#lib.check.total_load">[docs]</a><span class="k">def</span> <span class="nf">total_load</span><span class="p">(</span><span class="n">ncname</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">dicinfo</span><span class="p">,</span>  <span class="n">area_fname</span><span class="o">=</span><span class="s1">&#39;data/area_grid.nc&#39;</span><span class="p">,</span> <span class="n">area_varid</span><span class="o">=</span><span class="s1">&#39;area&#39;</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">ncname</span><span class="p">)</span>
+    <span class="n">areadata</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">area_fname</span><span class="p">)[</span><span class="n">area_varid</span><span class="p">]</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    try:</span>
+<span class="sd">        print(area_fname, area_varid)</span>
+<span class="sd">        areadata = xr.open_dataset(area_fname)[area_varid]</span>
+<span class="sd">    except:</span>
+<span class="sd">        import iris</span>
+<span class="sd">        variable_constraint = iris.Constraint(cube_func=(lambda c: c.var_name == varname))</span>
+<span class="sd">        cube = iris.load(fn_process, constraints=variable_constraint)[0]</span>
+<span class="sd">        try:</span>
+<span class="sd">           cube.coord(&#39;latitude&#39;).guess_bounds()</span>
+<span class="sd">           cube.coord(&#39;longitude&#39;).guess_bounds()</span>
+<span class="sd">        except ValueError:</span>
+<span class="sd">           pass</span>
+<span class="sd">    cube_area = iris.analysis.cartography.area_weights(cube)</span>
+<span class="sd">    areadata=cube_area[0].data</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">load_field</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">varname</span><span class="p">]</span><span class="o">*</span><span class="n">areadata</span>
+    <span class="n">load_month</span> <span class="o">=</span> <span class="n">load_field</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">])</span>
+    <span class="n">load_out</span> <span class="o">=</span> <span class="n">load_month</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">/</span><span class="mf">1.e9</span>
+
+    <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;       ... [checking values] [Tg]: &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">load_out</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;Tg&#39;</span><span class="p">,</span> <span class="n">load_out</span><span class="o">.</span><span class="n">values</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_total_tendency</span><span class="p">(</span><span class="n">tendency_data</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">area</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">tendency_field</span> <span class="o">=</span> <span class="n">tendency_data</span><span class="p">[</span><span class="n">varname</span><span class="p">]</span><span class="o">*</span><span class="n">area</span>
+    <span class="n">tendency_month</span> <span class="o">=</span> <span class="n">tendency_field</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">])</span>
+    <span class="n">seconds_month</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">k</span> <span class="o">*</span> <span class="mf">86400.</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">31</span><span class="p">,</span> <span class="mf">28.25</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">]])</span>
+    <span class="n">tendency_total</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tendency_month</span><span class="p">[</span><span class="n">imonth</span><span class="p">]</span><span class="o">*</span><span class="n">seconds_month</span><span class="p">[</span><span class="n">imonth</span><span class="p">]</span> <span class="k">for</span> <span class="n">imonth</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">)])</span>
+
+    <span class="n">acc_tot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">tendency_total</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="mf">1.e9</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">acc_mon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">tendency_total</span><span class="o">/</span><span class="mf">1.e9</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">acc_tot</span><span class="p">,</span> <span class="n">acc_mon</span>
+
+<div class="viewcode-block" id="tendency_mass"><a class="viewcode-back" href="../../api.html#lib.check.tendency_mass">[docs]</a><span class="k">def</span> <span class="nf">tendency_mass</span><span class="p">(</span><span class="n">ncname</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">area_fname</span><span class="p">,</span> <span class="n">area_varid</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">ncname</span><span class="p">)</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">area_fname</span><span class="p">)[</span><span class="n">area_varid</span><span class="p">]</span>
+
+    <span class="n">new</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;time.month&#39;</span><span class="p">)</span>
+    <span class="n">new1</span><span class="o">=</span> <span class="n">new</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+    <span class="n">new1</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Jan&#39;</span><span class="p">,</span><span class="s1">&#39;Feb&#39;</span><span class="p">,</span><span class="s1">&#39;Mar&#39;</span><span class="p">,</span><span class="s1">&#39;Apr&#39;</span><span class="p">,</span><span class="s1">&#39;May&#39;</span><span class="p">,</span><span class="s1">&#39;Jun&#39;</span><span class="p">,</span><span class="s1">&#39;Jul&#39;</span><span class="p">,</span><span class="s1">&#39;Aug&#39;</span><span class="p">,</span><span class="s1">&#39;Sep&#39;</span><span class="p">,</span><span class="s1">&#39;Oct&#39;</span><span class="p">,</span><span class="s1">&#39;Nov&#39;</span><span class="p">,</span><span class="s1">&#39;Dec&#39;</span><span class="p">]</span>
+    <span class="n">val_tendency</span><span class="p">,</span> <span class="n">monthly</span> <span class="o">=</span> <span class="n">_total_tendency</span><span class="p">(</span><span class="n">new1</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">area</span><span class="p">)</span>
+
+    <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;       ... [checking values] [Tg yr-1]: &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">val_tendency</span><span class="p">),</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+    <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;       ... [checking values]   monthly: &#39;</span><span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">monthly</span><span class="p">]),</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;Tg yr-1&#39;</span><span class="p">,</span> <span class="n">val_tendency</span></div>
+
+<div class="viewcode-block" id="global_mean"><a class="viewcode-back" href="../../api.html#lib.check.global_mean">[docs]</a><span class="k">def</span> <span class="nf">global_mean</span><span class="p">(</span><span class="n">ncname</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">dicinfo</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="n">dg_to_rd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.0001</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">ncname</span><span class="p">)</span> <span class="c1"># time, lat, lon</span>
+    <span class="k">if</span> <span class="n">level</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+        <span class="n">mymethod</span><span class="o">=</span><span class="s1">&#39;global_mean&#39;</span>
+        <span class="n">datavar</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">varname</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">vlevel</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mymethod</span><span class="o">=</span><span class="s1">&#39;global_mean_atlev&#39;</span>
+        <span class="c1">#print(data[varname])</span>
+        <span class="n">datavar</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">varname</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">level</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;       evaluating at the pressure ... &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;pres&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">level</span><span class="p">])</span><span class="o">+</span>
+                    <span class="s1">&#39; &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;pres&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]),</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+        <span class="n">vlevel</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;pres&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">level</span><span class="p">])</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;pres&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">])</span>
+
+
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">time</span><span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">lat_nh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lat</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">lat_sh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lat</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">lataxis</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">lonaxis</span><span class="o">=</span><span class="mi">1</span>
+    <span class="n">ts_global</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">ts_nhemis</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">ts_shemis</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">itime</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)):</span>
+        <span class="n">data2Dgb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">datavar</span><span class="p">[</span><span class="n">itime</span><span class="p">,:</span>     <span class="p">,:])</span>
+        <span class="n">data2Dnh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">datavar</span><span class="p">[</span><span class="n">itime</span><span class="p">,</span><span class="n">lat_nh</span><span class="p">,:])</span>
+        <span class="n">data2Dsh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">datavar</span><span class="p">[</span><span class="n">itime</span><span class="p">,</span><span class="n">lat_sh</span><span class="p">,:])</span>
+        <span class="n">data2Davggb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">data2Dgb</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">lonaxis</span><span class="p">),</span>
+                                 <span class="n">axis</span><span class="o">=</span><span class="n">lataxis</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat</span><span class="o">*</span><span class="n">dg_to_rd</span><span class="p">))</span>
+
+        <span class="n">data2Davgnh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">data2Dnh</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">lonaxis</span><span class="p">),</span>
+                                 <span class="n">axis</span><span class="o">=</span><span class="n">lataxis</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat</span><span class="p">[</span><span class="n">lat_nh</span><span class="p">]</span><span class="o">*</span><span class="n">dg_to_rd</span><span class="p">))</span>
+
+        <span class="n">data2Davgsh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">data2Dsh</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">lonaxis</span><span class="p">),</span>
+                                 <span class="n">axis</span><span class="o">=</span><span class="n">lataxis</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat</span><span class="p">[</span><span class="n">lat_sh</span><span class="p">]</span><span class="o">*</span><span class="n">dg_to_rd</span><span class="p">))</span>
+
+        <span class="n">ts_global</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data2Davggb</span><span class="p">)</span>
+        <span class="n">ts_nhemis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data2Davgnh</span><span class="p">)</span>
+        <span class="n">ts_shemis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data2Davgsh</span><span class="p">)</span>
+
+    <span class="n">a_gl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ts_global</span><span class="p">)</span> <span class="c1">#; a_gl_avg = str(np.round(a_gl.mean(),4))</span>
+    <span class="n">a_nh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ts_nhemis</span><span class="p">)</span> <span class="c1">#; a_nh_avg = str(np.round(a_nh.mean(),4))</span>
+    <span class="n">a_sh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ts_shemis</span><span class="p">)</span> <span class="c1"># ; a_sh_avg = str(np.round(a_sh.mean(),4))</span>
+    <span class="c1">#a_gl_min = &quot;{0:0.3f}&quot;.format(a_gl.min())</span>
+    <span class="c1">#a_gl_max = &quot;{0:0.3f}&quot;.format(a_gl.max())</span>
+    <span class="c1">#a_gl_std = &quot;{0:0.3f}&quot;.format(a_gl.std())</span>
+
+    <span class="n">a_gl1</span> <span class="o">=</span> <span class="s2">&quot;&gt; 90S-90N </span><span class="si">{0:&gt;8.5g}</span><span class="s2"> | NH  </span><span class="si">{1:&gt;8.5g}</span><span class="s2"> | SH  </span><span class="si">{2:&gt;8.5g}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a_gl</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">a_nh</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">a_sh</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+    <span class="n">a_gl2</span> <span class="o">=</span> <span class="s2">&quot;| min     </span><span class="si">{0:&gt;8.5g}</span><span class="s2"> | max </span><span class="si">{1:&gt;8.5g}</span><span class="s2"> | std </span><span class="si">{2:&gt;8.5g}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a_gl</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">a_gl</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">a_gl</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
+    <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;       ... [checking values]: &#39;</span><span class="o">+</span>
+            <span class="s1">&#39;[&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">varname</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="o">+</span><span class="n">a_gl1</span><span class="o">+</span><span class="n">a_gl2</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">dicinfo</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">][</span><span class="n">mymethod</span><span class="p">][</span><span class="s1">&#39;factor&#39;</span><span class="p">])</span><span class="o">!=</span><span class="mi">1</span><span class="p">:</span>
+       <span class="n">na_gl</span> <span class="o">=</span>  <span class="n">a_gl</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">dicinfo</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">][</span><span class="n">mymethod</span><span class="p">][</span><span class="s1">&#39;factor&#39;</span><span class="p">])</span>
+       <span class="n">na_nh</span> <span class="o">=</span>  <span class="n">a_nh</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">dicinfo</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">][</span><span class="n">mymethod</span><span class="p">][</span><span class="s1">&#39;factor&#39;</span><span class="p">])</span>
+       <span class="n">na_sh</span> <span class="o">=</span>  <span class="n">a_sh</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">dicinfo</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">][</span><span class="n">mymethod</span><span class="p">][</span><span class="s1">&#39;factor&#39;</span><span class="p">])</span>
+
+       <span class="n">na_gl1</span> <span class="o">=</span> <span class="s2">&quot;&gt; 90S-90N </span><span class="si">{0:&gt;8.5g}</span><span class="s2"> | NH  </span><span class="si">{1:&gt;8.5g}</span><span class="s2"> | SH  </span><span class="si">{2:&gt;8.5g}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">na_gl</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">na_nh</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">na_sh</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+       <span class="n">na_gl2</span> <span class="o">=</span> <span class="s2">&quot;| min     </span><span class="si">{0:&gt;8.5g}</span><span class="s2"> | max </span><span class="si">{1:&gt;8.5g}</span><span class="s2"> | std </span><span class="si">{2:&gt;8.5g}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">na_gl</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span>  <span class="n">na_gl</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span>  <span class="n">na_gl</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="p">)</span>
+
+       <span class="n">myprint</span><span class="p">(</span><span class="s1">&#39;       ... [checking values]: &#39;</span><span class="o">+</span>
+               <span class="s1">&#39;[&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">dicinfo</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">][</span><span class="n">mymethod</span><span class="p">][</span><span class="s1">&#39;units&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;]&#39;</span>
+               <span class="o">+</span><span class="n">na_gl1</span><span class="o">+</span><span class="n">na_gl2</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">na_gl</span><span class="o">=</span> <span class="n">a_gl</span>
+    <span class="k">return</span> <span class="n">varname</span><span class="p">,</span> <span class="n">dicinfo</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">][</span><span class="n">mymethod</span><span class="p">][</span><span class="s1">&#39;units&#39;</span><span class="p">],</span> <span class="n">na_gl</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">vlevel</span></div>
+
+
+<div class="viewcode-block" id="global_mean_atlev"><a class="viewcode-back" href="../../api.html#lib.check.global_mean_atlev">[docs]</a><span class="k">def</span> <span class="nf">global_mean_atlev</span><span class="p">(</span><span class="n">ncname</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">dicinfo</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="n">global_mean</span><span class="p">(</span><span class="n">ncname</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">dicinfo</span><span class="p">,</span> <span class="n">finfo</span><span class="o">=</span><span class="n">finfo</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">)</span></div>
+
+
+
+
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Ramiro Checa-Garcia
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

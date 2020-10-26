@@ -1,0 +1,16 @@
+Tables/CMIP6_CREmon.json:        "dryNO3_1": {
+Tables/CMIP6_CREmon.json:            "out_name": "dryNO3_1", 
+Tables/CMIP6_CREmon.json:        "dryNO3_2": {
+Tables/CMIP6_CREmon.json:            "out_name": "dryNO3_2", 
+Tables/CMIP6_CREmon.json:        "dryNO3_5": {
+Tables/CMIP6_CREmon.json:            "out_name": "dryNO3_5", 
+Tables/CMIP6_CREmon.json:        "dryno3": {
+Tables/CMIP6_CREmon.json:            "out_name": "dryno3", 
+Tables/CMIP6_CREday.json:        "dryNO3_1": {
+Tables/CMIP6_CREday.json:            "out_name": "dryNO3_1", 
+Tables/CMIP6_CREday.json:        "dryNO3_2": {
+Tables/CMIP6_CREday.json:            "out_name": "dryNO3_2", 
+Tables/CMIP6_CREday.json:        "dryNO3_5": {
+Tables/CMIP6_CREday.json:            "out_name": "dryNO3_5", 
+Tables/CMIP6_CREday.json:        "dryno3": {
+Tables/CMIP6_CREday.json:            "out_name": "dryno3", 

@@ -1,0 +1,35 @@
+
+mmrpm10: &mmr_general
+        method:  {global_mean_atlev: {kind:  global, time:  mon, units:  'kg kg-1', factor:  1, levels: [0, 2, 25, 50]}}
+
+mmrNO3_5: *mmr_general
+mmrBC_4:  *mmr_general
+mmrOA_4:  *mmr_general
+mmrSS_2:  *mmr_general
+mmrSO4_1: *mmr_general
+mmrNH4_2: *mmr_general
+mmrNO3_2: *mmr_general
+mmrSS_1:  *mmr_general
+mmrBC_1:  *mmr_general
+mmrOA_1:  *mmr_general
+mmrNH4_1: *mmr_general
+mmrNO3_1: *mmr_general
+mmrSS_3:  *mmr_general
+mmrpm1:   *mmr_general
+mmrpm2p5: *mmr_general
+mmr_5:    *mmr_general
+mmr_4:    *mmr_general
+mmr_3:    *mmr_general
+mmr_2:    *mmr_general
+mmr_1:    *mmr_general
+mmrdust:  *mmr_general
+mmrss:    *mmr_general
+mmrso4:   *mmr_general
+mmrnh4:   *mmr_general
+mmrno3:   *mmr_general
+mmrbc:    *mmr_general
+mmroa:    *mmr_general
+mmrDU_5:  *mmr_general
+
+
+

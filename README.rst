@@ -8,7 +8,6 @@ pyIPSLtool: unpack/test/plot IPSL climate simulations
 :License: GPLv3 (GNU General Public License version 3)
 :Date: 2020-01-01
 :Version: 1.0
-:Documentation: |doc_flat_Badge|
 :Cite as: |cite-link|
 
 .. index: README
@@ -26,8 +25,8 @@ several diagnostics of IPSL climate model.
 
 Please if you use this software cite it as:
 
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3672001.svg
-   :target: https://doi.org/10.5281/zenodo.3672001
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4134747.svg
+   :target: https://doi.org/10.5281/zenodo.4134747
 
 Documentation
 =============
@@ -35,9 +34,7 @@ Documentation
 Currently, the documentation is being created. In the folder there is some information 
 about the tool.
 
-.. |doc_flat_Badge| image:: https://readthedocs.org/projects/pip/badge/?version=latest&style=flat
-                    :target: https://funfan.readthedocs.io/en/latest/
-.. |cite-link| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3672001.svg
-               :target: https://doi.org/10.5281/zenodo.3672001
+.. |cite-link| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4134747.svg
+               :target: https://doi.org/10.5281/zenodo.4134747
 
 
